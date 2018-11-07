@@ -97,6 +97,12 @@ interface DriverInterface extends \Evenement\EventEmitterInterface, QueryableInt
     function getConnectionState(): int;
     
     /**
+     * Retrieves the current busy state.
+     * @return int
+     */
+    function getBusyState(): int;
+    
+    /**
      * Get the length of the driver backlog queue.
      * @return int
      */
@@ -125,4 +131,22 @@ interface DriverInterface extends \Evenement\EventEmitterInterface, QueryableInt
      * @return bool
      */
     function isInTransaction(): bool;
+    
+    /**
+     * Begins a transaction. Resolves with a `TransactionInterface` instance.
+     *
+     * Checks out a connection until the transaction gets committed or rolled back.
+     * It must be noted that the user is responsible for finishing the transaction. The client WILL NOT automatically
+     * check the connection back into the pool, as long as the transaction is not finished.
+     *
+     * Some databases, including MySQL, automatically issue an implicit COMMIT when a database definition language (DDL)
+     * statement such as DROP TABLE or CREATE TABLE is issued within a transaction.
+     * The implicit COMMIT will prevent you from rolling back any other changes within the transaction boundary.
+     * @param \Plasma\ClientInterface  $client
+     * @param int                      $isolation  See the `TransactionInterface` constants.
+     * @return \React\Promise\PromiseInterface
+     * @throws \Plasma\Exception
+     * @see \Plasma\TransactionInterface
+     */
+    function beginTransaction(\Plasma\ClientInterface $client, int $isolation = \Plasma\TransactionInterface::ISOLATION_COMMITTED): \React\Promise\PromiseInterface;
 }

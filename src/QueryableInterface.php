@@ -36,6 +36,7 @@ interface QueryableInterface {
      * @param string  $str
      * @return string
      * @throws \LogicException  Thrown if the driver does not support quoting.
+     * @throws \Plasma\Exception
      */
     function quote(string $str): string;
 }

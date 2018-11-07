@@ -23,7 +23,14 @@ class Client implements ClientInterface {
     /**
      * @var array
      */
-    protected $options = array('maxConnections' => 5);
+    protected $options = array(
+        'maxConnections' => 5
+    );
+    
+    /**
+     * @var \React\Promise\PromiseInterface
+     */
+    protected $goingAway;
     
     /**
      * @var \SplObjectStorage
@@ -62,32 +69,6 @@ class Client implements ClientInterface {
     }
     
     /**
-     * Closes all connections gracefully after processing all outstanding requests.
-     * @return \React\Promise\PromiseInterface
-     */
-    function close(): \React\Promise\PromiseInterface {
-        $closes = array();
-        
-        /** @var \Plasma\DriverInterface  $conn */
-        foreach($this->connections as $conn) {
-            $closes[] = $conn->close();
-        }
-        
-        return \React\Promise\all($closes);
-    }
-    
-    /**
-     * Forcefully closes the connection, without waiting for any outstanding requests. This will reject all oustanding requests.
-     * @return void
-     */
-    function quit(): void {
-        /** @var \Plasma\DriverInterface  $conn */
-        foreach($this->connections as $conn) {
-            $conn->quit();
-        }
-    }
-    
-    /**
      * Get the amount of connections.
      * @return int
      */
@@ -96,38 +77,29 @@ class Client implements ClientInterface {
     }
     
     /**
-     * Begins a transaction. Resolves with a `TransactionInterface` instance.
+     * Begins a transaction. Resolves with a `Transaction` instance.
      *
-     * Checks out a connection permanently until the transaction gets committed or rolled back. If the transaction goes out of scope
-     * and thus deallocated, the `TransactionInterface` must check the connection back into the client.
+     * Checks out a connection until the transaction gets committed or rolled back. If the transaction goes out of scope
+     * and thus deallocated, the `Transaction` must check the connection back into the client.
      *
      * Some databases, including MySQL, automatically issue an implicit COMMIT when a database definition language (DDL)
      * statement such as DROP TABLE or CREATE TABLE is issued within a transaction.
      * The implicit COMMIT will prevent you from rolling back any other changes within the transaction boundary.
+     * @param int  $isolation  See the `TransactionInterface` constants.
      * @return \React\Promise\PromiseInterface
-     * @see \Plasma\TransactionInterface
+     * @throws \Plasma\Exception
+     * @see \Plasma\Transaction
      */
     function beginTransaction(int $isolation = \Plasma\TransactionInterface::ISOLATION_COMMITTED): \React\Promise\PromiseInterface {
-        $connection = $this->getOptimalConnection();
-        
-        switch($isolation) {
-            case \Plasma\TransactionInterface::ISOLATION_UNCOMMITTED:
-                $query = 'BEGIN TRANSACTION ISOLATION LEVEL READ UNCOMMITTED';
-            break;
-            case \Plasma\TransactionInterface::ISOLATION_COMMITTED:
-                $query = 'BEGIN TRANSACTION ISOLATION LEVEL READ COMMITTED';
-            break;
-            case \Plasma\TransactionInterface::ISOLATION_REPEATABLE:
-                $query = 'BEGIN TRANSACTION ISOLATION LEVEL REPEATABLE READ';
-            break;
-            case \Plasma\TransactionInterface::ISOLATION_SERIALIZABLE:
-                $query = 'BEGIN TRANSACTION ISOLATION LEVEL READ SERIALIZABLE';
-            break;
+        if($this->goingAway) {
+            return \React\Promise\reject((new \Plasma\Exception('Client is closing all connections')));
         }
         
-        return $connection->query($query)->then(function () use (&$connection, $isolation) {
+        $connection = $this->getOptimalConnection();
+        
+        return $connection->beginTransaction($this, $isolation)->then(function (\Plasma\TransactionInterface $value) use (&$connection) {
             $this->transactionConnections->attach($connection);
-            return (new \Plasma\Transaction($this, $connection, $isolation));
+            return $value;
         }, function (\Throwable $error) use (&$connection) {
             $this->connections->attach($connection);
             throw $error;
@@ -140,7 +112,7 @@ class Client implements ClientInterface {
      * @return void
      */
     function checkinConnection(\Plasma\DriverInterface $driver): void {
-        if($driver->getConnectionState() === \Plasma\DriverInterface::CONNECTION_OK) {
+        if($driver->getConnectionState() === \Plasma\DriverInterface::CONNECTION_OK && !$this->goingAway) {
             $this->connections->attach($driver);
             $this->transactionConnections->detach($driver);
         }
@@ -153,10 +125,14 @@ class Client implements ClientInterface {
      * @see \Plasma\QueryResultInterface
      */
     function query(string $query): \React\Promise\PromiseInterface {
+        if($this->goingAway) {
+            return \React\Promise\reject((new \Plasma\Exception('Client is closing all connections')));
+        }
+        
         $connection = $this->getOptimalConnection();
         
         return $connection->query($query)->always(function () use (&$connection) {
-            $this->connections->attach($connection);
+            $this->checkinConnection($connection);
         });
     }
     
@@ -167,10 +143,14 @@ class Client implements ClientInterface {
      * @see \Plasma\StatementInterface
      */
     function prepare(string $query): \React\Promise\PromiseInterface {
+        if($this->goingAway) {
+            return \React\Promise\reject((new \Plasma\Exception('Client is closing all connections')));
+        }
+        
         $connection = $this->getOptimalConnection();
         
         return $connection->prepare($query)->always(function () use (&$connection) {
-            $this->connections->attach($connection);
+            $this->checkinConnection($connection);
         });
     }
     
@@ -178,13 +158,72 @@ class Client implements ClientInterface {
      * Quotes the string for use in the query.
      * @param string  $str
      * @return string
-     * @throws \LogicException  Thrown if the driver does not support quoting.
+     * @throws \LogicException    Thrown if the driver does not support quoting.
+     * @throws \Plasma\Exception  Thrown if the client is closing all connections.
      */
     function quote(string $str): string {
+        if($this->goingAway) {
+            throw new \Plasma\Exception('Client is closing all connections');
+        }
+        
         $connection = $this->getOptimalConnection();
-        $this->connections->attach($connection);
+        $this->checkinConnection($connection);
         
         return $connection->quote($query);
+    }
+    
+    /**
+     * Closes all connections gracefully after processing all outstanding requests.
+     * @return \React\Promise\PromiseInterface
+     */
+    function close(): \React\Promise\PromiseInterface {
+        if($this->goingAway) {
+            return $this->goingAway;
+        }
+        
+        $deferred = new \React\Promise\Deferred();
+        $this->goingAway = $deferred->promise();
+        
+        $closes = array();
+        
+        /** @var \Plasma\DriverInterface  $conn */
+        foreach($this->connections as $conn) {
+            $closes[] = $conn->close();
+            $this->connections->detach($conn);
+        }
+        
+        /** @var \Plasma\DriverInterface  $conn */
+        foreach($this->transactionConnections as $conn) {
+            $closes[] = $conn->close();
+            $this->transactionConnections->detach($conn);
+        }
+        
+        \React\Promise\all($closes)->then(array($deferred, 'resolve'), array($deferred, 'reject'));
+        return $this->goingAway;
+    }
+    
+    /**
+     * Forcefully closes the connection, without waiting for any outstanding requests. This will reject all oustanding requests.
+     * @return void
+     */
+    function quit(): void {
+        if($this->goingAway) {
+            return;
+        }
+        
+        $this->goingAway = \React\Promise\resolve();
+        
+        /** @var \Plasma\DriverInterface  $conn */
+        foreach($this->connections as $conn) {
+            $conn->quit();
+            $this->connections->detach($conn);
+        }
+        
+        /** @var \Plasma\DriverInterface  $conn */
+        foreach($this->transactionConnections as $conn) {
+            $conn->quit();
+            $this->transactionConnections->detach($conn);
+        }
     }
     
     /**
@@ -198,26 +237,29 @@ class Client implements ClientInterface {
         
         /** @var \Plasma\DriverInterface  $connection */
         $connection = $this->connections[0];
-        $backlog = -1;
+        $backlog = $connection->getBacklogLength();
+        $state = $connection->getBusyState();
         $position = 0;
         
         /** @var \Plasma\DriverInterface  $conn */
         foreach($this->connections as $conn) {
             $cbacklog = $conn->getBacklogLength();
+            $cstate = $conn->getBusyState();
             
-            if($cbacklog === 0 && $conn->getConnectionState() === \Plasma\DriverInterface::CONNECTION_OK) {
+            if($cbacklog === 0 && $conn->getConnectionState() === \Plasma\DriverInterface::CONNECTION_OK && $cstate == \Plasma\DriverInterface::STATE_IDLE) {
                 $this->connections->detach($pos);
                 return $conn;
             }
             
-            if($backlog > $cbacklog) {
+            if($backlog > $cbacklog || $state > $cstate) {
                 $connection = $conn;
                 $backlog = $cbacklog;
+                $state = $cstate;
                 $position = $pos;
             }
         }
         
-        if($this->connections->count() < $this->options['maxConnections']) {
+        if($this->getConnectionCount() < $this->options['maxConnections']) {
             return $this->createNewConnection();
         }
         
@@ -233,9 +275,19 @@ class Client implements ClientInterface {
         /** @var \Plasma\DriverInterface  $connection */
         $connection = $this->factory->createDriver();
         
+        // We relay a driver's specific events forward, e.g. PostgreSQL notifications
+        $connection->on('eventRelay', function (string $eventName, array $args) use (&$connection) {
+            $args[] = $connection;
+            $this->emit($eventName, ...$args);
+        });
+        
         $connection->on('close', function () use (&$connection) {
             $this->connections->detach($connection);
             $this->transactionConnections->detach($connection);
+        });
+        
+        $connection->on('error', function (\Throwable $error) use (&$connection) {
+            $this->emit('error', array($error, $connection));
         });
         
         $this->connections->attach($connection);

@@ -54,16 +54,7 @@ interface TransactionInterface extends QueryableInterface {
     const ISOLATION_SERIALIZABLE = 4;
     
     /**
-     * Creates a client with the specified factory and options.
-     * @param \Plasma\ClientInterface  $client
-     * @param \Plasma\DriverInterface  $driver
-     * @param int                      $isolation
-     * @throws \Plasma\Exception
-     */
-    function __construct(\Plasma\ClientInterface $client, \Plasma\DriverInterface $driver, int $isolation);
-    
-    /**
-     * Destructor. Automatically checks the connection back into the client on deallocation.
+     * Destructor. Implicit rollback and automatically checks the connection back into the client on deallocation.
      */
     function __destruct();
     

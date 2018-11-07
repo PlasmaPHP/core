@@ -51,12 +51,14 @@ class Transaction implements TransactionInterface {
     }
     
     /**
-     * Destructor. Automatically checks the connection back into the client on deallocation.
+     * Destructor. Implicit rollback and automatically checks the connection back into the client on deallocation.
      */
     function __destruct() {
         if($this->driver !== null && $this->driver->getConnectionState() === \Plasma\DriverInterface::CONNECTION_OK) {
-            $this->rollback();
-            $this->client->checkinConnection($this->driver);
+            $this->rollback()->then(null, function () {
+                // Error during implicit rollback, close the session
+                $this->driver->close();
+            });
         }
     }
     
