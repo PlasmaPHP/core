@@ -13,17 +13,35 @@ namespace Plasma;
  * The client interface for plasma clients, responsible for creating drivers and pooling.
  * It also provides a minimal public API for checking out a connection, get work done and checking the connection back in.
  */
-interface ClientInterface {
+interface ClientInterface extends \Evenement\EventEmitterInterface, QueryableInterface {
     /**
-     * Creates a client for the specified driver and the driver construtor arguments.
-     * @param string  $driver  A driver implementing `\Plasma\DriverInterface`.
-     * @param array   $ctor    The constructor arguments for the driver.
-     * @return self
+     * Creates a client with the specified factory and options.
+     * @param \Plasma\DriverFactoryInterface  $factory
+     * @param array                           $options  Any options for the client, see client implementation for details.
+     * @throws \Throwable  The client implementation may throw any exception during this operation.
      */
-    static function create(string $driver, array $ctor): self;
+    function __construct(\Plasma\DriverFactoryInterface $factory, array $options = array());
     
     /**
-     * Begins a transaction.
+     * Closes all connections gracefully after processing all outstanding requests.
+     * @return \React\Promise\PromiseInterface
+     */
+    function close(): \React\Promise\PromiseInterface;
+    
+    /**
+     * Forcefully closes the connection, without waiting for any outstanding requests. This will reject all oustanding requests.
+     * @return void
+     */
+    function quit(): void;
+    
+    /**
+     * Get the amount of connections.
+     * @return int
+     */
+    function getConnectionCount(): int;
+    
+    /**
+     * Begins a transaction. Resolves with a `TransactionInterface` instance.
      *
      * Checks out a connection permanently until the transaction gets committed or rolled back.
      * It must be noted that the user is responsible for finishing the transaction. The client WILL NOT automatically
@@ -32,7 +50,15 @@ interface ClientInterface {
      * Some databases, including MySQL, automatically issue an implicit COMMIT when a database definition language (DDL)
      * statement such as DROP TABLE or CREATE TABLE is issued within a transaction.
      * The implicit COMMIT will prevent you from rolling back any other changes within the transaction boundary.
-     * @return \Plasma\TransactionInterface
+     * @return \React\Promise\PromiseInterface
+     * @see \Plasma\TransactionInterface
      */
-    function beginTransaction(): \Plasma\TransactionInterface;
+    function beginTransaction(int $isolation = \Plasma\TransactionInterface::ISOLATION_COMMITTED): \React\Promise\PromiseInterface;
+    
+    /**
+     * Checks a connection back in. This method is used by `TransactionInterface` instances.
+     * @param \Plasma\DriverInterface  $driver
+     * @return void
+     */
+    function checkinConnection(\Plasma\DriverInterface $driver): void;
 }

@@ -10,7 +10,10 @@
         }
     ],
     "require": {
-        
+        "php": ">=7.1",
+        "charlottedunois/validator": "^0.3|^0.2.2",
+        "evenement/evenement": "^3.0|^2.0",
+        "react/promise": "^2.7"
     },
     "autoload": {
         "psr-4": {

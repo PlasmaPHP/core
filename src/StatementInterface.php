@@ -19,4 +19,18 @@ interface StatementInterface {
      * @return mixed
      */
     function getID();
+    
+    /**
+     * Closes the prepared statement and frees the associated resources on the server.
+     * @return \React\Promise\PromiseInterface
+     */
+    function close(): \React\Promise\PromiseInterface;
+    
+    /**
+     * Executes the prepared statement. Resolves with a `QueryResult` instance.
+     * @param array  $params
+     * @return \React\Promise\PromiseInterface
+     * @see \Plasma\QueryResultInterface
+     */
+    function execute(array $params): \React\Promise\PromiseInterface;
 }
