@@ -1,0 +1,20 @@
+{
+    "name": "plasma/core",
+    "description": "Core component of Plasma.",
+    "type": "library",
+    "license": "Apache-2.0",
+    "authors": [
+        {
+            "name": "Charlotte Dunois",
+            "email": "github@charuru.moe"
+        }
+    ],
+    "require": {
+        
+    },
+    "autoload": {
+        "psr-4": {
+            "Plasma\\": "src"
+        }
+    }
+}

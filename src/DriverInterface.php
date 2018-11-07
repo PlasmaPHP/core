@@ -1,0 +1,17 @@
+<?php
+/**
+ * Plasma Core component
+ * Copyright 2018 PlasmaPHP, All Rights Reserved
+ *
+ * Website: https://github.com/PlasmaPHP
+ * License: https://github.com/PlasmaPHP/core/blob/master/LICENSE
+*/
+
+namespace Plasma;
+
+/**
+ * The minimum public API a driver has to maintain.
+ */
+interface DriverInterface {
+
+}
