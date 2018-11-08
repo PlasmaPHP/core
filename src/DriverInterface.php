@@ -135,7 +135,7 @@ interface DriverInterface extends \Evenement\EventEmitterInterface, QueryableInt
     function close(): \React\Promise\PromiseInterface;
     
     /**
-     * Forcefully closes the connection, without waiting for any outstanding requests. This will reject all oustanding requests.
+     * Forcefully closes the connection, without waiting for any outstanding requests. This will reject all outstanding requests.
      * @return void
      */
     function quit(): void;
