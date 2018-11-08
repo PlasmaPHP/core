@@ -16,6 +16,10 @@ namespace Plasma;
  * The client must support relaying forward events from the driver to the client. This is done with a driver event called `eventRelay`.
  * The listener callback for the driver is: `function (string $eventName, array $args)`.
  * The client must always append the driver the event occurred on at the end of the `$args`. And emit the event, called `$eventName`, on itself.
+ *
+ * Additionally to the event relaying, the client emits `close` and `error` events from the driver forward.
+ * `close` event: The single argument is the `DriverInterface` (for debugging purpose).
+ * `error` event: The first argument is a `\Throwable` and the second argument is the `DriverInterface` (for debugging purpose).
  */
 interface ClientInterface extends \Evenement\EventEmitterInterface, QueryableInterface {
     /**
@@ -63,7 +67,7 @@ interface ClientInterface extends \Evenement\EventEmitterInterface, QueryableInt
     function close(): \React\Promise\PromiseInterface;
     
     /**
-     * Forcefully closes the connection, without waiting for any outstanding requests. This will reject all oustanding requests.
+     * Forcefully closes the connection, without waiting for any outstanding requests. This will reject all outstanding requests.
      * @return void
      */
     function quit(): void;

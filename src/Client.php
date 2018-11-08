@@ -167,9 +167,10 @@ class Client implements ClientInterface {
         }
         
         $connection = $this->getOptimalConnection();
-        $this->checkinConnection($connection);
+        $quoted = $connection->quote($query);
         
-        return $connection->quote($query);
+        $this->checkinConnection($connection);
+        return $quoted;
     }
     
     /**
@@ -284,6 +285,8 @@ class Client implements ClientInterface {
         $connection->on('close', function () use (&$connection) {
             $this->connections->detach($connection);
             $this->transactionConnections->detach($connection);
+            
+            $this->emit('close', array($connection));
         });
         
         $connection->on('error', function (\Throwable $error) use (&$connection) {

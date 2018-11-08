@@ -14,7 +14,7 @@ namespace Plasma;
  */
 interface QueryableInterface {
     /**
-     * Executes a plain query. Resolves with a `QueryResult` instance.
+     * Executes a plain query. Resolves with a `QueryResultInterface` instance.
      * @param string  $query
      * @return \React\Promise\PromiseInterface
      * @throws \Plasma\Exception

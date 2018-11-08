@@ -12,7 +12,7 @@ namespace Plasma;
 /**
  * The basic interface for commands. Some drivers may extend this interface to provide additional functionalities.
  */
-interface CommandInterface {
+interface CommandInterface extends \Evenement\EventEmitterInterface {
     /**
      * Get the encoded message for writing to the database connection.
      * @return string
