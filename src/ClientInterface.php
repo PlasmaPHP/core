@@ -28,7 +28,7 @@ interface ClientInterface extends \Evenement\EventEmitterInterface, QueryableInt
      * @param array                           $options  Any options for the client, see client implementation for details.
      * @throws \Throwable  The client implementation may throw any exception during this operation.
      */
-    function __construct(\Plasma\DriverFactoryInterface $factory, array $options = array());
+    static function create(\Plasma\DriverFactoryInterface $factory, array $options = array());
     
     /**
      * Get the amount of connections.

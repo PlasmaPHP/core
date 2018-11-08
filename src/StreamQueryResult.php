@@ -24,6 +24,26 @@ class StreamQueryResult implements StreamQueryResultInterface {
     protected $command;
     
     /**
+     * @var int
+     */
+    protected $affectedRows = 0;
+    
+    /**
+     * @var int
+     */
+    protected $warningsCount = 0;
+    
+    /**
+     * @var array|null
+     */
+    protected $fields;
+    
+    /**
+     * @var int|null
+     */
+    protected $insertID = 0;
+    
+    /**
      * @var bool
      */
     protected $started = false;
@@ -42,10 +62,20 @@ class StreamQueryResult implements StreamQueryResultInterface {
      * Constructor.
      * @param \Plasma\DriverInterface   $driver
      * @param \Plasma\CommandInterface  $command
+     * @param int                       $affectedRows
+     * @param int                       $warningsCount
+     * @param array|null                $fields
+     * @param int|null                  $insertID
      */
-    function __construct(\Plasma\DriverInterface $driver, \Plasma\CommandInterface $command) {
+    function __construct(\Plasma\DriverInterface $driver, \Plasma\CommandInterface $command, int $affectedRows = 0, int $warningsCount = 0, ?array $fields = null, ?int $insertID = null) {
         $this->driver = $driver;
         $this->command = $command;
+        
+        $this->affectedRows = $affectedRows;
+        $this->warningsCount = $warningsCount;
+        
+        $this->fields = $fields;
+        $this->insertID = $insertID;
         
         $command->on('data', function ($row) {
             if(!$this->started && $this->paused) {
@@ -68,6 +98,38 @@ class StreamQueryResult implements StreamQueryResultInterface {
     }
     
     /**
+     * Get the number of affected rows (for UPDATE, DELETE, etc.).
+     * @return int
+     */
+    function getAffectedRows(): int {
+        return $this->affectedRows;
+    }
+    
+    /**
+     * Get the number of warnings sent by the server.
+     * @return int
+     */
+    function getWarningsCount(): int {
+        return $this->warningsCount;
+    }
+    
+    /**
+     * Get the field definitions, if any. `SELECT` statements only.
+     * @return array|null
+     */
+     function getFieldDefinitions(): ?array {
+         return $this->fields;
+     }
+    
+    /**
+     * Get the used insert ID for the row, if any. `INSERT` statements only.
+     * @return int|null
+     */
+     function getInsertID(): ?int {
+         return $this->insertID;
+     }
+    
+    /**
      * Whether the stream is readable.
      * @return bool
      */
@@ -77,7 +139,8 @@ class StreamQueryResult implements StreamQueryResultInterface {
     
     /**
      * Pauses the connection, where this stream is coming from.
-     * This operation halts ALL read activities.
+     * This operation halts ALL read activities. You may still receive
+     * `data` events until the underlying network buffer is drained.
      * @return void
      */
     function pause() {

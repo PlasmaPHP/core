@@ -69,6 +69,17 @@ class Client implements ClientInterface {
     }
     
     /**
+     * Creates a client with the specified factory and options.
+     * @param \Plasma\DriverFactoryInterface  $factory
+     * @param array                           $options
+     * @throws \Throwable  The client implementation may throw any exception during this operation.
+     * @see Client::__construct()
+     */
+    static function create(\Plasma\DriverFactoryInterface $factory, array $options = array()) {
+        return (new static($factory, $options));
+    }
+    
+    /**
      * Get the amount of connections.
      * @return int
      */
