@@ -310,7 +310,7 @@ class Client implements ClientInterface {
     
     /**
      * Validates the given options.
-     * @param array $options;
+     * @param array  $options
      * @return void
      * @throws \InvalidArgumentException
      */
