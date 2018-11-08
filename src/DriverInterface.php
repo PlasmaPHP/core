@@ -163,4 +163,10 @@ interface DriverInterface extends \Evenement\EventEmitterInterface, QueryableInt
      * @see \Plasma\TransactionInterface
      */
     function beginTransaction(\Plasma\ClientInterface $client, int $isolation = \Plasma\TransactionInterface::ISOLATION_COMMITTED): \React\Promise\PromiseInterface;
+    
+    /**
+     * Informationally closes a transaction. This method is used by `Transaction` to inform the driver of the end of the transaction.
+     * @return void
+     */
+    function endTransaction(): void;
 }
