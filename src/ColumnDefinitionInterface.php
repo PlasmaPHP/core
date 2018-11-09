@@ -38,6 +38,12 @@ interface ColumnDefinitionInterface {
     function getType(): string;
     
     /**
+     * Get the charset, such as `utf8mb4`.
+     * @return string
+     */
+    function getCharset(): string;
+    
+    /**
      * Get the maximum field length, if any.
      * @return int|null
      */

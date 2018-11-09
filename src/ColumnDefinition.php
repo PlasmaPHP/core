@@ -34,6 +34,11 @@ class ColumnDefinition {
     protected $type;
     
     /**
+     * @var string
+     */
+    protected $charset;
+    
+    /**
      * @var int|null
      */
     protected $length;
@@ -54,13 +59,17 @@ class ColumnDefinition {
      * @param string    $table
      * @param string    $name
      * @param string    $type
+     * @param string    $charset
      * @param int|null  $length
      * @param bool      $nullable
      * @param int       $flags
      */
-    function __construct(string $database, string $table, string $name, string $type, ?int $length, bool $nullable, int $flags) {
+    function __construct(string $database, string $table, string $name, string $type, string $charset, ?int $length, bool $nullable, int $flags) {
         $this->database = $database;
         $this->table = $table;
+        $this->name = $name;
+        $this->type = $type;
+        $this->charset = $charset;
         $this->length = $length;
         $this->nullable = $nullable;
         $this->flags = $flags;
@@ -96,6 +105,14 @@ class ColumnDefinition {
      */
     function getType(): string {
         return $this->type;
+    }
+    
+    /**
+     * Get the charset, such as `utf8mb4`.
+     * @return string
+     */
+    function getCharset(): string {
+        return $this->charset;
     }
     
     /**
