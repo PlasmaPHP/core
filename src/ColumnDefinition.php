@@ -54,6 +54,11 @@ class ColumnDefinition {
     protected $flags;
     
     /**
+     * @var int
+     */
+    protected $decimals;
+    
+    /**
      * Constructor.
      * @param string    $database
      * @param string    $table
@@ -63,8 +68,9 @@ class ColumnDefinition {
      * @param int|null  $length
      * @param bool      $nullable
      * @param int       $flags
+     * @param int       $decimals
      */
-    function __construct(string $database, string $table, string $name, string $type, string $charset, ?int $length, bool $nullable, int $flags) {
+    function __construct(string $database, string $table, string $name, string $type, string $charset, ?int $length, bool $nullable, int $flags, int $decimals) {
         $this->database = $database;
         $this->table = $table;
         $this->name = $name;
@@ -73,6 +79,7 @@ class ColumnDefinition {
         $this->length = $length;
         $this->nullable = $nullable;
         $this->flags = $flags;
+        $this->decimals = $decimals;
     }
     
     /**
@@ -137,6 +144,14 @@ class ColumnDefinition {
      */
     function getFlags(): int {
         return $this->flags;
+    }
+    
+    /**
+     * Get the maximum shown decimal digits.
+     * @return int
+     */
+    function getDecimals(): int {
+        return $this->decimals;
     }
     
     /**

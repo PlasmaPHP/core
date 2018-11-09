@@ -62,6 +62,12 @@ interface ColumnDefinitionInterface {
     function getFlags(): int;
     
     /**
+     * Get the maximum shown decimal digits.
+     * @return int
+     */
+    function getDecimals(): int;
+    
+    /**
      * Parses the row value into the field type.
      * @return mixed
      */
