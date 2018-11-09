@@ -34,7 +34,7 @@ class StreamQueryResult implements StreamQueryResultInterface {
     protected $warningsCount = 0;
     
     /**
-     * @var array|null
+     * @var \Plasma\ColumnDefinitionInterface[]|null
      */
     protected $fields;
     
@@ -60,12 +60,12 @@ class StreamQueryResult implements StreamQueryResultInterface {
     
     /**
      * Constructor.
-     * @param \Plasma\DriverInterface   $driver
-     * @param \Plasma\CommandInterface  $command
-     * @param int                       $affectedRows
-     * @param int                       $warningsCount
-     * @param array|null                $fields
-     * @param int|null                  $insertID
+     * @param \Plasma\DriverInterface                   $driver
+     * @param \Plasma\CommandInterface                  $command
+     * @param int                                       $affectedRows
+     * @param int                                       $warningsCount
+     * @param \Plasma\ColumnDefinitionInterface[]|null  $fields
+     * @param int|null                                  $insertID
      */
     function __construct(\Plasma\DriverInterface $driver, \Plasma\CommandInterface $command, int $affectedRows = 0, int $warningsCount = 0, ?array $fields = null, ?int $insertID = null) {
         $this->driver = $driver;
@@ -115,7 +115,7 @@ class StreamQueryResult implements StreamQueryResultInterface {
     
     /**
      * Get the field definitions, if any. `SELECT` statements only.
-     * @return array|null
+     * @return \Plasma\ColumnDefinitionInterface[]|null
      */
      function getFieldDefinitions(): ?array {
          return $this->fields;

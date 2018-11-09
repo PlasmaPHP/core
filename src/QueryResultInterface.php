@@ -28,7 +28,7 @@ interface QueryResultInterface {
     
     /**
      * Get the field definitions, if any. `SELECT` statements only.
-     * @return array|null
+     * @return \Plasma\ColumnDefinitionInterface[]|null
      */
     function getFieldDefinitions(): ?array;
     
