@@ -54,4 +54,10 @@ interface ColumnDefinitionInterface {
      * @return int
      */
     function getFlags(): int;
+    
+    /**
+     * Parses the row value into the field type.
+     * @return mixed
+     */
+    function parseValue($value);
 }

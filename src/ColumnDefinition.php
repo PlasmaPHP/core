@@ -121,4 +121,12 @@ class ColumnDefinition {
     function getFlags(): int {
         return $this->flags;
     }
+    
+    /**
+     * Parses the row value into the field type.
+     * @return mixed
+     */
+    function parseValue($value) { // TODO
+        return $value;
+    }
 }
