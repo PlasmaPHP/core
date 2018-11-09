@@ -10,7 +10,7 @@
 namespace Plasma;
 
 /**
- * This is just a basic interface. There is an additional interface which defines that the query result is event emitter-based.
+ * This is just a basic interface. There is an additional interface which defines that the query result is stream-based.
  * A driver might implement a query result based on ReactiveX instead, which will be documented as such.
  */
 interface QueryResultInterface {
@@ -30,11 +30,11 @@ interface QueryResultInterface {
      * Get the field definitions, if any. `SELECT` statements only.
      * @return array|null
      */
-     function getFieldDefinitions(): ?array;
+    function getFieldDefinitions(): ?array;
     
     /**
      * Get the used insert ID for the row, if any. `INSERT` statements only.
      * @return int|null
      */
-     function getInsertID(): ?int;
+    function getInsertID(): ?int;
 }

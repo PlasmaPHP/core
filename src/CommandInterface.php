@@ -27,12 +27,14 @@ interface CommandInterface extends \Evenement\EventEmitterInterface {
     
     /**
      * Sets the command as errored. This state gets reported back to the user.
+     * @param \Throwable  $throwable
      * @return void
      */
-    public function onError(\Throwable $throwable);
+    public function onError(\Throwable $throwable): void;
     
     /**
      * Sends the next received value into the command.
+     * @param mixed  $value
      * @return void
      */
     public function onNext($value): void;
