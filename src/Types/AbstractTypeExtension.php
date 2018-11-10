@@ -19,6 +19,11 @@ abstract class AbstractTypeExtension implements TypeExtensionInterface {
     protected $type;
     
     /**
+     * @var mixed
+     */
+    protected $sqlType;
+    
+    /**
      * @var callable
      */
     protected $filter;
@@ -26,10 +31,12 @@ abstract class AbstractTypeExtension implements TypeExtensionInterface {
     /**
      * Constructor.
      * @param string    $type
+     * @param mixed     $sqlType
      * @param callable  $filter
      */
-    function __construct(string $type, callable $filter) {
+    function __construct(string $type, $sqlType, callable $filter) {
         $this->type = $type;
+        $this->sqlType = $sqlType;
         $this->filter = $filter;
     }
     
@@ -51,6 +58,14 @@ abstract class AbstractTypeExtension implements TypeExtensionInterface {
      */
     function getHumanType(): string {
         return $this->type;
+    }
+    
+    /**
+     * Get the SQL type this Type Extension is for.
+     * @return mixed
+     */
+    function getSQLType() {
+        return $this->sqlType;
     }
     
     /**

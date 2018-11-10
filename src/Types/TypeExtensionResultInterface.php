@@ -10,7 +10,7 @@
 namespace Plasma\Types;
 
 /**
- * Represents a successful conversion (encode).
+ * Represents a successful encoding conversion as general interface.
  */
 interface TypeExtensionResultInterface {
     /**
