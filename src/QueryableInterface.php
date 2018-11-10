@@ -32,6 +32,18 @@ interface QueryableInterface {
     function prepare(string $query): \React\Promise\PromiseInterface;
     
     /**
+     * Prepares and executes a query. Resolves with a `QueryResultInterface` instance.
+     * This is equivalent to prepare -> execute -> close.
+     * If you need to execute a query multiple times, prepare the query manually for performance reasons.
+     * @param string  $query
+     * @param array   $params
+     * @return \React\Promise\PromiseInterface
+     * @throws \Plasma\Exception
+     * @see \Plasma\StatementInterface
+     */
+    function execute(string $query, array $params = array()): \React\Promise\PromiseInterface;
+    
+    /**
      * Quotes the string for use in the query.
      * @param string  $str
      * @return string

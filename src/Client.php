@@ -112,7 +112,7 @@ class Client implements ClientInterface {
             $this->transactionConnections->attach($connection);
             return $value;
         }, function (\Throwable $error) use (&$connection) {
-            $this->connections->attach($connection);
+            $this->checkinConnection($connection);
             throw $error;
         });
     }
@@ -142,8 +142,9 @@ class Client implements ClientInterface {
         
         $connection = $this->getOptimalConnection();
         
-        return $connection->query($query)->always(function () use (&$connection) {
+        return $connection->query($this, $query)->otherwise(function (\Throwable $error) use (&$connection) {
             $this->checkinConnection($connection);
+            throw $error;
         });
     }
     
@@ -160,7 +161,30 @@ class Client implements ClientInterface {
         
         $connection = $this->getOptimalConnection();
         
-        return $connection->prepare($query)->always(function () use (&$connection) {
+        return $connection->prepare($this, $query)->otherwise(function (\Throwable $error) use (&$connection) {
+            $this->checkinConnection($connection);
+            throw $error;
+        });
+    }
+    
+    /**
+     * Prepares and executes a query. Resolves with a `QueryResultInterface` instance.
+     * This is equivalent to prepare -> execute -> close.
+     * If you need to execute a query multiple times, prepare the query manually for performance reasons.
+     * @param string  $query
+     * @param array   $params
+     * @return \React\Promise\PromiseInterface
+     * @throws \Plasma\Exception
+     * @see \Plasma\StatementInterface
+     */
+    function execute(string $query, array $params = array()): \React\Promise\PromiseInterface {
+        if($this->goingAway) {
+            return \React\Promise\reject((new \Plasma\Exception('Client is closing all connections')));
+        }
+        
+        $connection = $this->getOptimalConnection();
+        
+        return $connection->execute($this, $query, $params)->always(function () use (&$connection) {
             $this->checkinConnection($connection);
         });
     }

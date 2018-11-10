@@ -21,7 +21,20 @@ interface StatementInterface {
     function getID();
     
     /**
+     * Get the prepared query.
+     * @return string
+     */
+    function getQuery(): string;
+    
+    /**
+     * Whether the statement has been closed.
+     * @return bool
+     */
+    function isClosed(): bool;
+    
+    /**
      * Closes the prepared statement and frees the associated resources on the server.
+     * Closing a statement more than once SHOULD have no effect.
      * @return \React\Promise\PromiseInterface
      */
     function close(): \React\Promise\PromiseInterface;
@@ -30,7 +43,8 @@ interface StatementInterface {
      * Executes the prepared statement. Resolves with a `QueryResult` instance.
      * @param array  $params
      * @return \React\Promise\PromiseInterface
+     * @throws \Plasma\Exception
      * @see \Plasma\QueryResultInterface
      */
-    function execute(array $params): \React\Promise\PromiseInterface;
+    function execute(array $params = array()): \React\Promise\PromiseInterface;
 }

@@ -12,7 +12,7 @@ namespace Plasma;
 /**
  * The minimum public API a driver has to maintain. The driver MUST emit a `close` event when it gets disconnected from the server.
  */
-interface DriverInterface extends \Evenement\EventEmitterInterface, QueryableInterface {
+interface DriverInterface extends \Evenement\EventEmitterInterface {
     /**
      * Driver is idling and ready for requests.
      * @var int
@@ -145,6 +145,50 @@ interface DriverInterface extends \Evenement\EventEmitterInterface, QueryableInt
      * @return bool
      */
     function isInTransaction(): bool;
+    
+    /**
+     * Executes a plain query. Resolves with a `QueryResultInterface` instance.
+     * When the command is done, the driver must check itself back into the client.
+     * @param \Plasma\ClientInterface  $client
+     * @param string                   $query
+     * @return \React\Promise\PromiseInterface
+     * @throws \Plasma\Exception
+     * @see \Plasma\QueryResultInterface
+     */
+    function query(ClientInterface $client, string $query): \React\Promise\PromiseInterface;
+    
+    /**
+     * Prepares a query. Resolves with a `StatementInterface` instance.
+     * When the command is done, the driver must check itself back into the client.
+     * @param \Plasma\ClientInterface  $client
+     * @param string                   $query
+     * @return \React\Promise\PromiseInterface
+     * @throws \Plasma\Exception
+     * @see \Plasma\StatementInterface
+     */
+    function prepare(\Plasma\ClientInterface $client, string $query): \React\Promise\PromiseInterface;
+    
+    /**
+     * Prepares and executes a query. Resolves with a `QueryResultInterface` instance.
+     * This is equivalent to prepare -> execute -> close.
+     * If you need to execute a query multiple times, prepare the query manually for performance reasons.
+     * @param \Plasma\ClientInterface  $client
+     * @param string                   $query
+     * @param array                    $params
+     * @return \React\Promise\PromiseInterface
+     * @throws \Plasma\Exception
+     * @see \Plasma\StatementInterface
+     */
+    function execute(\Plasma\ClientInterface $client, string $query, array $params = array()): \React\Promise\PromiseInterface;
+    
+    /**
+     * Quotes the string for use in the query.
+     * @param string  $str
+     * @return string
+     * @throws \LogicException  Thrown if the driver does not support quoting.
+     * @throws \Plasma\Exception
+     */
+    function quote(string $str): string;
     
     /**
      * Begins a transaction. Resolves with a `TransactionInterface` instance.
