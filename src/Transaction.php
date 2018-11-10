@@ -125,6 +125,7 @@ class Transaction implements TransactionInterface {
      */
     function commit(): \React\Promise\PromiseInterface {
         return $this->driver->query('COMMIT')->then(function () {
+            $this->driver->endTransaction();
             $this->client->checkinConnection($this->driver);
             $this->driver = null;
         });
@@ -137,6 +138,7 @@ class Transaction implements TransactionInterface {
      */
     function rollback(): \React\Promise\PromiseInterface {
         return $this->driver->query('ROLLBACK')->then(function () {
+            $this->driver->endTransaction();
             $this->client->checkinConnection($this->driver);
             $this->driver = null;
         });
