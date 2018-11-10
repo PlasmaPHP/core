@@ -159,6 +159,12 @@ class ColumnDefinition {
      * @return mixed
      */
     function parseValue($value) { // TODO
+        try {
+            return \Plasma\Types\TypeExtensionManager::decode($this->type, $value);
+        } catch (\Plasma\Exception $e) {
+            /* Continue regardless of error */
+        }
+        
         return $value;
     }
 }

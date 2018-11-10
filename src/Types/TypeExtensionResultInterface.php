@@ -1,0 +1,27 @@
+<?php
+/**
+ * Plasma Core component
+ * Copyright 2018 PlasmaPHP, All Rights Reserved
+ *
+ * Website: https://github.com/PlasmaPHP
+ * License: https://github.com/PlasmaPHP/core/blob/master/LICENSE
+*/
+
+namespace Plasma\Types;
+
+/**
+ * Represents a successful conversion (encode).
+ */
+interface TypeExtensionResultInterface {
+    /**
+     * Get the SQL type.
+     * @return mixed  Driver-dependent.
+     */
+    function getSQLType();
+    
+    /**
+     * Get the encoded value.
+     * @return mixed
+     */
+    function getValue();
+}
