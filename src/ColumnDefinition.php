@@ -158,7 +158,7 @@ class ColumnDefinition {
      * Parses the row value into the field type.
      * @return mixed
      */
-    function parseValue($value) { // TODO
+    function parseValue($value) {
         try {
             return \Plasma\Types\TypeExtensionManager::decode($this->type, $value);
         } catch (\Plasma\Exception $e) {
