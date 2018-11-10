@@ -20,6 +20,9 @@ namespace Plasma\Types;
  * For standard PHP types (such as `string`, `float`, etc.),
  * the type identifier is the type name (`float is used instead of `double`).
  * For classes you can also use an interface name (e.g. `JsonSerializable`).
+ *
+ * Anyone can register a specific manager under a name and access it statically.
+ * One use case would be to create one specific manager per driver (type), if more than one is used.
  */
 class TypeExtensionsManager {
     /**
@@ -50,9 +53,9 @@ class TypeExtensionsManager {
     protected $enableFuzzySearch = true;
     
     /**
-     * @var self
+     * @var self[]
      */
-    protected $instance;
+    protected $instances = array();
     
     /**
      * Handles calling the methods statically.
@@ -60,11 +63,57 @@ class TypeExtensionsManager {
      * @param array   $args
      */
     function __callStatic(string $name, array $args) {
-        if(!static::$instance) {
-            static::$instance = new static();
+        return static::getManager()->$name(...$args);
+    }
+    
+    /**
+     * Registers a specific Type Extensions Manager under a specific name.
+     * @param string                                    $name
+     * @param \Plasma\Types\TypeExtensionsManager|null  $manager  If `null` is passed, one will be created.
+     * @return void
+     * @throws \Plasma\Exception  Thrown if the name is already in use.
+     */
+    static function registerManager(string $name, ?\Plasma\Types\TypeExtensionsManager $manager = null): void {
+        if(isset(static::$instances[$name])) {
+            throw new \Plasma\Exception('Name is already in use');
         }
         
-        return static::$instance->$name(...$args);
+        if($manager === null) {
+            $manager = new static();
+        }
+        
+        static::$instances[$name] = $manager;
+    }
+    
+    /**
+     * Registers a specific Type Extensions Manager under a specific name.
+     * @param string|null  $name  If `null` is passed, the generic global one will be returned.
+     * @return \Plasma\Types\TypeExtensionsManager
+     * @throws \Plasma\Exception  Thrown if the name does not exist.
+     */
+    static function getManager(?string $name = null): \Plasma\Types\TypeExtensionsManager {
+        if($name === null) {
+            if(!isset(static::$instances['@me'])) {
+                static::$instances['@me'] = new static();
+            }
+            
+            return static::$instances['@me'];
+        }
+        
+        if(isset(static::$instances[$name])) {
+            return static::$instances[$name];
+        }
+        
+        throw new \Plasma\Exception('Unknown name');
+    }
+    
+    /**
+     * Unregisters a name. If the name does not exist, this will do nothing.
+     * @param string  $name
+     * @return void
+     */
+    static function unregisterManager(string $name): void {
+        unset(static::$instances[$name]);
     }
     
     /**
