@@ -55,7 +55,7 @@ class TypeExtensionsManager {
     /**
      * @var self[]
      */
-    protected $instances = array();
+    protected static $instances = array();
     
     /**
      * Handles calling the methods statically.
@@ -251,5 +251,82 @@ class TypeExtensionsManager {
         }
         
         throw new \Plasma\Exception('Unable to decode given value');
+    }
+    
+    /**
+     * Registers a type.
+     * @param mixed                                 $typeIdentifier
+     * @param \Plasma\Types\TypeExtensionInterface  $type
+     * @return void
+     * @throws \Plasma\Exception  Thrown if the type identifier is already in use.
+     */
+    static function registerType($typeIdentifier, \Plasma\Types\TypeExtensionInterface $type): void {
+        static::__callStatic(__FUNCTION__, $typeIdentifier, $type);
+    }
+    
+    /**
+     * Unregisters a type. A non-existent type identifier does nothing.
+     * @param mixed  $typeIdentifier
+     * @return void
+     */
+    static function unregisterType($typeIdentifier): void {
+        static::__callStatic(__FUNCTION__, $typeIdentifier);
+    }
+    
+    /**
+     * Registers a type.
+     * @param mixed                                 $typeIdentifier  Depends on the driver.
+     * @param \Plasma\Types\TypeExtensionInterface  $type
+     * @return void
+     * @throws \Plasma\Exception  Thrown if the type identifier is already in use.
+     */
+    static function registerSQLType($typeIdentifier, \Plasma\Types\TypeExtensionInterface $type): void {
+        static::__callStatic(__FUNCTION__, $typeIdentifier, $type);
+    }
+    
+    /**
+     * Unregisters a SQL type. A non-existent type identifier does nothing.
+     * @param mixed  $typeIdentifier  The used type identifier. Depends on the driver.
+     * @return void
+     */
+    static function unregisterSQLType($typeIdentifier): void {
+        static::__callStatic(__FUNCTION__, $typeIdentifier);
+    }
+    
+    /**
+     * Enables iterating over all types and invoking `canHandleType`, if quick type check is failing.
+     * @return void
+     */
+    static function enableFuzzySearch(): void {
+        static::__callStatic(__FUNCTION__);
+    }
+    
+    /**
+     * Disables iterating over all types and invoking `canHandleType`, if quick type check is failing.
+     * @return void
+     */
+    static function disableFuzzySearch(): void {
+        static::__callStatic(__FUNCTION__);
+    }
+    
+    /**
+     * Tries to encode a value.
+     * @param mixed  $value
+     * @return \Plasma\Types\TypeExtensionResultInterface
+     * @throws \Plasma\Exception  Thrown if unable to encode the value.
+     */
+    static function encodeType($value): \Plasma\Types\TypeExtensionResultInterface {
+        return static::__callStatic(__FUNCTION__, $value);
+    }
+    
+    /**
+     * Tries to decode a value.
+     * @param mixed|null  $type  The driver-dependent SQL type identifier. Can be `null` to not use the fast-path.
+     * @param mixed       $value
+     * @return mixed
+     * @throws \Plasma\Exception  Thrown if unable to decode the value.
+     */
+    static function decodeType($type, $value) {
+        return static::__callStatic(__FUNCTION__, $type, $value);
     }
 }
