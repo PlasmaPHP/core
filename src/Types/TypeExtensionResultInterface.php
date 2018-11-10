@@ -21,6 +21,12 @@ interface TypeExtensionResultInterface {
     
     /**
      * Get the encoded value.
+     * @return bool
+     */
+    function isUnsigned(): bool;
+    
+    /**
+     * Get the encoded value.
      * @return mixed
      */
     function getValue();

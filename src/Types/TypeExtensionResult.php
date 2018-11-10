@@ -19,6 +19,11 @@ class TypeExtensionResult {
     protected $type;
     
     /**
+     * @var bool
+     */
+    protected $unsigned;
+    
+    /**
      * @var mixed
      */
     protected $value;
@@ -26,10 +31,12 @@ class TypeExtensionResult {
     /**
      * Constructor.
      * @param mixed  $type
+     * @param bool   $unsigned
      * @param mixed  $value
      */
-    function __construct($type, $value) {
+    function __construct($type, bool $unsigned, $value) {
         $this->type = $type;
+        $this->unsigned = $unsigned;
         $this->value = $value;
     }
     
@@ -39,6 +46,14 @@ class TypeExtensionResult {
      */
     function getSQLType() {
         return $this->type;
+    }
+    
+    /**
+     * Get the encoded value.
+     * @return bool
+     */
+    function isUnsigned(): bool {
+        return $this->unsigned;
     }
     
     /**

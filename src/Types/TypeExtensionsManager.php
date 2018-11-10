@@ -21,7 +21,7 @@ namespace Plasma\Types;
  * the type identifier is the type name (`float is used instead of `double`).
  * For classes you can also use an interface name (e.g. `JsonSerializable`).
  */
-class TypeExtensionManager {
+class TypeExtensionsManager {
     /**
      * List of PHP types.
      * @var string[]
