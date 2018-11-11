@@ -29,7 +29,8 @@ class Client implements ClientInterface {
      * @var array
      */
     protected $options = array(
-        'maxConnections' => 5
+        'maxConnections' => 5,
+        'connect.lazy' => false
     );
     
     /**
@@ -38,14 +39,14 @@ class Client implements ClientInterface {
     protected $goingAway;
     
     /**
-     * @var \SplObjectStorage
+     * @var \CharlotteDunois\Collect\Set
      */
     protected $connections;
     
     /**
-     * @var \SplObjectStorage
+     * @var \CharlotteDunois\Collect\Set
      */
-    protected $transactionConnections;
+    protected $busyConnections;
     
     /**
      * Creates a client with the specified factory and options.
@@ -70,11 +71,11 @@ class Client implements ClientInterface {
         $this->uri = $uri;
         $this->options = \array_merge($this->options, $options);
         
-        $this->connections = new \SplObjectStorage();
-        $this->transactionConnections = new \SplObjectStorage();
+        $this->connections = new \CharlotteDunois\Collect\Set();
+        $this->busyConnections = new \CharlotteDunois\Collect\Set();
         
-        if(!($this->options['connect.lazy'] ?? false)) {
-            $this->createNewConnection();
+        if(!$this->options['connect.lazy']) {
+            $this->connections->add($this->createNewConnection());
         }
     }
     
@@ -87,7 +88,7 @@ class Client implements ClientInterface {
      * @see Client::__construct()
      */
     static function create(\Plasma\DriverFactoryInterface $factory, string $uri, array $options = array()) {
-        return (new static($factory, $options));
+        return (new static($factory, $uri, $options));
     }
     
     /**
@@ -95,7 +96,19 @@ class Client implements ClientInterface {
      * @return int
      */
     function getConnectionCount(): int {
-        return ($this->connections->count() + $this->transactionConnections->count());
+        return ($this->connections->count() + $this->busyConnections->count());
+    }
+    
+    /**
+     * Checks a connection back in, if usable and not closing.
+     * @param \Plasma\DriverInterface  $driver
+     * @return void
+     */
+    function checkinConnection(\Plasma\DriverInterface $driver): void {
+        if($driver->getConnectionState() !== \Plasma\DriverInterface::CONNECTION_UNUSABLE && !$this->goingAway) {
+            $this->connections->add($driver);
+            $this->busyConnections->delete($driver);
+        }
     }
     
     /**
@@ -119,25 +132,10 @@ class Client implements ClientInterface {
         
         $connection = $this->getOptimalConnection();
         
-        return $connection->beginTransaction($this, $isolation)->then(function (\Plasma\TransactionInterface $value) use (&$connection) {
-            $this->transactionConnections->attach($connection);
-            return $value;
-        }, function (\Throwable $error) use (&$connection) {
+        return $connection->beginTransaction($this, $isolation)->otherwise(function (\Throwable $error) use (&$connection) {
             $this->checkinConnection($connection);
             throw $error;
         });
-    }
-    
-    /**
-     * Checks a connection back in. This method is used by `TransactionInterface` instances.
-     * @param \Plasma\DriverInterface  $driver
-     * @return void
-     */
-    function checkinConnection(\Plasma\DriverInterface $driver): void {
-        if($driver->getConnectionState() === \Plasma\DriverInterface::CONNECTION_OK && !$this->goingAway) {
-            $this->connections->attach($driver);
-            $this->transactionConnections->detach($driver);
-        }
     }
     
     /**
@@ -213,7 +211,7 @@ class Client implements ClientInterface {
         }
         
         $connection = $this->getOptimalConnection();
-        $quoted = $connection->quote($query);
+        $quoted = $connection->quote($str);
         
         $this->checkinConnection($connection);
         return $quoted;
@@ -236,13 +234,13 @@ class Client implements ClientInterface {
         /** @var \Plasma\DriverInterface  $conn */
         foreach($this->connections as $conn) {
             $closes[] = $conn->close();
-            $this->connections->detach($conn);
+            $this->connections->delete($conn);
         }
         
         /** @var \Plasma\DriverInterface  $conn */
-        foreach($this->transactionConnections as $conn) {
+        foreach($this->busyConnections as $conn) {
             $closes[] = $conn->close();
-            $this->transactionConnections->detach($conn);
+            $this->busyConnections->delete($conn);
         }
         
         \React\Promise\all($closes)->then(array($deferred, 'resolve'), array($deferred, 'reject'));
@@ -263,13 +261,13 @@ class Client implements ClientInterface {
         /** @var \Plasma\DriverInterface  $conn */
         foreach($this->connections as $conn) {
             $conn->quit();
-            $this->connections->detach($conn);
+            $this->connections->delete($conn);
         }
         
         /** @var \Plasma\DriverInterface  $conn */
-        foreach($this->transactionConnections as $conn) {
+        foreach($this->busyConnections as $conn) {
             $conn->quit();
-            $this->transactionConnections->detach($conn);
+            $this->busyConnections->delete($conn);
         }
     }
     
@@ -285,7 +283,7 @@ class Client implements ClientInterface {
         }
         
         $connection = $this->getOptimalConnection();
-        return $connection->runCommand($this, $comamnd);
+        return $connection->runCommand($this, $command);
     }
     
     /**
@@ -298,7 +296,9 @@ class Client implements ClientInterface {
         }
         
         /** @var \Plasma\DriverInterface  $connection */
-        $connection = $this->connections[0];
+        $this->connections->rewind();
+        $connection = $this->connections->current();
+        
         $backlog = $connection->getBacklogLength();
         $state = $connection->getBusyState();
         $position = 0;
@@ -309,7 +309,9 @@ class Client implements ClientInterface {
             $cstate = $conn->getBusyState();
             
             if($cbacklog === 0 && $conn->getConnectionState() === \Plasma\DriverInterface::CONNECTION_OK && $cstate == \Plasma\DriverInterface::STATE_IDLE) {
-                $this->connections->detach($pos);
+                $this->connections->delete($conn);
+                $this->busyConnections->add($connection);
+                
                 return $conn;
             }
             
@@ -325,7 +327,9 @@ class Client implements ClientInterface {
             return $this->createNewConnection();
         }
         
-        $this->connections->detach($connection);
+        $this->connections->delete($connection);
+        $this->busyConnections->add($connection);
+        
         return $connection;
     }
     
@@ -337,14 +341,14 @@ class Client implements ClientInterface {
         $connection = $this->factory->createDriver();
         
         // We relay a driver's specific events forward, e.g. PostgreSQL notifications
-        $connection->on('eventRelay', function (string $eventName, array $args) use (&$connection) {
+        $connection->on('eventRelay', function (string $eventName, ...$args) use (&$connection) {
             $args[] = $connection;
-            $this->emit($eventName, ...$args);
+            $this->emit($eventName, $args);
         });
         
         $connection->on('close', function () use (&$connection) {
-            $this->connections->detach($connection);
-            $this->transactionConnections->detach($connection);
+            $this->connections->delete($connection);
+            $this->busyConnections->delete($connection);
             
             $this->emit('close', array($connection));
         });
@@ -353,9 +357,7 @@ class Client implements ClientInterface {
             $this->emit('error', array($error, $connection));
         });
         
-        $connection->connect($this->uri)->then(function () use (&$connection) {
-            $this->connections->attach($connection);
-        }, function (\Throwable $error) use (&$connection) {
+        $connection->connect($this->uri)->otherwise(function (\Throwable $error) use (&$connection) {
             $this->emit('error', array($error, $connection));
         });
         
@@ -370,8 +372,8 @@ class Client implements ClientInterface {
      */
     protected function validateOptions(array $options) {
         $validator = \CharlotteDunois\Validation\Validator::make($options, array(
-            'maxConnections' => 'int|min:1',
-            'connect.lazy' => 'bool'
+            'maxConnections' => 'integer|min:1',
+            'connect.lazy' => 'boolean'
         ));
         
         $validator->throw(\InvalidArgumentException::class);

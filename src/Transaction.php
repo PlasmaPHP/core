@@ -90,7 +90,7 @@ class Transaction implements TransactionInterface {
             throw new \Plasma\TransactionException('Transaction has been committed or rolled back');
         }
         
-        return $this->driver->query($query);
+        return $this->driver->query($this->client, $query);
     }
     
     /**
@@ -105,7 +105,26 @@ class Transaction implements TransactionInterface {
             throw new \Plasma\TransactionException('Transaction has been committed or rolled back');
         }
         
-        return $this->driver->prepare($query);
+        return $this->driver->prepare($this->client, $query);
+    }
+    
+    /**
+     * Prepares and executes a query. Resolves with a `QueryResultInterface` instance.
+     * This is equivalent to prepare -> execute -> close.
+     * If you need to execute a query multiple times, prepare the query manually for performance reasons.
+     * @param string  $query
+     * @param array   $params
+     * @return \React\Promise\PromiseInterface
+     * @throws \Plasma\TransactionException  Thrown if the transaction has been committed or rolled back.
+     * @throws \Plasma\Exception
+     * @see \Plasma\StatementInterface
+     */
+    function execute(string $query, array $params = array()): \React\Promise\PromiseInterface {
+        if($this->driver === null) {
+            throw new \Plasma\TransactionException('Transaction has been committed or rolled back');
+        }
+        
+        return $this->driver->execute($this->client, $query, $params);
     }
     
     /**
@@ -124,7 +143,7 @@ class Transaction implements TransactionInterface {
      * @throws \Plasma\TransactionException  Thrown if the transaction has been committed or rolled back.
      */
     function commit(): \React\Promise\PromiseInterface {
-        return $this->driver->query('COMMIT')->then(function () {
+        return $this->driver->query($this->client, 'COMMIT')->then(function () {
             $this->driver->endTransaction();
             $this->client->checkinConnection($this->driver);
             $this->driver = null;
@@ -137,7 +156,7 @@ class Transaction implements TransactionInterface {
      * @throws \Plasma\TransactionException  Thrown if the transaction has been committed or rolled back.
      */
     function rollback(): \React\Promise\PromiseInterface {
-        return $this->driver->query('ROLLBACK')->then(function () {
+        return $this->driver->query($this->client, 'ROLLBACK')->then(function () {
             $this->driver->endTransaction();
             $this->client->checkinConnection($this->driver);
             $this->driver = null;
@@ -151,7 +170,7 @@ class Transaction implements TransactionInterface {
      * @throws \Plasma\TransactionException  Thrown if the transaction has been committed or rolled back.
      */
     function createSavepoint(string $identifier): \React\Promise\PromiseInterface {
-        return $this->query('SAVEPOINT '.$this->driver->quote($identifier));
+        return $this->query($this->client, 'SAVEPOINT '.$this->driver->quote($identifier));
     }
     
     /**
@@ -161,7 +180,7 @@ class Transaction implements TransactionInterface {
      * @throws \Plasma\TransactionException  Thrown if the transaction has been committed or rolled back.
      */
     function rollbackTo(string $identifier): \React\Promise\PromiseInterface {
-        return $this->query('ROLLBACK TO '.$this->driver->quote($identifier));
+        return $this->query($this->client, 'ROLLBACK TO '.$this->driver->quote($identifier));
     }
     
     /**
@@ -171,6 +190,6 @@ class Transaction implements TransactionInterface {
      * @throws \Plasma\TransactionException  Thrown if the transaction has been committed or rolled back.
      */
     function releaseSavepoint(string $identifier): \React\Promise\PromiseInterface {
-        return $this->query('RELEASE SAVEPOINT '.$this->driver->quote($identifier));
+        return $this->query($this->client, 'RELEASE SAVEPOINT '.$this->driver->quote($identifier));
     }
 }

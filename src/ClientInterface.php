@@ -14,7 +14,7 @@ namespace Plasma;
  * It also provides a minimal public API for checking out a connection, get work done and checking the connection back in.
  *
  * The client must support relaying forward events from the driver to the client. This is done with a driver event called `eventRelay`.
- * The listener callback for the driver is: `function (string $eventName, array $args)`.
+ * The listener callback for the driver is: `function (string $eventName, ...$args)`.
  * The client must always append the driver the event occurred on at the end of the `$args`. And emit the event, called `$eventName`, on itself.
  *
  * Additionally to the event relaying, the client emits `close` and `error` events from the driver forward.
@@ -38,6 +38,13 @@ interface ClientInterface extends \Evenement\EventEmitterInterface, QueryableInt
     function getConnectionCount(): int;
     
     /**
+     * Checks a connection back in, if usable and not closing.
+     * @param \Plasma\DriverInterface  $driver
+     * @return void
+     */
+    function checkinConnection(\Plasma\DriverInterface $driver): void;
+    
+    /**
      * Begins a transaction. Resolves with a `TransactionInterface` instance.
      *
      * Checks out a connection until the transaction gets committed or rolled back.
@@ -53,13 +60,6 @@ interface ClientInterface extends \Evenement\EventEmitterInterface, QueryableInt
      * @see \Plasma\TransactionInterface
      */
     function beginTransaction(int $isolation = \Plasma\TransactionInterface::ISOLATION_COMMITTED): \React\Promise\PromiseInterface;
-    
-    /**
-     * Checks a connection back in. This method is used by `TransactionInterface` instances.
-     * @param \Plasma\DriverInterface  $driver
-     * @return void
-     */
-    function checkinConnection(\Plasma\DriverInterface $driver): void;
     
     /**
      * Closes all connections gracefully after processing all outstanding requests.

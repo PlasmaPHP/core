@@ -155,7 +155,7 @@ interface DriverInterface extends \Evenement\EventEmitterInterface {
      * @throws \Plasma\Exception
      * @see \Plasma\QueryResultInterface
      */
-    function query(ClientInterface $client, string $query): \React\Promise\PromiseInterface;
+    function query(\Plasma\ClientInterface $client, string $query): \React\Promise\PromiseInterface;
     
     /**
      * Prepares a query. Resolves with a `StatementInterface` instance.
