@@ -213,4 +213,11 @@ interface DriverInterface extends \Evenement\EventEmitterInterface {
      * @return void
      */
     function endTransaction(): void;
+    
+    /**
+     * Runs the given command.
+     * @param \Plasma\CommandInterface  $command
+     * @return mixed  Return depends on command and driver.
+     */
+    function runCommand(\Plasma\CommandInterface $command);
 }

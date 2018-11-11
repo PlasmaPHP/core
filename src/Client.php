@@ -263,6 +263,21 @@ class Client implements ClientInterface {
     }
     
     /**
+     * Runs the given command.
+     * @param \Plasma\CommandInterface  $command
+     * @return mixed  Return depends on command and driver.
+     * @throws \Plasma\Exception  Thrown if the client is closing all connections.
+     */
+    function runCommand(\Plasma\CommandInterface $command) {
+        if($this->goingAway) {
+            throw new \Plasma\Exception('Client is closing all connections');
+        }
+        
+        $connection = $this->getOptimalConnection();
+        return $connection->runCommand($comamnd);
+    }
+    
+    /**
      * Get the optimal connection.
      * @return \Plasma\DriverInterface
      */

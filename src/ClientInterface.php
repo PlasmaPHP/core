@@ -71,4 +71,12 @@ interface ClientInterface extends \Evenement\EventEmitterInterface, QueryableInt
      * @return void
      */
     function quit(): void;
+    
+    /**
+     * Runs the given command.
+     * @param \Plasma\CommandInterface  $command
+     * @return mixed  Return depends on command and driver.
+     * @throws \Plasma\Exception  Thrown if the client is closing all connections.
+     */
+    function runCommand(\Plasma\CommandInterface $command);
 }
