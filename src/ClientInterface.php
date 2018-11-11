@@ -25,10 +25,11 @@ interface ClientInterface extends \Evenement\EventEmitterInterface, QueryableInt
     /**
      * Creates a client with the specified factory and options.
      * @param \Plasma\DriverFactoryInterface  $factory
+     * @param string                          $uri      The connect uri, which consists of `username:password@host:port`.
      * @param array                           $options  Any options for the client, see client implementation for details.
      * @throws \Throwable  The client implementation may throw any exception during this operation.
      */
-    static function create(\Plasma\DriverFactoryInterface $factory, array $options = array());
+    static function create(\Plasma\DriverFactoryInterface $factory, string $uri, array $options = array());
     
     /**
      * Get the amount of connections.

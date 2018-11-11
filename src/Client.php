@@ -21,6 +21,11 @@ class Client implements ClientInterface {
     protected $factory;
     
     /**
+     * @var string
+     */
+    protected $uri;
+    
+    /**
      * @var array
      */
     protected $options = array(
@@ -49,33 +54,39 @@ class Client implements ClientInterface {
      * ```
      * array(
      *     'maxConnections' => int, (the maximum amount of connections to open, defaults to 5)
+     *     'connect.lazy' => bool, (whether the connection should be established lazily (on first request), defaults to false)
      * )
      * ```
      *
      * @param \Plasma\DriverFactoryInterface  $factory
+     * @param string                          $uri
      * @param array                           $options
      * @throws \InvalidArgumentException
      */
-    function __construct(\Plasma\DriverFactoryInterface $factory, array $options = array()) {
+    function __construct(\Plasma\DriverFactoryInterface $factory, string $uri, array $options = array()) {
         $this->validateOptions($options);
         
         $this->factory = $factory;
+        $this->uri = $uri;
         $this->options = \array_merge($this->options, $options);
         
         $this->connections = new \SplObjectStorage();
         $this->transactionConnections = new \SplObjectStorage();
         
-        $this->createNewConnection();
+        if(!($this->options['connect.lazy'] ?? false)) {
+            $this->createNewConnection();
+        }
     }
     
     /**
      * Creates a client with the specified factory and options.
      * @param \Plasma\DriverFactoryInterface  $factory
+     * @param string                          $uri
      * @param array                           $options
      * @throws \Throwable  The client implementation may throw any exception during this operation.
      * @see Client::__construct()
      */
-    static function create(\Plasma\DriverFactoryInterface $factory, array $options = array()) {
+    static function create(\Plasma\DriverFactoryInterface $factory, string $uri, array $options = array()) {
         return (new static($factory, $options));
     }
     
@@ -281,7 +292,7 @@ class Client implements ClientInterface {
      * Get the optimal connection.
      * @return \Plasma\DriverInterface
      */
-    protected function getOptimalConnection() {
+    protected function getOptimalConnection(): \Plasma\DriverInterface {
         if(\count($this->connections) === 0) {
             return $this->createNewConnection();
         }
@@ -322,8 +333,7 @@ class Client implements ClientInterface {
      * Create a new connection.
      * @return \Plasma\DriverInterface
      */
-    protected function createNewConnection() {
-        /** @var \Plasma\DriverInterface  $connection */
+    protected function createNewConnection(): \Plasma\DriverInterface {
         $connection = $this->factory->createDriver();
         
         // We relay a driver's specific events forward, e.g. PostgreSQL notifications
@@ -343,7 +353,12 @@ class Client implements ClientInterface {
             $this->emit('error', array($error, $connection));
         });
         
-        $this->connections->attach($connection);
+        $connection->connect($this->uri)->then(function () use (&$connection) {
+            $this->connections->attach($connection);
+        }, function (\Throwable $error) use (&$connection) {
+            $this->emit('error', array($error, $connection));
+        });
+        
         return $connection;
     }
     
@@ -355,7 +370,8 @@ class Client implements ClientInterface {
      */
     protected function validateOptions(array $options) {
         $validator = \CharlotteDunois\Validation\Validator::make($options, array(
-            'maxConnections' => 'int|min:1'
+            'maxConnections' => 'int|min:1',
+            'connect.lazy' => 'bool'
         ));
         
         $validator->throw(\InvalidArgumentException::class);
