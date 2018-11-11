@@ -216,6 +216,7 @@ interface DriverInterface extends \Evenement\EventEmitterInterface {
     
     /**
      * Runs the given command.
+     * When the command is done, the driver must check itself back into the client.
      * @param \Plasma\CommandInterface  $command
      * @return mixed  Return depends on command and driver.
      */
