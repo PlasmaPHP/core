@@ -86,7 +86,7 @@ class TypeExtensionsManager {
     }
     
     /**
-     * Registers a specific Type Extensions Manager under a specific name.
+     * Get a specific Type Extensions Manager under a specific name.
      * @param string|null  $name  If `null` is passed, the generic global one will be returned.
      * @return \Plasma\Types\TypeExtensionsManager
      * @throws \Plasma\Exception  Thrown if the name does not exist.
