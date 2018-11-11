@@ -274,7 +274,7 @@ class Client implements ClientInterface {
         }
         
         $connection = $this->getOptimalConnection();
-        return $connection->runCommand($comamnd);
+        return $connection->runCommand($this, $comamnd);
     }
     
     /**
