@@ -13,6 +13,20 @@ class UtilityTest extends TestCase {
     function testParseParameters() {
         [ 'query' => $query, 'parameters' => $params] = \Plasma\Utility::parseParameters(
             'SELECT `a` FROM `HERE_WE_GO` WHERE a < ? AND b = :named OR  c = $1',
+            null
+        );
+        
+        $this->assertSame('SELECT `a` FROM `HERE_WE_GO` WHERE a < ? AND b = :named OR  c = $1', $query);
+        $this->assertSame(array(
+            1 => '?',
+            2 => ':named',
+            3 => '$1'
+        ), $params);
+    }
+    
+    function testParseParametersReplace() {
+        [ 'query' => $query, 'parameters' => $params] = \Plasma\Utility::parseParameters(
+            'SELECT `a` FROM `HERE_WE_GO` WHERE a < ? AND b = :named OR  c = $1',
             '?'
         );
         
