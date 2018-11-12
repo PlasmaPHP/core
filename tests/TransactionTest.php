@@ -223,4 +223,128 @@ class TransactionTest extends ClientTestHelpers {
         
         $this->await($prom);
     }
+    
+    function testPrepare() {
+        $client = $this->createClient(array('connect.lazy' => true));
+        $driver = $this->getDriverMock();
+        
+        $transaction = new \Plasma\Transaction($client, $driver, \Plasma\TransactionInterface::ISOLATION_SERIALIZABLE);
+        
+        $driver->expects($this->once())
+            ->method('prepare')
+            ->with($client, 'SELECT 1')
+            ->will($this->returnValue(\React\Promise\resolve()));
+        
+        $prom = $transaction->prepare('SELECT 1');
+        $this->assertInstanceOf(\React\Promise\PromiseInterface::class, $prom);
+        
+        $this->await($prom);
+    }
+    
+    function testPrepareFail() {
+        $client = $this->createClient(array('connect.lazy' => true));
+        $driver = $this->getDriverMock();
+        
+        $transaction = new \Plasma\Transaction($client, $driver, \Plasma\TransactionInterface::ISOLATION_SERIALIZABLE);
+        
+        $driver->expects($this->once())
+            ->method('query')
+            ->with($client, 'COMMIT')
+            ->will($this->returnValue(\React\Promise\resolve()));
+        
+        $prom = $transaction->commit();
+        $this->assertInstanceOf(\React\Promise\PromiseInterface::class, $prom);
+        
+        $this->await($prom);
+        
+        $driver->expects($this->never())
+            ->method('prepare')
+            ->with($client, 'SELECT 1')
+            ->will($this->returnValue(\React\Promise\resolve()));
+        
+        $this->expectException(\Plasma\TransactionException::class);
+        $prom2 = $transaction->prepare('SELECT 1');
+    }
+    
+    function testQuery() {
+        $client = $this->createClient(array('connect.lazy' => true));
+        $driver = $this->getDriverMock();
+        
+        $transaction = new \Plasma\Transaction($client, $driver, \Plasma\TransactionInterface::ISOLATION_SERIALIZABLE);
+        
+        $driver->expects($this->once())
+            ->method('query')
+            ->with($client, 'SELECT 1')
+            ->will($this->returnValue(\React\Promise\resolve()));
+        
+            $prom = $transaction->query('SELECT 1');
+            $this->assertInstanceOf(\React\Promise\PromiseInterface::class, $prom);
+            
+            $this->await($prom);
+    }
+    
+    function testQueryFail() {
+        $client = $this->createClient(array('connect.lazy' => true));
+        $driver = $this->getDriverMock();
+        
+        $transaction = new \Plasma\Transaction($client, $driver, \Plasma\TransactionInterface::ISOLATION_SERIALIZABLE);
+        
+        $driver->expects($this->once())
+            ->method('query')
+            ->with($client, 'COMMIT')
+            ->will($this->returnValue(\React\Promise\resolve()));
+        
+        $prom = $transaction->commit();
+        $this->assertInstanceOf(\React\Promise\PromiseInterface::class, $prom);
+        
+        $this->await($prom);
+        
+        $driver->expects($this->never())
+            ->method('query')
+            ->with($client, 'SELECT 1')
+            ->will($this->returnValue(\React\Promise\resolve()));
+        
+        $this->expectException(\Plasma\TransactionException::class);
+        $prom2 = $transaction->query('SELECT 1');
+    }
+    
+    function testQuote() {
+        $client = $this->createClient(array('connect.lazy' => true));
+        $driver = $this->getDriverMock();
+        
+        $transaction = new \Plasma\Transaction($client, $driver, \Plasma\TransactionInterface::ISOLATION_SERIALIZABLE);
+        
+        $driver->expects($this->once())
+            ->method('quote')
+            ->with('COMMIT')
+            ->will($this->returnValue('"COMMIT"'));
+        
+        $quoted = $transaction->quote('COMMIT');
+        $this->assertInternalType('string', $quoted);
+    }
+    
+    function testQuoteFail() {
+        $client = $this->createClient(array('connect.lazy' => true));
+        $driver = $this->getDriverMock();
+        
+        $transaction = new \Plasma\Transaction($client, $driver, \Plasma\TransactionInterface::ISOLATION_SERIALIZABLE);
+        
+        $driver->expects($this->once())
+            ->method('query')
+            ->with($client, 'COMMIT')
+            ->will($this->returnValue(\React\Promise\resolve()));
+        
+        $prom = $transaction->commit();
+        $this->assertInstanceOf(\React\Promise\PromiseInterface::class, $prom);
+        
+        $this->await($prom);
+        
+        $driver->expects($this->never())
+            ->method('quote')
+            ->with('COMMIT')
+            ->will($this->returnValue('"COMMIT"'));
+        
+        $this->expectException(\Plasma\TransactionException::class);
+        $quoted = $transaction->quote('COMMIT');
+    }
 }

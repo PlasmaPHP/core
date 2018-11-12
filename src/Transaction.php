@@ -180,7 +180,7 @@ class Transaction implements TransactionInterface {
      * @throws \Plasma\TransactionException  Thrown if the transaction has been committed or rolled back.
      */
     function createSavepoint(string $identifier): \React\Promise\PromiseInterface {
-        return $this->query('SAVEPOINT '.$this->driver->quote($identifier));
+        return $this->query('SAVEPOINT '.$this->quote($identifier));
     }
     
     /**
@@ -190,7 +190,7 @@ class Transaction implements TransactionInterface {
      * @throws \Plasma\TransactionException  Thrown if the transaction has been committed or rolled back.
      */
     function rollbackTo(string $identifier): \React\Promise\PromiseInterface {
-        return $this->query('ROLLBACK TO '.$this->driver->quote($identifier));
+        return $this->query('ROLLBACK TO '.$this->quote($identifier));
     }
     
     /**
@@ -200,6 +200,6 @@ class Transaction implements TransactionInterface {
      * @throws \Plasma\TransactionException  Thrown if the transaction has been committed or rolled back.
      */
     function releaseSavepoint(string $identifier): \React\Promise\PromiseInterface {
-        return $this->query('RELEASE SAVEPOINT '.$this->driver->quote($identifier));
+        return $this->query('RELEASE SAVEPOINT '.$this->quote($identifier));
     }
 }
