@@ -40,5 +40,10 @@ $client->execute('SELECT * FROM `users`', [])
 $loop->run();
 ```
 
+# Drivers
+This is a list of drivers for Plasma - community-created or not.
+
+- [plasma/driver-mysql](https://github.com/PlasmaPHP/driver-mysql) - A driver for MySQL/MariaDB
+
 # Documentation
 Coming soon!
