@@ -70,7 +70,7 @@ class ColumnDefinitionTest extends ClientTestHelpers {
             }
         });
         
-        \Plasma\Types\TypeExtensionsManager::registerType('BIGINT', $type);
+        \Plasma\Types\TypeExtensionsManager::getManager()->registerType('BIGINT', $type);
         
         $this->assertSame('testValue', $this->coldef->parseValue('500'));
     }
