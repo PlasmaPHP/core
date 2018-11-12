@@ -44,6 +44,19 @@ class TypeExtensionsManagerTest extends \Plasma\Tests\TestCase {
         $this->assertSame($man, $manager);
     }
     
+    function testRegisterManagerFail() {
+        $man = new \Plasma\Types\TypeExtensionsManager();
+        $this->assertNull(\Plasma\Types\TypeExtensionsManager::registerManager(__FUNCTION__, $man));
+        
+        $manager = \Plasma\Types\TypeExtensionsManager::getManager(__FUNCTION__);
+        $this->assertInstanceOf(\Plasma\Types\TypeExtensionsManager::class, $manager);
+        
+        $this->assertSame($man, $manager);
+        
+        $this->expectException(\Plasma\Exception::class);
+        $this->assertNull(\Plasma\Types\TypeExtensionsManager::registerManager(__FUNCTION__, $man));
+    }
+    
     function testUnregisterManager() {
         $this->assertNull(\Plasma\Types\TypeExtensionsManager::registerManager(__FUNCTION__));
         
@@ -143,6 +156,20 @@ class TypeExtensionsManagerTest extends \Plasma\Tests\TestCase {
         
         $this->assertInstanceOf(\Plasma\Types\TypeExtensionResultInterface::class, $decoded);
         $this->assertsame('500', $decoded->getValue());
+    }
+    
+    function testRegisterSQLTypeFail() {
+        $manager = new \Plasma\Types\TypeExtensionsManager();
+        
+        $type = (new class('string', 0xFB, 'is_string') extends \Plasma\Types\AbstractTypeExtension {
+            function encode($value): \Plasma\Types\TypeExtensionResultInterface {}
+            function decode($value): \Plasma\Types\TypeExtensionResultInterface {}
+        });
+        
+        $this->assertNull($manager->registerSQLType(0xFB, $type));
+        
+        $this->expectException(\Plasma\Exception::class);
+        $manager->registerSQLType(0xFB, $type);
     }
     
     function testUnregisterSQLType() {
