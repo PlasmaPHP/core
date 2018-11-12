@@ -52,18 +52,6 @@ class StreamQueryResultTest extends ClientTestHelpers {
         $result = new \Plasma\StreamQueryResult($driver, $command, 0, 1, null, null);
         $this->assertNull($result->getInsertID());
         
-        $result = new \Plasma\StreamQueryResult($driver, $command, 0, 1, null, 52);
-        $this->assertSame(52, $result2->getInsertID());
-    }
-    
-    function testGetInsertID() {
-        $driver = $this->getDriverMock();
-        $command = $this->getMockBuilder(\Plasma\CommandInterface::class)
-            ->getMock();
-        
-        $result = new \Plasma\StreamQueryResult($driver, $command, 0, 1, null, null);
-        $this->assertNull($result->getInsertID());
-        
         $result2 = new \Plasma\StreamQueryResult($driver, $command, 0, 1, null, 42);
         $this->assertSame(42, $result2->getInsertID());
     }
