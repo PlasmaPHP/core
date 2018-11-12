@@ -13,6 +13,14 @@ class StreamQueryResultTest extends ClientTestHelpers {
     function testGetAffectedRows() {
         $driver = $this->getDriverMock();
         $command = $this->getMockBuilder(\Plasma\CommandInterface::class)
+            ->setMethods(array(
+                'listeners',
+                'on',
+                'once',
+                'emit',
+                'removeListener',
+                'removeAllListeners'
+            ))
             ->getMock();
         
         $result = new \Plasma\StreamQueryResult($driver, $command, 0, 1, null, null);
@@ -22,6 +30,14 @@ class StreamQueryResultTest extends ClientTestHelpers {
     function testGetWarningsCount() {
         $driver = $this->getDriverMock();
         $command = $this->getMockBuilder(\Plasma\CommandInterface::class)
+            ->setMethods(array(
+                'listeners',
+                'on',
+                'once',
+                'emit',
+                'removeListener',
+                'removeAllListeners'
+            ))
             ->getMock();
         
         $result = new \Plasma\StreamQueryResult($driver, $command, 0, 1, null, null);
@@ -31,6 +47,14 @@ class StreamQueryResultTest extends ClientTestHelpers {
     function testGetFieldDefinitions() {
         $driver = $this->getDriverMock();
         $command = $this->getMockBuilder(\Plasma\CommandInterface::class)
+            ->setMethods(array(
+                'listeners',
+                'on',
+                'once',
+                'emit',
+                'removeListener',
+                'removeAllListeners'
+            ))
             ->getMock();
         
         $result = new \Plasma\StreamQueryResult($driver, $command, 0, 1, null, null);
@@ -47,6 +71,14 @@ class StreamQueryResultTest extends ClientTestHelpers {
     function testGetInsertID() {
         $driver = $this->getDriverMock();
         $command = $this->getMockBuilder(\Plasma\CommandInterface::class)
+            ->setMethods(array(
+                'listeners',
+                'on',
+                'once',
+                'emit',
+                'removeListener',
+                'removeAllListeners'
+            ))
             ->getMock();
         
         $result = new \Plasma\StreamQueryResult($driver, $command, 0, 1, null, null);
@@ -59,6 +91,14 @@ class StreamQueryResultTest extends ClientTestHelpers {
     function testStream() {
         $driver = $this->getDriverMock();
         $command = $this->getMockBuilder(\Plasma\CommandInterface::class)
+            ->setMethods(array(
+                'listeners',
+                'on',
+                'once',
+                'emit',
+                'removeListener',
+                'removeAllListeners'
+            ))
             ->getMock();
         
         $result = new \Plasma\StreamQueryResult($driver, $command, 0, 1, null, null);
@@ -256,6 +296,14 @@ class StreamQueryResultTest extends ClientTestHelpers {
     function testClose() {
         $driver = $this->getDriverMock();
         $command = $this->getMockBuilder(\Plasma\CommandInterface::class)
+            ->setMethods(array(
+                'listeners',
+                'on',
+                'once',
+                'emit',
+                'removeListener',
+                'removeAllListeners'
+            ))
             ->getMock();
         
         $result = new \Plasma\StreamQueryResult($driver, $command, 0, 1, null, null);
