@@ -84,11 +84,11 @@ class Client implements ClientInterface {
      * @param \Plasma\DriverFactoryInterface  $factory
      * @param string                          $uri
      * @param array                           $options
-     * @return self
+     * @return \Plasma\ClientInterface
      * @throws \Throwable  The client implementation may throw any exception during this operation.
      * @see Client::__construct()
      */
-    static function create(\Plasma\DriverFactoryInterface $factory, string $uri, array $options = array()): self {
+    static function create(\Plasma\DriverFactoryInterface $factory, string $uri, array $options = array()): \Plasma\ClientInterface {
         return (new static($factory, $uri, $options));
     }
     
