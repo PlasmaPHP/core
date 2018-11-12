@@ -4,7 +4,7 @@ Plasma aims to be an asynchronous, non-blocking (data access) Database Abstracti
 
 The core component alone does __nothing__, you need a Plasma driver, which does all the handling of the DBMS.
 
-Plasma does not aim to be a full Database Abstraction Layer. Simulating missing features is not a goal and should never be.s
+Plasma does not aim to be a full Database Abstraction Layer. Simulating missing features is not a goal and should never be.
 
 # Getting Started
 As soon as you have selected a driver, you can install it using `composer`. For the core, the command is
