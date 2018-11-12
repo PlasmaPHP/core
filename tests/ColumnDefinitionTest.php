@@ -9,54 +9,61 @@
 
 namespace Plasma\Tests;
 
-class ColumnDefinitionTest extends ClientTestHelpers {
-    /**
-     * @var \Plasma\ColumnDefinitionInterface
-     */
-    protected $coldef;
-    
-    function setUp() {
-        $this->coldef = new \Plasma\ColumnDefinition('test', 'test2', 'coltest', 'BIGINT', 'utf8mb4', 20, false, 0, null);
-    }
-    
-     function testGetDatabaseName() {
-        $this->assertSame('test', $this->coldef->getDatabaseName());
+class ColumnDefinitionTest extends TestCase {
+    function testGetDatabaseName() {
+        $coldef = new \Plasma\ColumnDefinition('test', 'test2', 'coltest', 'BIGINT', 'utf8mb4', 20, false, 0, null);
+        $this->assertSame('test', $coldef->getDatabaseName());
     }
     
     function testGetTableName() {
-        $this->assertSame('test2', $this->coldef->getTableName());
+        $coldef = new \Plasma\ColumnDefinition('test', 'test2', 'coltest', 'BIGINT', 'utf8mb4', 20, false, 0, null);
+        $this->assertSame('test2', $coldef->getTableName());
     }
     
     function testGetName() {
-        $this->assertSame('coltest', $this->coldef->getName());
+        $coldef = new \Plasma\ColumnDefinition('test', 'test2', 'coltest', 'BIGINT', 'utf8mb4', 20, false, 0, null);
+        $this->assertSame('coltest', $coldef->getName());
     }
     
     function testGetType() {
-        $this->assertSame('BIGINT', $this->coldef->getType());
+        $coldef = new \Plasma\ColumnDefinition('test', 'test2', 'coltest', 'BIGINT', 'utf8mb4', 20, false, 0, null);
+        $this->assertSame('BIGINT', $coldef->getType());
     }
     
     function testGetCharset() {
-        $this->assertSame('utf8mb4', $this->coldef->getCharset());
+        $coldef = new \Plasma\ColumnDefinition('test', 'test2', 'coltest', 'BIGINT', 'utf8mb4', 20, false, 0, null);
+        $this->assertSame('utf8mb4', $coldef->getCharset());
     }
    
     function testGetLength() {
-        $this->assertSame(20, $this->coldef->getLength());
+        $coldef = new \Plasma\ColumnDefinition('test', 'test2', 'coltest', 'BIGINT', 'utf8mb4', 20, false, 0, null);
+        $this->assertSame(20, $coldef->getLength());
+        
+        $coldef2 = new \Plasma\ColumnDefinition('test', 'test2', 'coltest', 'BIGINT', 'utf8mb4', null, false, 0, null);
+        $this->assertNull($coldef2->getLength());
     }
     
     function testIsNullable() {
-        $this->assertFalse($this->coldef->isNullable());
+        $coldef = new \Plasma\ColumnDefinition('test', 'test2', 'coltest', 'BIGINT', 'utf8mb4', 20, false, 0, null);
+        $this->assertFalse($coldef->isNullable());
     }
     
     function testGetFlags() {
-        $this->assertSame(0, $this->coldef->getFlags());
+        $coldef = new \Plasma\ColumnDefinition('test', 'test2', 'coltest', 'BIGINT', 'utf8mb4', 20, false, 0, null);
+        $this->assertSame(0, $coldef->getFlags());
     }
     
     function testGetDecimals() {
-        $this->assertNull($this->coldef->getDecimals());
+        $coldef = new \Plasma\ColumnDefinition('test', 'test2', 'coltest', 'BIGINT', 'utf8mb4', 20, false, 0, null);
+        $this->assertNull($coldef->getDecimals());
+        
+        $coldef2 = new \Plasma\ColumnDefinition('test', 'test2', 'coltest', 'BIGINT', 'utf8mb4', 20, false, 0, 2);
+        $this->assertSame(2, $coldef2->getDecimals());
     }
     
     function testParseValueNoMatchingType() {
-        $this->assertSame('testValue', $this->coldef->parseValue('testValue'));
+        $coldef = new \Plasma\ColumnDefinition('test', 'test2', 'coltest', 'BIGINT', 'utf8mb4', 20, false, 0, null);
+        $this->assertSame('testValue', $coldef->parseValue('testValue'));
     }
     
     function testParseValue() {
@@ -72,6 +79,7 @@ class ColumnDefinitionTest extends ClientTestHelpers {
         
         \Plasma\Types\TypeExtensionsManager::getManager()->registerType('BIGINT', $type);
         
-        $this->assertSame(500, $this->coldef->parseValue('500'));
+        $coldef = new \Plasma\ColumnDefinition('test', 'test2', 'coltest', 'BIGINT', 'utf8mb4', 20, false, 0, null);
+        $this->assertSame(500, $coldef->parseValue('500'));
     }
 }
