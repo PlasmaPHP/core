@@ -277,10 +277,10 @@ class TransactionTest extends ClientTestHelpers {
             ->with($client, 'SELECT 1')
             ->will($this->returnValue(\React\Promise\resolve()));
         
-            $prom = $transaction->query('SELECT 1');
-            $this->assertInstanceOf(\React\Promise\PromiseInterface::class, $prom);
-            
-            $this->await($prom);
+        $prom = $transaction->query('SELECT 1');
+        $this->assertInstanceOf(\React\Promise\PromiseInterface::class, $prom);
+        
+        $this->await($prom);
     }
     
     function testQueryFail() {
@@ -306,6 +306,48 @@ class TransactionTest extends ClientTestHelpers {
         
         $this->expectException(\Plasma\TransactionException::class);
         $prom2 = $transaction->query('SELECT 1');
+    }
+    
+    function testExecute() {
+        $client = $this->createClient(array('connect.lazy' => true));
+        $driver = $this->getDriverMock();
+        
+        $transaction = new \Plasma\Transaction($client, $driver, \Plasma\TransactionInterface::ISOLATION_SERIALIZABLE);
+        
+        $driver->expects($this->once())
+            ->method('execute')
+            ->with($client, 'SELECT 1')
+            ->will($this->returnValue(\React\Promise\resolve()));
+        
+        $prom = $transaction->execute('SELECT 1');
+        $this->assertInstanceOf(\React\Promise\PromiseInterface::class, $prom);
+        
+        $this->await($prom);
+    }
+    
+    function testExecuteFail() {
+        $client = $this->createClient(array('connect.lazy' => true));
+        $driver = $this->getDriverMock();
+        
+        $transaction = new \Plasma\Transaction($client, $driver, \Plasma\TransactionInterface::ISOLATION_SERIALIZABLE);
+        
+        $driver->expects($this->once())
+            ->method('query')
+            ->with($client, 'COMMIT')
+            ->will($this->returnValue(\React\Promise\resolve()));
+        
+        $prom = $transaction->commit();
+        $this->assertInstanceOf(\React\Promise\PromiseInterface::class, $prom);
+        
+        $this->await($prom);
+        
+        $driver->expects($this->never())
+            ->method('execute')
+            ->with($client, 'SELECT 1')
+            ->will($this->returnValue(\React\Promise\resolve()));
+        
+        $this->expectException(\Plasma\TransactionException::class);
+        $prom2 = $transaction->execute('SELECT 1');
     }
     
     function testQuote() {
