@@ -277,4 +277,67 @@ class TypeExtensionsManagerTest extends \Plasma\Tests\TestCase {
         $this->assertInstanceOf(\Plasma\Types\TypeExtensionResultInterface::class, $decoded2);
         $this->assertSame(array(0, 20, 15, 30), \array_values($decoded2->getValue()));
     }
+    
+    function testEncodeTypeClass() {
+        $manager = new \Plasma\Types\TypeExtensionsManager();
+        
+        $type = (new class('string', 0xFE, function ($value) {
+            return ($value instanceof \stdClass);
+        }) extends \Plasma\Types\AbstractTypeExtension {
+            function encode($value): \Plasma\Types\TypeExtensionResultInterface {
+                return (new \Plasma\Types\TypeExtensionResult('json', false, \json_encode($value)));
+            }
+            
+            function decode($value): \Plasma\Types\TypeExtensionResultInterface {
+                return (new \Plasma\Types\TypeExtensionResult('json', false, \json_decode($value, true)));
+            }
+        });
+        
+        $manager->registerType(\JsonSerializable::class, $type);
+        
+        $class = (new class() implements \JsonSerializable {
+            function jsonSerialize() {
+                return array('hello' => true);
+            }
+        });
+        
+        $encoded = $manager->encodeType($class);
+        
+        $this->assertInstanceOf(\Plasma\Types\TypeExtensionResultInterface::class, $encoded);
+        $this->assertSame(\json_encode(array('hello' => true)), $encoded->getValue());
+        
+        $class = new \stdClass();
+        $class->hello = true;
+        
+        $encoded2 = $manager->encodeType($class);
+        
+        $this->assertInstanceOf(\Plasma\Types\TypeExtensionResultInterface::class, $encoded2);
+        $this->assertSame(\json_encode(array('hello' => true)), $encoded2->getValue());
+    }
+    
+    function testDecodeTypeClass() {
+        $manager = new \Plasma\Types\TypeExtensionsManager();
+        
+        $type = (new class('string', 0xFE, 'is_string') extends \Plasma\Types\AbstractTypeExtension {
+            function encode($value): \Plasma\Types\TypeExtensionResultInterface {
+                return (new \Plasma\Types\TypeExtensionResult('json', false, \json_encode($value)));
+            }
+            
+            function decode($value): \Plasma\Types\TypeExtensionResultInterface {
+                return (new \Plasma\Types\TypeExtensionResult('json', false, \json_decode($value, true)));
+            }
+        });
+        
+        $manager->registerSQLType(0xFE, $type);
+        
+        $decoded = $manager->decodeType(0xFE, \json_encode(array('hello' => true)));
+        
+        $this->assertInstanceOf(\Plasma\Types\TypeExtensionResultInterface::class, $decoded);
+        $this->assertSame(array('hello' => true), $decoded->getValue());
+        
+        $decoded2 = $manager->decodeType(null, \json_encode(array('hello' => true)));
+        
+        $this->assertInstanceOf(\Plasma\Types\TypeExtensionResultInterface::class, $decoded2);
+        $this->assertSame(array('hello' => true), $decoded2->getValue());
+    }
 }
