@@ -9,17 +9,7 @@
 
 namespace Plasma\Tests;
 
-class ClientTest extends TestCase {
-    /**
-     * @var \Plasma\DriverFactoryInterface
-     */
-    public $factory;
-    
-    /**
-     * @var \Plasma\DriverInterface
-     */
-    public $driver;
-    
+class ClientTest extends ClientTestHelpers {
     function testCloseEvent() {
         $client = $this->createClient();
         
@@ -406,88 +396,4 @@ class ClientTest extends TestCase {
         
         $this->assertTrue($client->runCommand($command));
     }
-    
-    // --- Helpers ---
-    function createClient(array $options = array()): \Plasma\ClientInterface {
-        $this->factory = $this->getMockBuilder(\Plasma\DriverFactoryInterface::class)
-            ->setMethods(array(
-                'createDriver',
-            ))
-            ->getMock();
-        
-        $this->driver = $this->getDriverMock();
-        
-        $this->driver
-            ->expects($this->any())
-            ->method('getConnectionState')
-            ->will($this->returnValue(\Plasma\DriverInterface::CONNECTION_OK));
-        
-        $this->driver
-            ->expects($this->any())
-            ->method('connect')
-            ->with('localhost')
-            ->will($this->returnValue(\React\Promise\resolve()));
-        
-        $events = array();
-        
-        $this->driver
-            ->method('on')
-            ->will($this->returnCallback(function ($event, $cb) use (&$events) {
-                $events[$event] = $cb;
-            }));
-        
-        $this->driver
-            ->method('emit')
-            ->will($this->returnCallback(function ($event, $args) use (&$events) {
-                $events[$event](...$args);
-            }));
-        
-        $this->factory
-            ->method('createDriver')
-            ->will($this->returnValue($this->driver));
-        
-        return \Plasma\Client::create($this->factory, 'localhost', $options);
-    }
-    
-    function createClientMock(): \Plasma\ClientInterface {
-        return $this->getMockBuilder(\Plasma\ClientInterface::class)
-            ->setMethods(array(
-                'getConnectionCount',
-                'beginTransaction',
-                'checkinConnection',
-                'close',
-                'quit',
-                'runCommand'
-            ))
-            ->getMock();
-    }
-    
-    function getDriverMock(): \Plasma\DriverInterface {
-        return $this->getMockBuilder(\Plasma\DriverInterface::class)
-            ->setMethods(array(
-                'getConnectionState',
-                'getBusyState',
-                'getBacklogLength',
-                'connect',
-                'pauseStreamConsumption',
-                'resumeStreamConsumption',
-                'close',
-                'quit',
-                'isInTransaction',
-                'query',
-                'prepare',
-                'execute',
-                'quote',
-                'beginTransaction',
-                'endTransaction',
-                'runCommand',
-                'listeners',
-                'on',
-                'once',
-                'emit',
-                'removeListener',
-                'removeAllListeners'
-            ))
-            ->getMock();
-        }
 }

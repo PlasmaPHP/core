@@ -84,10 +84,11 @@ class Client implements ClientInterface {
      * @param \Plasma\DriverFactoryInterface  $factory
      * @param string                          $uri
      * @param array                           $options
+     * @return self
      * @throws \Throwable  The client implementation may throw any exception during this operation.
      * @see Client::__construct()
      */
-    static function create(\Plasma\DriverFactoryInterface $factory, string $uri, array $options = array()) {
+    static function create(\Plasma\DriverFactoryInterface $factory, string $uri, array $options = array()): self {
         return (new static($factory, $uri, $options));
     }
     
@@ -132,7 +133,7 @@ class Client implements ClientInterface {
         
         $connection = $this->getOptimalConnection();
         
-        return $connection->beginTransaction($this, $isolation)->otherwise(function (\Throwable $error) use (&$connection) {
+        return $connection->beginTransaction($this, $isolation)->then(null, function (\Throwable $error) use (&$connection) {
             $this->checkinConnection($connection);
             throw $error;
         });
@@ -151,7 +152,7 @@ class Client implements ClientInterface {
         
         $connection = $this->getOptimalConnection();
         
-        return $connection->query($this, $query)->otherwise(function (\Throwable $error) use (&$connection) {
+        return $connection->query($this, $query)->then(null, function (\Throwable $error) use (&$connection) {
             $this->checkinConnection($connection);
             throw $error;
         });
@@ -170,7 +171,7 @@ class Client implements ClientInterface {
         
         $connection = $this->getOptimalConnection();
         
-        return $connection->prepare($this, $query)->otherwise(function (\Throwable $error) use (&$connection) {
+        return $connection->prepare($this, $query)->then(null, function (\Throwable $error) use (&$connection) {
             $this->checkinConnection($connection);
             throw $error;
         });
@@ -193,8 +194,12 @@ class Client implements ClientInterface {
         
         $connection = $this->getOptimalConnection();
         
-        return $connection->execute($this, $query, $params)->always(function () use (&$connection) {
+        return $connection->execute($this, $query, $params)->then(function ($value) use (&$connection) {
             $this->checkinConnection($connection);
+            return $value;
+        }, function (\Throwable $error) use (&$connection) {
+            $this->checkinConnection($connection);
+            throw $error;
         });
     }
     
@@ -301,7 +306,6 @@ class Client implements ClientInterface {
         
         $backlog = $connection->getBacklogLength();
         $state = $connection->getBusyState();
-        $position = 0;
         
         /** @var \Plasma\DriverInterface  $conn */
         foreach($this->connections as $conn) {
@@ -319,7 +323,6 @@ class Client implements ClientInterface {
                 $connection = $conn;
                 $backlog = $cbacklog;
                 $state = $cstate;
-                $position = $pos;
             }
         }
         
@@ -357,7 +360,7 @@ class Client implements ClientInterface {
             $this->emit('error', array($error, $connection));
         });
         
-        $connection->connect($this->uri)->otherwise(function (\Throwable $error) use (&$connection) {
+        $connection->connect($this->uri)->then(null, function (\Throwable $error) use (&$connection) {
             $this->emit('error', array($error, $connection));
         });
         

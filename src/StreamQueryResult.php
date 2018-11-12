@@ -117,17 +117,17 @@ class StreamQueryResult implements StreamQueryResultInterface {
      * Get the field definitions, if any. `SELECT` statements only.
      * @return \Plasma\ColumnDefinitionInterface[]|null
      */
-     function getFieldDefinitions(): ?array {
-         return $this->fields;
-     }
+    function getFieldDefinitions(): ?array {
+        return $this->fields;
+    }
     
     /**
      * Get the used insert ID for the row, if any. `INSERT` statements only.
      * @return int|null
      */
-     function getInsertID(): ?int {
-         return $this->insertID;
-     }
+    function getInsertID(): ?int {
+        return $this->insertID;
+    }
     
     /**
      * Whether the stream is readable.

@@ -12,7 +12,7 @@ namespace Plasma;
 /**
  * Column Definitions define columns (who would've thought of that?). Such as their name, type, length, etc.
  */
-class ColumnDefinition {
+class ColumnDefinition implements ColumnDefinitionInterface {
     /**
      * @var string
      */
@@ -156,6 +156,7 @@ class ColumnDefinition {
     
     /**
      * Parses the row value into the field type.
+     * @param mixed  $value
      * @return mixed
      */
     function parseValue($value) {

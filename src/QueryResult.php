@@ -16,17 +16,17 @@ class QueryResult implements QueryResultInterface {
     /**
      * @var int
      */
-    protected $affectedRows = 0;
+    protected $affectedRows;
     
     /**
      * @var int
      */
-    protected $warningsCount = 0;
+    protected $warningsCount;
     
     /**
      * @var int|null
      */
-    protected $insertID = null;
+    protected $insertID;
     
     /**
      * Constructor.
@@ -47,7 +47,7 @@ class QueryResult implements QueryResultInterface {
     function getAffectedRows(): int {
         return $this->affectedRows;
     }
-
+    
     /**
      * Get the number of warnings sent by the server.
      * @return int
@@ -55,20 +55,20 @@ class QueryResult implements QueryResultInterface {
     function getWarningsCount(): int {
         return $this->warningsCount;
     }
-
+    
     /**
      * Get the field definitions, if any. `SELECT` statements only.
      * @return array|null
      */
-     function getFieldDefinitions(): ?array {
-         return null;
-     }
-
+    function getFieldDefinitions(): ?array {
+        return null;
+    }
+    
     /**
      * Get the used insert ID for the row, if any. `INSERT` statements only.
      * @return int|null
      */
-     function getInsertID(): ?int {
-         return $this->insertID;
-     }
+    function getInsertID(): ?int {
+        return $this->insertID;
+    }
 }

@@ -58,34 +58,6 @@ class TypeExtensionsManager {
     protected static $instances = array();
     
     /**
-     * Handles calling the methods statically.
-     * @param string  $name
-     * @param array   $args
-     */
-    function __callStatic(string $name, array $args) {
-        return static::getManager()->$name(...$args);
-    }
-    
-    /**
-     * Registers a specific Type Extensions Manager under a specific name.
-     * @param string                                    $name
-     * @param \Plasma\Types\TypeExtensionsManager|null  $manager  If `null` is passed, one will be created.
-     * @return void
-     * @throws \Plasma\Exception  Thrown if the name is already in use.
-     */
-    static function registerManager(string $name, ?\Plasma\Types\TypeExtensionsManager $manager = null): void {
-        if(isset(static::$instances[$name])) {
-            throw new \Plasma\Exception('Name is already in use');
-        }
-        
-        if($manager === null) {
-            $manager = new static();
-        }
-        
-        static::$instances[$name] = $manager;
-    }
-    
-    /**
      * Get a specific Type Extensions Manager under a specific name.
      * @param string|null  $name  If `null` is passed, the generic global one will be returned.
      * @return \Plasma\Types\TypeExtensionsManager
@@ -105,6 +77,25 @@ class TypeExtensionsManager {
         }
         
         throw new \Plasma\Exception('Unknown name');
+    }
+    
+    /**
+     * Registers a specific Type Extensions Manager under a specific name.
+     * @param string                                    $name
+     * @param \Plasma\Types\TypeExtensionsManager|null  $manager  If `null` is passed, one will be created.
+     * @return void
+     * @throws \Plasma\Exception  Thrown if the name is already in use.
+     */
+    static function registerManager(string $name, ?\Plasma\Types\TypeExtensionsManager $manager = null): void {
+        if(isset(static::$instances[$name])) {
+            throw new \Plasma\Exception('Name is already in use');
+        }
+        
+        if($manager === null) {
+            $manager = new static();
+        }
+        
+        static::$instances[$name] = $manager;
     }
     
     /**
@@ -196,12 +187,18 @@ class TypeExtensionsManager {
             $type = 'float';
         }
         
-        $classes = ($type === 'object' ? \array_merge(array(\get_class($value)), \class_parents($value), \class_implements($value)) : array());
-        
-        /** @var \Plasma\Types\TypeExtensionInterface  $encoder */
-        foreach($this->classTypes as $key => $encoder) {
-            if(\in_array($key, $classes, true)) {
-                return $encoder->encode($value);
+        if($type === 'object') {
+            $classes = \array_merge(
+                array(\get_class($value)),
+                \class_parents($value),
+                \class_implements($value)
+            );
+            
+            /** @var \Plasma\Types\TypeExtensionInterface  $encoder */
+            foreach($this->classTypes as $key => $encoder) {
+                if(\in_array($key, $classes, true)) {
+                    return $encoder->encode($value);
+                }
             }
         }
         
@@ -261,7 +258,7 @@ class TypeExtensionsManager {
      * @throws \Plasma\Exception  Thrown if the type identifier is already in use.
      */
     static function registerType($typeIdentifier, \Plasma\Types\TypeExtensionInterface $type): void {
-        static::__callStatic(__FUNCTION__, $typeIdentifier, $type);
+        static::getManager()->registerType($typeIdentifier, $type);
     }
     
     /**
@@ -270,7 +267,7 @@ class TypeExtensionsManager {
      * @return void
      */
     static function unregisterType($typeIdentifier): void {
-        static::__callStatic(__FUNCTION__, $typeIdentifier);
+        static::getManager()->unregisterType($typeIdentifier);
     }
     
     /**
@@ -281,7 +278,7 @@ class TypeExtensionsManager {
      * @throws \Plasma\Exception  Thrown if the type identifier is already in use.
      */
     static function registerSQLType($typeIdentifier, \Plasma\Types\TypeExtensionInterface $type): void {
-        static::__callStatic(__FUNCTION__, $typeIdentifier, $type);
+        static::getManager()->registerSQLType($typeIdentifier, $type);
     }
     
     /**
@@ -290,7 +287,7 @@ class TypeExtensionsManager {
      * @return void
      */
     static function unregisterSQLType($typeIdentifier): void {
-        static::__callStatic(__FUNCTION__, $typeIdentifier);
+        static::getManager()->unregisterSQLType($typeIdentifier);
     }
     
     /**
@@ -298,7 +295,7 @@ class TypeExtensionsManager {
      * @return void
      */
     static function enableFuzzySearch(): void {
-        static::__callStatic(__FUNCTION__);
+        static::getManager()->enableFuzzySearch();
     }
     
     /**
@@ -306,7 +303,7 @@ class TypeExtensionsManager {
      * @return void
      */
     static function disableFuzzySearch(): void {
-        static::__callStatic(__FUNCTION__);
+        static::getManager()->disableFuzzySearch();
     }
     
     /**
@@ -316,7 +313,7 @@ class TypeExtensionsManager {
      * @throws \Plasma\Exception  Thrown if unable to encode the value.
      */
     static function encodeType($value): \Plasma\Types\TypeExtensionResultInterface {
-        return static::__callStatic(__FUNCTION__, $value);
+        return static::getManager()->encodeType($value);
     }
     
     /**
@@ -327,6 +324,6 @@ class TypeExtensionsManager {
      * @throws \Plasma\Exception  Thrown if unable to decode the value.
      */
     static function decodeType($type, $value) {
-        return static::__callStatic(__FUNCTION__, $type, $value);
+        return static::getManager()->decodeType($type, $value);
     }
 }

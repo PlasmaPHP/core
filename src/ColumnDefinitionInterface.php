@@ -69,6 +69,7 @@ interface ColumnDefinitionInterface {
     
     /**
      * Parses the row value into the field type.
+     * @param mixed  $value
      * @return mixed
      */
     function parseValue($value);
