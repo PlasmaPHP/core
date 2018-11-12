@@ -63,9 +63,9 @@ interface ColumnDefinitionInterface {
     
     /**
      * Get the maximum shown decimal digits.
-     * @return int
+     * @return int|null
      */
-    function getDecimals(): int;
+    function getDecimals(): ?int;
     
     /**
      * Parses the row value into the field type.

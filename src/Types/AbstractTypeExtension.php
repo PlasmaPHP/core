@@ -80,5 +80,5 @@ abstract class AbstractTypeExtension implements TypeExtensionInterface {
      * @param mixed  $value  The encoded binary. Actual type depends on the driver.
      * @return mixed  The decoded value.
      */
-    abstract function encode($value): \Plasma\Types\TypeExtensionResultInterface;
+    abstract function decode($value);
 }
