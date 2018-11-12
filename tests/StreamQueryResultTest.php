@@ -62,6 +62,48 @@ class StreamQueryResultTest extends ClientTestHelpers {
         $result->close();
         $this->assertFalse($result->isReadable());
     }
+    
+    function testEvents() {
+        $driver = $this->getDriverMock();
+        $command = $this->getCommandMock();
+        
+        $events = array();
+    
+        $command
+            ->method('on')
+            ->will($this->returnCallback(function ($event, $cb) use (&$events) {
+                $events[$event] = $cb;
+            }));
+        
+        $command
+            ->method('emit')
+            ->will($this->returnCallback(function ($event, $args) use (&$events) {
+                $events[$event](...$args);
+            }));
+        
+        $result = new \Plasma\StreamQueryResult($driver, $command, 0, 1, null, null);
+        
+        $deferred = new \React\Promise\Deferred();
+        $result->once('end', array($deferred, 'resolve'));
+        
+        $deferred2 = new \React\Promise\Deferred();
+        $result->once('close', array($deferred2, 'resolve'));
+        
+        $command->emit('end', array());
+        
+        $this->assertNull($this->await($deferred->promise()));
+        $this->assertNull($this->await($deferred2->promise()));
+    
+        $result2 = new \Plasma\StreamQueryResult($driver, $command, 0, 1, null, null);
+        
+        $deferred3 = new \React\Promise\Deferred();
+        $result2->once('error', array($deferred3, 'resolve'));
+        
+        $command->emit('error', array((new \RuntimeException('test'))));
+        
+        $exc = $this->await($deferred3->promise());
+        $this->assertInstanceOf(\Throwable::class, $exc);
+    }
 
     function testPause() {
         $driver = $this->getDriverMock();
