@@ -161,7 +161,7 @@ class ColumnDefinition implements ColumnDefinitionInterface {
      */
     function parseValue($value) {
         try {
-            return \Plasma\Types\TypeExtensionsManager::getManager()->decodeType($this->type, $value);
+            return \Plasma\Types\TypeExtensionsManager::getManager()->decodeType($this->type, $value)->getValue();
         } catch (\Plasma\Exception $e) {
             /* Continue regardless of error */
         }

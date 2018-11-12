@@ -34,14 +34,14 @@ interface TypeExtensionInterface {
     /**
      * Encodes a PHP value into a binary SQL value.
      * @param mixed   $value  The value to encode.
-     * @return mixed  The encoded binary. Actual type depends on the driver.
+     * @return \Plasma\Types\TypeExtensionResultInterface
      */
     function encode($value): \Plasma\Types\TypeExtensionResultInterface;
     
     /**
      * Decodes a binary SQL value into a PHP value.
      * @param mixed  $value  The encoded binary. Actual type depends on the driver.
-     * @return mixed  The decoded value.
+     * @return \Plasma\Types\TypeExtensionResultInterface
      */
-    function decode($value);
+    function decode($value): \Plasma\Types\TypeExtensionResultInterface;
 }

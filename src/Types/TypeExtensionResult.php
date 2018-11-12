@@ -12,7 +12,7 @@ namespace Plasma\Types;
 /**
  * Represents a successful encoding conversion.
  */
-class TypeExtensionResult {
+class TypeExtensionResult implements TypeExtensionResultInterface {
     /**
      * @var mixed
      */

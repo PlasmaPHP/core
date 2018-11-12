@@ -26,6 +26,13 @@ namespace Plasma\Types;
  */
 class TypeExtensionsManager {
     /**
+     * The name for the global Type Extensions Manager.
+     * @var string
+     * @source
+     */
+    const GLOBAL_NAME = '@me';
+    
+    /**
      * List of PHP types.
      * @var string[]
      * @source
@@ -50,7 +57,7 @@ class TypeExtensionsManager {
     /**
      * @var bool
      */
-    protected $enableFuzzySearch = true;
+    protected $enabledFuzzySearch = true;
     
     /**
      * @var self[]
@@ -65,11 +72,11 @@ class TypeExtensionsManager {
      */
     static function getManager(?string $name = null): \Plasma\Types\TypeExtensionsManager {
         if($name === null) {
-            if(!isset(static::$instances['@me'])) {
-                static::$instances['@me'] = new static();
+            if(!isset(static::$instances[static::GLOBAL_NAME])) {
+                static::$instances[static::GLOBAL_NAME] = new static();
             }
             
-            return static::$instances['@me'];
+            return static::$instances[static::GLOBAL_NAME];
         }
         
         if(isset(static::$instances[$name])) {
@@ -164,7 +171,7 @@ class TypeExtensionsManager {
      * @return void
      */
     function enableFuzzySearch(): void {
-        $this->enableFuzzySearch = true;
+        $this->enabledFuzzySearch = true;
     }
     
     /**
@@ -172,7 +179,7 @@ class TypeExtensionsManager {
      * @return void
      */
     function disableFuzzySearch(): void {
-        $this->enableFuzzySearch = false;
+        $this->enabledFuzzySearch = false;
     }
     
     /**
@@ -209,7 +216,7 @@ class TypeExtensionsManager {
             }
         }
         
-        if($this->enableFuzzySearch) {
+        if($this->enabledFuzzySearch) {
             /** @var \Plasma\Types\TypeExtensionInterface  $encoder */
             foreach($this->classTypes as $key => $encoder) {
                 if($encoder->canHandleType($value)) {
@@ -230,13 +237,13 @@ class TypeExtensionsManager {
     
     /**
      * Tries to decode a value.
-     * @param mixed|null  $type  The driver-dependent SQL type identifier. Can be `null` to not use the fast-path.
+     * @param mixed|null  $type   The driver-dependent SQL type identifier. Can be `null` to not use the fast-path.
      * @param mixed       $value
-     * @return mixed
+     * @return \Plasma\Types\TypeExtensionResultInterface
      * @throws \Plasma\Exception  Thrown if unable to decode the value.
      */
-    function decodeType($type, $value) {
-        if($type === null) {
+    function decodeType($type, $value): \Plasma\Types\TypeExtensionResultInterface {
+        if($type === null && $this->enabledFuzzySearch) {
             /** @var \Plasma\Types\TypeExtensionInterface  $decoder */
             foreach($this->sqlTypes as $sqlType => $decoder) {
                 if($decoder->canHandleType($value)) {

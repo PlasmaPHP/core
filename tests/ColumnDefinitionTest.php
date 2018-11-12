@@ -72,8 +72,8 @@ class ColumnDefinitionTest extends TestCase {
                 return (new \Plasma\Types\TypeExtensionResult(0, false, $value));
             }
             
-            function decode($value) {
-                return ((int) $value);
+            function decode($value): \Plasma\Types\TypeExtensionResultInterface {
+                return (new \Plasma\Types\TypeExtensionResult(0, false, ((int) $value)));
             }
         });
         
