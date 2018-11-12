@@ -73,14 +73,14 @@ interface TransactionInterface extends QueryableInterface {
     /**
      * Commits the changes.
      * @return \React\Promise\PromiseInterface
-     * @throws \Plasma\TransactionException
+     * @throws \Plasma\TransactionException  Thrown if the transaction has been committed or rolled back.
      */
     function commit(): \React\Promise\PromiseInterface;
     
     /**
      * Rolls back the changes.
      * @return \React\Promise\PromiseInterface
-     * @throws \Plasma\TransactionException
+     * @throws \Plasma\TransactionException  Thrown if the transaction has been committed or rolled back.
      */
     function rollback(): \React\Promise\PromiseInterface;
     

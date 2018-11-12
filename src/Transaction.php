@@ -136,9 +136,14 @@ class Transaction implements TransactionInterface {
      * Quotes the string for use in the query.
      * @param string  $str
      * @return string
-     * @throws \LogicException  Thrown if the driver does not support quoting.
+     * @throws \LogicException               Thrown if the driver does not support quoting.
+     * @throws \Plasma\TransactionException  Thrown if the transaction has been committed or rolled back.
      */
     function quote(string $str): string {
+        if($this->driver === null) {
+            throw new \Plasma\TransactionException('Transaction has been committed or rolled back');
+        }
+        
         return $this->driver->quote($str);
     }
     
