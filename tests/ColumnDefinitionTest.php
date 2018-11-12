@@ -72,6 +72,6 @@ class ColumnDefinitionTest extends ClientTestHelpers {
         
         \Plasma\Types\TypeExtensionsManager::getManager()->registerType('BIGINT', $type);
         
-        $this->assertSame('testValue', $this->coldef->parseValue('500'));
+        $this->assertSame(500, $this->coldef->parseValue('500'));
     }
 }
