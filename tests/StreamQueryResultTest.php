@@ -110,7 +110,7 @@ class StreamQueryResultTest extends ClientTestHelpers {
         $command = $this->getCommandMock();
         
         $events = array();
-    
+        
         $command
             ->method('on')
             ->will($this->returnCallback(function ($event, $cb) use (&$events) {
@@ -244,10 +244,14 @@ class StreamQueryResultTest extends ClientTestHelpers {
         });
         
         $this->assertTrue($result->isReadable());
+        
         $this->assertNull($result->close());
         
         $this->assertFalse($result->isReadable());
         $this->assertNull($this->await($deferred->promise()));
+        
+        // Test double close
+        $this->assertNull($result->close());
     }
     
     function getCommandMock(): \Plasma\CommandInterface {

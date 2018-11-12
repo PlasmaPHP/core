@@ -1,0 +1,226 @@
+<?php
+/**
+ * Plasma Core component
+ * Copyright 2018 PlasmaPHP, All Rights Reserved
+ *
+ * Website: https://github.com/PlasmaPHP
+ * License: https://github.com/PlasmaPHP/core/blob/master/LICENSE
+*/
+
+namespace Plasma\Tests;
+
+class TransactionTest extends ClientTestHelpers {
+    function testConstruct() {
+        $client = $this->createClient(array('connect.lazy' => true));
+        $driver = $this->getDriverMock();
+        
+        $transaction = new \Plasma\Transaction($client, $driver, \Plasma\TransactionInterface::ISOLATION_UNCOMMITTED);
+        $this->assertInstanceOf(\Plasma\TransactionInterface::class, $transaction);
+    }
+    
+    function testConstruct2() {
+        $client = $this->createClient(array('connect.lazy' => true));
+        $driver = $this->getDriverMock();
+        
+        $transaction = new \Plasma\Transaction($client, $driver, \Plasma\TransactionInterface::ISOLATION_COMMITTED);
+        $this->assertInstanceOf(\Plasma\TransactionInterface::class, $transaction);
+    }
+    
+    function testConstruct3() {
+        $client = $this->createClient(array('connect.lazy' => true));
+        $driver = $this->getDriverMock();
+        
+        $transaction = new \Plasma\Transaction($client, $driver, \Plasma\TransactionInterface::ISOLATION_REPEATABLE);
+        $this->assertInstanceOf(\Plasma\TransactionInterface::class, $transaction);
+    }
+    
+    function testConstruct4() {
+        $client = $this->createClient(array('connect.lazy' => true));
+        $driver = $this->getDriverMock();
+        
+        $transaction = new \Plasma\Transaction($client, $driver, \Plasma\TransactionInterface::ISOLATION_SERIALIZABLE);
+        $this->assertInstanceOf(\Plasma\TransactionInterface::class, $transaction);
+    }
+    
+    function testConstructFail() {
+        $client = $this->createClient(array('connect.lazy' => true));
+        $driver = $this->getDriverMock();
+        
+        $this->expectException(\Plasma\Exception::class);
+        $transaction = new \Plasma\Transaction($client, $driver, 250);
+    }
+    
+    function testDestruct() {
+        $client = $this->createClient(array('connect.lazy' => true));
+        $driver = $this->getDriverMock();
+        
+        $driver->expects($this->atMost(2))
+            ->method('getConnectionState')
+            ->will($this->returnValue(\Plasma\DriverInterface::CONNECTION_OK));
+        
+        $driver->expects($this->once())
+            ->method('query')
+            ->with($client, 'ROLLBACK')
+            ->will($this->returnValue(\React\Promise\resolve()));
+        
+        (function ($client, $driver) {
+            $transaction = new \Plasma\Transaction($client, $driver, \Plasma\TransactionInterface::ISOLATION_UNCOMMITTED);
+        })($client, $driver);
+    }
+    
+    function testDestructFail() {
+        $client = $this->createClient(array('connect.lazy' => true));
+        $driver = $this->getDriverMock();
+        
+        $driver->expects($this->atMost(2))
+            ->method('getConnectionState')
+            ->will($this->returnValue(\Plasma\DriverInterface::CONNECTION_OK));
+        
+        $driver->expects($this->once())
+            ->method('query')
+            ->with($client, 'ROLLBACK')
+            ->will($this->returnValue(\React\Promise\reject((new \RuntimeException('test')))));
+        
+        $driver->expects($this->once())
+            ->method('close')
+            ->will($this->returnValue(\React\Promise\resolve()));
+        
+        (function ($client, $driver) {
+            $transaction = new \Plasma\Transaction($client, $driver, \Plasma\TransactionInterface::ISOLATION_UNCOMMITTED);
+        })($client, $driver);
+    }
+    
+    function testGetIsolationLevel() {
+        $client = $this->createClient(array('connect.lazy' => true));
+        $driver = $this->getDriverMock();
+        
+        $transaction = new \Plasma\Transaction($client, $driver, \Plasma\TransactionInterface::ISOLATION_SERIALIZABLE);
+        $this->assertSame(\Plasma\TransactionInterface::ISOLATION_SERIALIZABLE, $transaction->getIsolationLevel());
+    }
+    
+    function testIsActive() {
+        $client = $this->createClient(array('connect.lazy' => true));
+        $driver = $this->getDriverMock();
+        
+        $transaction = new \Plasma\Transaction($client, $driver, \Plasma\TransactionInterface::ISOLATION_SERIALIZABLE);
+        $this->assertTrue($transaction->isActive());
+    }
+    
+    function testIsActiveFalse() {
+        $client = $this->createClient(array('connect.lazy' => true));
+        $driver = $this->getDriverMock();
+        
+        $transaction = new \Plasma\Transaction($client, $driver, \Plasma\TransactionInterface::ISOLATION_SERIALIZABLE);
+        
+        $driver->expects($this->once())
+            ->method('query')
+            ->with($client, 'ROLLBACK')
+            ->will($this->returnValue(\React\Promise\resolve()));
+        
+        $prom = $transaction->rollback();
+        $this->assertInstanceOf(\React\Promise\PromiseInterface::class, $prom);
+        
+        $this->await($prom);
+        $this->assertFalse($transaction->isActive());
+    }
+    
+    function testCommit() {
+        $client = $this->createClient(array('connect.lazy' => true));
+        $driver = $this->getDriverMock();
+        
+        $transaction = new \Plasma\Transaction($client, $driver, \Plasma\TransactionInterface::ISOLATION_SERIALIZABLE);
+        
+        $driver->expects($this->once())
+            ->method('query')
+            ->with($client, 'COMMIT')
+            ->will($this->returnValue(\React\Promise\resolve()));
+        
+        $prom = $transaction->commit();
+        $this->assertInstanceOf(\React\Promise\PromiseInterface::class, $prom);
+        
+        $this->await($prom);
+    }
+    
+    function testRollback() {
+        $client = $this->createClient(array('connect.lazy' => true));
+        $driver = $this->getDriverMock();
+        
+        $transaction = new \Plasma\Transaction($client, $driver, \Plasma\TransactionInterface::ISOLATION_SERIALIZABLE);
+        
+        $driver->expects($this->once())
+            ->method('query')
+            ->with($client, 'ROLLBACK')
+            ->will($this->returnValue(\React\Promise\resolve()));
+        
+        $prom = $transaction->rollback();
+        $this->assertInstanceOf(\React\Promise\PromiseInterface::class, $prom);
+        
+        $this->await($prom);
+    }
+    
+    function testCreateSavepoint() {
+        $client = $this->createClient(array('connect.lazy' => true));
+        $driver = $this->getDriverMock();
+        
+        $transaction = new \Plasma\Transaction($client, $driver, \Plasma\TransactionInterface::ISOLATION_SERIALIZABLE);
+        
+        $driver->expects($this->once())
+            ->method('quote')
+            ->with('hello')
+            ->will($this->returnValue('"hello"'));
+        
+        $driver->expects($this->once())
+            ->method('query')
+            ->with($client, 'SAVEPOINT "hello"')
+            ->will($this->returnValue(\React\Promise\resolve()));
+        
+        $prom = $transaction->createSavepoint('hello');
+        $this->assertInstanceOf(\React\Promise\PromiseInterface::class, $prom);
+        
+        $this->await($prom);
+    }
+    
+    function testRollbackTo() {
+        $client = $this->createClient(array('connect.lazy' => true));
+        $driver = $this->getDriverMock();
+        
+        $transaction = new \Plasma\Transaction($client, $driver, \Plasma\TransactionInterface::ISOLATION_SERIALIZABLE);
+        
+        $driver->expects($this->once())
+            ->method('quote')
+            ->with('hello')
+            ->will($this->returnValue('"hello"'));
+        
+        $driver->expects($this->once())
+            ->method('query')
+            ->with($client, 'ROLLBACK TO "hello"')
+            ->will($this->returnValue(\React\Promise\resolve()));
+        
+        $prom = $transaction->rollbackTo('hello');
+        $this->assertInstanceOf(\React\Promise\PromiseInterface::class, $prom);
+        
+        $this->await($prom);
+    }
+    
+    function testReleaseSavepoint() {
+        $client = $this->createClient(array('connect.lazy' => true));
+        $driver = $this->getDriverMock();
+        
+        $transaction = new \Plasma\Transaction($client, $driver, \Plasma\TransactionInterface::ISOLATION_SERIALIZABLE);
+        
+        $driver->expects($this->once())
+            ->method('quote')
+            ->with('hello')
+            ->will($this->returnValue('"hello"'));
+        
+        $driver->expects($this->once())
+            ->method('query')
+            ->with($client, 'RELEASE SAVEPOINT "hello"')
+            ->will($this->returnValue(\React\Promise\resolve()));
+        
+        $prom = $transaction->releaseSavepoint('hello');
+        $this->assertInstanceOf(\React\Promise\PromiseInterface::class, $prom);
+        
+        $this->await($prom);
+    }
+}
