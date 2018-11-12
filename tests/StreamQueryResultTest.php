@@ -12,16 +12,7 @@ namespace Plasma\Tests;
 class StreamQueryResultTest extends ClientTestHelpers {
     function testGetAffectedRows() {
         $driver = $this->getDriverMock();
-        $command = $this->getMockBuilder(\Plasma\CommandInterface::class)
-            ->setMethods(array(
-                'listeners',
-                'on',
-                'once',
-                'emit',
-                'removeListener',
-                'removeAllListeners'
-            ))
-            ->getMock();
+        $command = $this->getCommandMock();
         
         $result = new \Plasma\StreamQueryResult($driver, $command, 0, 1, null, null);
         $this->assertSame(0, $result->getAffectedRows());
@@ -29,16 +20,7 @@ class StreamQueryResultTest extends ClientTestHelpers {
     
     function testGetWarningsCount() {
         $driver = $this->getDriverMock();
-        $command = $this->getMockBuilder(\Plasma\CommandInterface::class)
-            ->setMethods(array(
-                'listeners',
-                'on',
-                'once',
-                'emit',
-                'removeListener',
-                'removeAllListeners'
-            ))
-            ->getMock();
+        $command = $this->getCommandMock();
         
         $result = new \Plasma\StreamQueryResult($driver, $command, 0, 1, null, null);
         $this->assertSame(1, $result->getWarningsCount());
@@ -46,16 +28,7 @@ class StreamQueryResultTest extends ClientTestHelpers {
     
     function testGetFieldDefinitions() {
         $driver = $this->getDriverMock();
-        $command = $this->getMockBuilder(\Plasma\CommandInterface::class)
-            ->setMethods(array(
-                'listeners',
-                'on',
-                'once',
-                'emit',
-                'removeListener',
-                'removeAllListeners'
-            ))
-            ->getMock();
+        $command = $this->getCommandMock();
         
         $result = new \Plasma\StreamQueryResult($driver, $command, 0, 1, null, null);
         $this->assertNull($result->getFieldDefinitions());
@@ -65,21 +38,12 @@ class StreamQueryResultTest extends ClientTestHelpers {
         );
         
         $result2 = new \Plasma\StreamQueryResult($driver, $command, 0, 1, $fields, null);
-        $this->assertSame($fields, $result->getFieldDefinitions());
+        $this->assertSame($fields, $result2->getFieldDefinitions());
     }
     
     function testGetInsertID() {
         $driver = $this->getDriverMock();
-        $command = $this->getMockBuilder(\Plasma\CommandInterface::class)
-            ->setMethods(array(
-                'listeners',
-                'on',
-                'once',
-                'emit',
-                'removeListener',
-                'removeAllListeners'
-            ))
-            ->getMock();
+        $command = $this->getCommandMock();
         
         $result = new \Plasma\StreamQueryResult($driver, $command, 0, 1, null, null);
         $this->assertNull($result->getInsertID());
@@ -88,34 +52,9 @@ class StreamQueryResultTest extends ClientTestHelpers {
         $this->assertSame(42, $result2->getInsertID());
     }
     
-    function testStream() {
-        $driver = $this->getDriverMock();
-        $command = $this->getMockBuilder(\Plasma\CommandInterface::class)
-            ->setMethods(array(
-                'listeners',
-                'on',
-                'once',
-                'emit',
-                'removeListener',
-                'removeAllListeners'
-            ))
-            ->getMock();
-        
-        $result = new \Plasma\StreamQueryResult($driver, $command, 0, 1, null, null);
-        
-        $deferred = new \React\Promise\Deferred();
-        
-        $result->once('data', function ($val) use (&$deferred) {
-            $deferred->resolve($val);
-        });
-        
-        
-    }
-    
     function testIsReadable() {
         $driver = $this->getDriverMock();
-        $command = $this->getMockBuilder(\Plasma\CommandInterface::class)
-            ->getMock();
+        $command = $this->getCommandMock();
         
         $result = new \Plasma\StreamQueryResult($driver, $command, 0, 1, null, null);
         $this->assertTrue($result->isReadable());
@@ -126,16 +65,7 @@ class StreamQueryResultTest extends ClientTestHelpers {
 
     function testPause() {
         $driver = $this->getDriverMock();
-        $command = $this->getMockBuilder(\Plasma\CommandInterface::class)
-            ->setMethods(array(
-                'listeners',
-                'on',
-                'once',
-                'emit',
-                'removeListener',
-                'removeAllListeners'
-            ))
-            ->getMock();
+        $command = $this->getCommandMock();
         
         $events = array();
     
@@ -160,7 +90,7 @@ class StreamQueryResultTest extends ClientTestHelpers {
             $deferred->resolve($val);
         });
         
-        $driver->emit('data', array(50));
+        $command->emit('data', array(50));
         
         $value = $this->await($deferred->promise());
         $this->assertSame(50, $value);
@@ -172,31 +102,7 @@ class StreamQueryResultTest extends ClientTestHelpers {
         
         $this->assertNull($result->pause());
         
-        $deferred2 = new \React\Promise\Deferred();
-        
-        $result->once('data', function ($val) use (&$deferred2) {
-            $deferred2->resolve($val);
-        });
-        
-        $driver->emit('data', array(50));
-        
-        try {
-            $this->await($deferred2->promise(), 0.1);
-            throw new \Exception('Unexpected data emit');
-        } catch (\Throwable $e) {
-            $this->assertInstanceOf(\React\Promise\Timer\TimeoutException::class, $e);
-        }
-        
-        $command2 = $this->getMockBuilder(\Plasma\CommandInterface::class)
-            ->setMethods(array(
-                'listeners',
-                'on',
-                'once',
-                'emit',
-                'removeListener',
-                'removeAllListeners'
-            ))
-            ->getMock();
+        $command2 = $this->getCommandMock();
         
         $events2 = array();
         $driver2 = $this->getDriverMock();
@@ -218,19 +124,19 @@ class StreamQueryResultTest extends ClientTestHelpers {
                 $events2[$event](...$args);
             }));
         
-        $result = new \Plasma\StreamQueryResult($driver2, $command2, 0, 1, null, null);
+        $result2 = new \Plasma\StreamQueryResult($driver2, $command2, 0, 1, null, null);
         $deferred3 = new \React\Promise\Deferred();
         
         $result2->once('data', function ($val) use (&$deferred3) {
             $deferred3->resolve($val);
         });
         
-        $driver2->emit('data', array(25));
+        $command2->emit('data', array(25));
         
         $value2 = $this->await($deferred3->promise());
         $this->assertSame(25, $value2);
         
-        $this->assertNull($driver2->pause());
+        $this->assertNull($result2->pause());
         
         $deferred4 = new \React\Promise\Deferred();
         
@@ -238,7 +144,7 @@ class StreamQueryResultTest extends ClientTestHelpers {
             $deferred4->resolve($val);
         });
         
-        $driver2->emit('data', array(252));
+        $command2->emit('data', array(252));
         
         $value3 = $this->await($deferred4->promise());
         $this->assertSame(252, $value3);
@@ -246,18 +152,7 @@ class StreamQueryResultTest extends ClientTestHelpers {
 
     function testResume() {
         $driver = $this->getDriverMock();
-        $command = $this->getMockBuilder(\Plasma\CommandInterface::class)
-            ->setMethods(array(
-                'listeners',
-                'on',
-                'once',
-                'emit',
-                'removeListener',
-                'removeAllListeners'
-            ))
-            ->getMock();
-        
-        $result = new \Plasma\StreamQueryResult($driver, $command, 0, 1, null, null);
+        $command = $this->getCommandMock();
         $events = array();
     
         $command
@@ -271,6 +166,9 @@ class StreamQueryResultTest extends ClientTestHelpers {
             ->will($this->returnCallback(function ($event, $args) use (&$events) {
                 $events[$event](...$args);
             }));
+        
+        $result = new \Plasma\StreamQueryResult($driver, $command, 0, 1, null, null);
+        $command->emit('data', array('hello world'));
         
         $driver
             ->expects($this->once())
@@ -287,24 +185,13 @@ class StreamQueryResultTest extends ClientTestHelpers {
         $this->assertNull($result->resume());
     }
 
-    function testPipe(WritableStreamInterface $dest, array $options = array()) {
-        /*
-         -- Not implemented yet --
-        */
+    function testPipe() { // TODO
+        $this->markTestSkipped('Not implemented yet');
     }
     
     function testClose() {
         $driver = $this->getDriverMock();
-        $command = $this->getMockBuilder(\Plasma\CommandInterface::class)
-            ->setMethods(array(
-                'listeners',
-                'on',
-                'once',
-                'emit',
-                'removeListener',
-                'removeAllListeners'
-            ))
-            ->getMock();
+        $command = $this->getCommandMock();
         
         $result = new \Plasma\StreamQueryResult($driver, $command, 0, 1, null, null);
         
@@ -319,5 +206,24 @@ class StreamQueryResultTest extends ClientTestHelpers {
         
         $this->assertFalse($result->isReadable());
         $this->assertNull($this->await($deferred->promise()));
+    }
+    
+    function getCommandMock(): \Plasma\CommandInterface {
+        return $this->getMockBuilder(\Plasma\CommandInterface::class)
+            ->setMethods(array(
+                'listeners',
+                'on',
+                'once',
+                'emit',
+                'removeListener',
+                'removeAllListeners',
+                'getEncodedMessage',
+                'onComplete',
+                'onError',
+                'onNext',
+                'hasFinished',
+                'waitForCompletion'
+            ))
+            ->getMock();
     }
 }

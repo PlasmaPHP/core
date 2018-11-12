@@ -77,7 +77,7 @@ class ColumnDefinitionTest extends TestCase {
             }
         });
         
-        \Plasma\Types\TypeExtensionsManager::getManager()->registerType('BIGINT', $type);
+        \Plasma\Types\TypeExtensionsManager::getManager()->registerSQLType('BIGINT', $type);
         
         $coldef = new \Plasma\ColumnDefinition('test', 'test2', 'coltest', 'BIGINT', 'utf8mb4', 20, false, 0, null);
         $this->assertSame(500, $coldef->parseValue('500'));

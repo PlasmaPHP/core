@@ -13,6 +13,8 @@ namespace Plasma;
  * A query result stream. Used to get rows row by row, as sent by the DBMS.
  */
 class StreamQueryResult implements StreamQueryResultInterface {
+    use \Evenement\EventEmitterTrait;
+    
     /**
      * @var \Plasma\DriverInterface
      */
