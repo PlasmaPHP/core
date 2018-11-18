@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="robots" content="index, follow, all" />
+    <title>All Classes | core</title>
+
+            <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="css/bootstrap-theme.min.css">
+        <link rel="stylesheet" type="text/css" href="css/sami.css">
+        <link rel="stylesheet" type="text/css" href="css/prism.css">
+        <script src="js/jquery-1.11.1.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/typeahead.min.js"></script>
+        <script src="sami.js"></script>
+        <script src="js/prism.js"></script>
+        <meta name="MobileOptimized" content="width">
+        <meta name="HandheldFriendly" content="true">
+        <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+    
+    
+    </head>
+
+    <body id="classes" data-name="" data-root-path="">
+            <div id="content">
+        <div id="left-column">
+                <div id="control-panel">
+                <script>
+            $('option[data-version="'+window.projectVersion+'"]').prop('selected', true);
+        </script>
+        <form id="search-form" action="search.html" method="GET">
+            <span class="glyphicon glyphicon-search"></span>
+            <input name="search"
+                   class="typeahead form-control"
+                   type="search"
+                   placeholder="Search">
+        </form>
+    </div>
+
+                <div id="api-tree"></div>
+
+        </div>
+        <div id="right-column">
+                <nav id="site-nav" class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-elements">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">core</a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-elements">
+                <ul class="nav navbar-nav">
+                    <li><a href="classes.html">Classes</a></li>
+                                                                <li><a href="namespaces.html">Namespaces</a></li>
+                                        <li><a href="interfaces.html">Interfaces</a></li>
+                    <li><a href="traits.html">Traits</a></li>
+                    <li><a href="doc-index.html">Index</a></li>
+                    <li><a href="search.html">Search</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+                        <div id="page-content">
+                    <div class="page-header">
+        <h1>Classes</h1>
+    </div>
+
+    
+    <div class="container-fluid underlined">
+                    <div class="row">
+                <div class="col-md-6">
+                                            <a href="Plasma/Client.html"><abbr title="Plasma\Client">Client</abbr></a>
+                                            
+                </div>
+                <div class="col-md-6">
+                    The plasma client, responsible for pooling and connections.
+                </div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                                            <em><a href="Plasma/ClientInterface.html"><abbr title="Plasma\ClientInterface">ClientInterface</abbr></a></em>
+                                            
+                </div>
+                <div class="col-md-6">
+                    The client interface for plasma clients, responsible for creating drivers and pooling.
+                </div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                                            <a href="Plasma/ColumnDefinition.html"><abbr title="Plasma\ColumnDefinition">ColumnDefinition</abbr></a>
+                                            
+                </div>
+                <div class="col-md-6">
+                    Column Definitions define columns (who would've thought of that?). Such as their name, type, length, etc.
+                </div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                                            <em><a href="Plasma/ColumnDefinitionInterface.html"><abbr title="Plasma\ColumnDefinitionInterface">ColumnDefinitionInterface</abbr></a></em>
+                                            
+                </div>
+                <div class="col-md-6">
+                    This interface defines a common column definition abstraction.
+                </div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                                            <em><a href="Plasma/CommandInterface.html"><abbr title="Plasma\CommandInterface">CommandInterface</abbr></a></em>
+                                            
+                </div>
+                <div class="col-md-6">
+                    The basic interface for commands. Some drivers may extend this interface to provide additional functionalities.
+                </div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                                            <em><a href="Plasma/DriverFactoryInterface.html"><abbr title="Plasma\DriverFactoryInterface">DriverFactoryInterface</abbr></a></em>
+                                            
+                </div>
+                <div class="col-md-6">
+                    A driver factory is used to create new driver instances. The factory is responsible to create the drivers with the necessary arguments.
+                </div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                                            <em><a href="Plasma/DriverInterface.html"><abbr title="Plasma\DriverInterface">DriverInterface</abbr></a></em>
+                                            
+                </div>
+                <div class="col-md-6">
+                    The minimum public API a driver has to maintain. The driver MUST emit a <code>close</code> event when it gets disconnected from the server.
+                </div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                                            <a href="Plasma/Exception.html"><abbr title="Plasma\Exception">Exception</abbr></a>
+                                            
+                </div>
+                <div class="col-md-6">
+                    The base exception for Plasma.
+                </div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                                            <a href="Plasma/QueryResult.html"><abbr title="Plasma\QueryResult">QueryResult</abbr></a>
+                                            
+                </div>
+                <div class="col-md-6">
+                    A class representing a regular query result (no SELECT), with no event emitter.
+                </div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                                            <em><a href="Plasma/QueryResultInterface.html"><abbr title="Plasma\QueryResultInterface">QueryResultInterface</abbr></a></em>
+                                            
+                </div>
+                <div class="col-md-6">
+                    This is just a basic interface. There is an additional interface which defines that the query result is stream-based.
+                </div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                                            <em><a href="Plasma/QueryableInterface.html"><abbr title="Plasma\QueryableInterface">QueryableInterface</abbr></a></em>
+                                            
+                </div>
+                <div class="col-md-6">
+                    Any queryable class (can execute queries) implements this indirectly or directly.
+                </div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                                            <em><a href="Plasma/StatementInterface.html"><abbr title="Plasma\StatementInterface">StatementInterface</abbr></a></em>
+                                            
+                </div>
+                <div class="col-md-6">
+                    Represents any prepared statement.
+                </div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                                            <a href="Plasma/StreamQueryResult.html"><abbr title="Plasma\StreamQueryResult">StreamQueryResult</abbr></a>
+                                            
+                </div>
+                <div class="col-md-6">
+                    A query result stream. Used to get rows row by row, as sent by the DBMS.
+                </div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                                            <em><a href="Plasma/StreamQueryResultInterface.html"><abbr title="Plasma\StreamQueryResultInterface">StreamQueryResultInterface</abbr></a></em>
+                                            
+                </div>
+                <div class="col-md-6">
+                    This is the more advanced query result interface, which is a readable stream.
+                </div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                                            <a href="Plasma/Transaction.html"><abbr title="Plasma\Transaction">Transaction</abbr></a>
+                                            
+                </div>
+                <div class="col-md-6">
+                    Represents a transaction.
+                </div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                                            <a href="Plasma/TransactionException.html"><abbr title="Plasma\TransactionException">TransactionException</abbr></a>
+                                            
+                </div>
+                <div class="col-md-6">
+                    The exception for transaction exceptions, such as trying to use a finished transaction.
+                </div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                                            <em><a href="Plasma/TransactionInterface.html"><abbr title="Plasma\TransactionInterface">TransactionInterface</abbr></a></em>
+                                            
+                </div>
+                <div class="col-md-6">
+                    Transactions turn off auto-commit mode and let you rollback any changes you have done during it.
+                </div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                                            <a href="Plasma/Types/AbstractTypeExtension.html"><abbr title="Plasma\Types\AbstractTypeExtension">AbstractTypeExtension</abbr></a>
+                                            
+                </div>
+                <div class="col-md-6">
+                    An abstract type extension.
+                </div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                                            <em><a href="Plasma/Types/TypeExtensionInterface.html"><abbr title="Plasma\Types\TypeExtensionInterface">TypeExtensionInterface</abbr></a></em>
+                                            
+                </div>
+                <div class="col-md-6">
+                    A Type Extension is used to map SQL values to and from PHP values.
+                </div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                                            <a href="Plasma/Types/TypeExtensionResult.html"><abbr title="Plasma\Types\TypeExtensionResult">TypeExtensionResult</abbr></a>
+                                            
+                </div>
+                <div class="col-md-6">
+                    Represents a successful encoding conversion.
+                </div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                                            <em><a href="Plasma/Types/TypeExtensionResultInterface.html"><abbr title="Plasma\Types\TypeExtensionResultInterface">TypeExtensionResultInterface</abbr></a></em>
+                                            
+                </div>
+                <div class="col-md-6">
+                    Represents a successful encoding conversion as general interface.
+                </div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                                            <a href="Plasma/Types/TypeExtensionsManager.html"><abbr title="Plasma\Types\TypeExtensionsManager">TypeExtensionsManager</abbr></a>
+                                            
+                </div>
+                <div class="col-md-6">
+                    The Type Extension Manager manages type extensions globally.
+                </div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                                            <a href="Plasma/Utility.html"><abbr title="Plasma\Utility">Utility</abbr></a>
+                                            
+                </div>
+                <div class="col-md-6">
+                    Common utilities for components.
+                </div>
+            </div>
+            </div>
+            </div>
+                <div id="footer">
+        Generated by <a href="http://sami.sensiolabs.org/">Sami, the API Documentation Generator</a>.
+    </div>
+
+        </div>
+    </div>
+    </body>
+
+</html>
