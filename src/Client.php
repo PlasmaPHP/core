@@ -75,7 +75,10 @@ class Client implements ClientInterface {
         $this->busyConnections = new \CharlotteDunois\Collect\Set();
         
         if(!$this->options['connect.lazy']) {
-            $this->busyConnections->add($this->createNewConnection());
+            $connection = $this->createNewConnection();
+            if($connection->getConnectionState() !== \Plasma\DriverInterface::CONNECTION_OK) {
+                $this->busyConnections->add($connection);
+            }
         }
     }
     
