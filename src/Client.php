@@ -75,7 +75,7 @@ class Client implements ClientInterface {
         $this->busyConnections = new \CharlotteDunois\Collect\Set();
         
         if(!$this->options['connect.lazy']) {
-            $this->connections->add($this->createNewConnection());
+            $this->busyConnections->add($this->createNewConnection());
         }
     }
     
@@ -360,7 +360,13 @@ class Client implements ClientInterface {
             $this->emit('error', array($error, $connection));
         });
         
-        $connection->connect($this->uri)->then(null, function (\Throwable $error) use (&$connection) {
+        $connection->connect($this->uri)->then(function () use (&$connection) {
+            $this->connections->add($connection);
+            $this->busyConnections->delete($connection);
+        }, function (\Throwable $error) use (&$connection) {
+            $this->connections->delete($connection);
+            $this->busyConnections->delete($connection);
+            
             $this->emit('error', array($error, $connection));
         });
         
