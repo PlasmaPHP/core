@@ -192,7 +192,7 @@
                     string
                 </div>
                 <div class="col-md-8 type">
-                    <a href="#method_quote">quote</a>(string $str)
+                    <a href="#method_quote">quote</a>(string $str, int $type = \Plasma\DriverInterface::QUOTE_TYPE_VALUE)
         
                                             <p>Quotes the string for use in the query.</p>                </div>
                 <div class="col-md-2"></div>
@@ -310,7 +310,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_commit">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/Transaction.php#L155">line 155</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/Transaction.php#L156">line 156</a></div>
         <code>                    <abbr title="React\Promise\PromiseInterface">PromiseInterface</abbr>
     <strong>commit</strong>()
         </code>
@@ -351,7 +351,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_createSavepoint">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/Transaction.php#L182">line 182</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/Transaction.php#L183">line 183</a></div>
         <code>                    <abbr title="React\Promise\PromiseInterface">PromiseInterface</abbr>
     <strong>createSavepoint</strong>(string $identifier)
         </code>
@@ -662,9 +662,9 @@ If you need to execute a query multiple times, prepare the query manually for pe
             </div>
                     <div class="method-item">
                     <h3 id="method_quote">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/Transaction.php#L142">line 142</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/Transaction.php#L143">line 143</a></div>
         <code>                    string
-    <strong>quote</strong>(string $str)
+    <strong>quote</strong>(string $str, int $type = \Plasma\DriverInterface::QUOTE_TYPE_VALUE)
         </code>
     </h3>
     <div class="details">
@@ -681,6 +681,11 @@ If you need to execute a query multiple times, prepare the query manually for pe
                 <td>string</td>
                 <td>$str</td>
                 <td></td>
+            </tr>
+                    <tr>
+                <td>int</td>
+                <td>$type</td>
+                <td>For types, see the driver interface constants.</td>
             </tr>
             </table>
 
@@ -717,7 +722,7 @@ If you need to execute a query multiple times, prepare the query manually for pe
             </div>
                     <div class="method-item">
                     <h3 id="method_releaseSavepoint">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/Transaction.php#L202">line 202</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/Transaction.php#L203">line 203</a></div>
         <code>                    <abbr title="React\Promise\PromiseInterface">PromiseInterface</abbr>
     <strong>releaseSavepoint</strong>(string $identifier)
         </code>
@@ -768,7 +773,7 @@ If you need to execute a query multiple times, prepare the query manually for pe
             </div>
                     <div class="method-item">
                     <h3 id="method_rollback">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/Transaction.php#L168">line 168</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/Transaction.php#L169">line 169</a></div>
         <code>                    <abbr title="React\Promise\PromiseInterface">PromiseInterface</abbr>
     <strong>rollback</strong>()
         </code>
@@ -809,7 +814,7 @@ If you need to execute a query multiple times, prepare the query manually for pe
             </div>
                     <div class="method-item">
                     <h3 id="method_rollbackTo">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/Transaction.php#L192">line 192</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/Transaction.php#L193">line 193</a></div>
         <code>                    <abbr title="React\Promise\PromiseInterface">PromiseInterface</abbr>
     <strong>rollbackTo</strong>(string $identifier)
         </code>

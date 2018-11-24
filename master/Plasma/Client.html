@@ -216,7 +216,7 @@
                     string
                 </div>
                 <div class="col-md-8 type">
-                    <a href="#method_quote">quote</a>(string $str)
+                    <a href="#method_quote">quote</a>(string $str, int $type = \Plasma\DriverInterface::QUOTE_TYPE_VALUE)
         
                                             <p>Quotes the string for use in the query.</p>                </div>
                 <div class="col-md-2"></div>
@@ -407,7 +407,7 @@ The implicit COMMIT will prevent you from rolling back any other changes within 
             </div>
                     <div class="method-item">
                     <h3 id="method_close">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/Client.php#L232">line 232</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/Client.php#L233">line 233</a></div>
         <code>                    <abbr title="React\Promise\PromiseInterface">PromiseInterface</abbr>
     <strong>close</strong>()
         </code>
@@ -717,7 +717,7 @@ If you need to execute a query multiple times, prepare the query manually for pe
             </div>
                     <div class="method-item">
                     <h3 id="method_quit">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/Client.php#L262">line 262</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/Client.php#L263">line 263</a></div>
         <code>                    void
     <strong>quit</strong>()
         </code>
@@ -749,9 +749,9 @@ If you need to execute a query multiple times, prepare the query manually for pe
             </div>
                     <div class="method-item">
                     <h3 id="method_quote">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/Client.php#L216">line 216</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/Client.php#L217">line 217</a></div>
         <code>                    string
-    <strong>quote</strong>(string $str)
+    <strong>quote</strong>(string $str, int $type = \Plasma\DriverInterface::QUOTE_TYPE_VALUE)
         </code>
     </h3>
     <div class="details">
@@ -768,6 +768,11 @@ If you need to execute a query multiple times, prepare the query manually for pe
                 <td>string</td>
                 <td>$str</td>
                 <td></td>
+            </tr>
+                    <tr>
+                <td>int</td>
+                <td>$type</td>
+                <td>For types, see the driver interface constants.</td>
             </tr>
             </table>
 
@@ -804,7 +809,7 @@ If you need to execute a query multiple times, prepare the query manually for pe
             </div>
                     <div class="method-item">
                     <h3 id="method_runCommand">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/Client.php#L288">line 288</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/Client.php#L289">line 289</a></div>
         <code>                    mixed
     <strong>runCommand</strong>(<a href="../Plasma/CommandInterface.html"><abbr title="Plasma\CommandInterface">CommandInterface</abbr></a> $command)
         </code>

@@ -225,7 +225,7 @@ In this level, transactions are not isolated from each other.</p>
                     string
                 </div>
                 <div class="col-md-8 type">
-                    <a href="#method_quote">quote</a>(string $str)
+                    <a href="#method_quote">quote</a>(string $str, int $type = \Plasma\DriverInterface::QUOTE_TYPE_VALUE)
         
                                             <p>Quotes the string for use in the query.</p>                </div>
                 <div class="col-md-2"><small>from&nbsp;<a href="../Plasma/QueryableInterface.html#method_quote"><abbr title="Plasma\QueryableInterface">QueryableInterface</abbr></a></small></div>
@@ -639,9 +639,9 @@ If you need to execute a query multiple times, prepare the query manually for pe
             </div>
                     <div class="method-item">
                     <h3 id="method_quote">
-        <div class="location">in <a href="../Plasma/QueryableInterface.html#method_quote"><abbr title="Plasma\QueryableInterface">QueryableInterface</abbr></a> at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/QueryableInterface.php#L53">line 53</a></div>
+        <div class="location">in <a href="../Plasma/QueryableInterface.html#method_quote"><abbr title="Plasma\QueryableInterface">QueryableInterface</abbr></a> at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/QueryableInterface.php#L54">line 54</a></div>
         <code>                    string
-    <strong>quote</strong>(string $str)
+    <strong>quote</strong>(string $str, int $type = \Plasma\DriverInterface::QUOTE_TYPE_VALUE)
         </code>
     </h3>
     <div class="details">
@@ -658,6 +658,11 @@ If you need to execute a query multiple times, prepare the query manually for pe
                 <td>string</td>
                 <td>$str</td>
                 <td></td>
+            </tr>
+                    <tr>
+                <td>int</td>
+                <td>$type</td>
+                <td>For types, see the driver interface constants.</td>
             </tr>
             </table>
 
