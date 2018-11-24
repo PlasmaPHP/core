@@ -6,6 +6,8 @@ The core component alone does __nothing__, you need a Plasma driver, which does 
 
 Plasma does not aim to be a full Database Abstraction Layer. Simulating missing features is not a goal and should never be.
 
+For a list of drivers, see the [main repository](https://github.com/PlasmaPHP/plasma).
+
 # Getting Started
 As soon as you have selected a driver, you can install it using `composer`. For the core, the command is
 
@@ -39,11 +41,6 @@ $client->execute('SELECT * FROM `users`', [])
 
 $loop->run();
 ```
-
-# Drivers
-This is a list of drivers for Plasma - community-created or not.
-
-- [plasma/driver-mysql](https://github.com/PlasmaPHP/driver-mysql) - A driver for MySQL/MariaDB
 
 # Documentation
 https://plasmaphp.github.io/core/
