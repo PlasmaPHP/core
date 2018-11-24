@@ -209,17 +209,18 @@ class Client implements ClientInterface {
     /**
      * Quotes the string for use in the query.
      * @param string  $str
+     * @param int     $type  For types, see the driver interface constants.
      * @return string
      * @throws \LogicException    Thrown if the driver does not support quoting.
      * @throws \Plasma\Exception  Thrown if the client is closing all connections.
      */
-    function quote(string $str): string {
+    function quote(string $str, int $type = \Plasma\DriverInterface::QUOTE_TYPE_VALUE): string {
         if($this->goingAway) {
             throw new \Plasma\Exception('Client is closing all connections');
         }
         
         $connection = $this->getOptimalConnection();
-        $quoted = $connection->quote($str);
+        $quoted = $connection->quote($str, $type);
         
         $this->checkinConnection($connection);
         return $quoted;

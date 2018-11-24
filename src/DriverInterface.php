@@ -91,6 +91,20 @@ interface DriverInterface extends \Evenement\EventEmitterInterface {
     const CONNECTION_OK = 8;
     
     /**
+     * Quoting should be applied on an identifier (such as table name, column name, etc.)
+     * @var int
+     * @source
+     */
+    const QUOTE_TYPE_IDENTIFIER = 0;
+    
+    /**
+     * Quoting should be applied on a value.
+     * @var int
+     * @source
+     */
+    const QUOTE_TYPE_VALUE = 1;
+    
+    /**
      * Retrieves the current connection state.
      * @return int
      */
@@ -185,11 +199,12 @@ interface DriverInterface extends \Evenement\EventEmitterInterface {
     /**
      * Quotes the string for use in the query.
      * @param string  $str
+     * @param int     $type  For types, see the constants.
      * @return string
      * @throws \LogicException  Thrown if the driver does not support quoting.
      * @throws \Plasma\Exception
      */
-    function quote(string $str): string;
+    function quote(string $str, int $type = \Plasma\DriverInterface::QUOTE_TYPE_VALUE): string;
     
     /**
      * Begins a transaction. Resolves with a `TransactionInterface` instance.

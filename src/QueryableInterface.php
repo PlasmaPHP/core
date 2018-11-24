@@ -46,9 +46,10 @@ interface QueryableInterface {
     /**
      * Quotes the string for use in the query.
      * @param string  $str
+     * @param int     $type  For types, see the driver interface constants.
      * @return string
      * @throws \LogicException  Thrown if the driver does not support quoting.
      * @throws \Plasma\Exception
      */
-    function quote(string $str): string;
+    function quote(string $str, int $type = \Plasma\DriverInterface::QUOTE_TYPE_VALUE): string;
 }
