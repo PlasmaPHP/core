@@ -116,9 +116,19 @@
                     
                 </div>
                 <div class="col-md-8 type">
-                    <a href="#method___construct">__construct</a>(<a href="../Plasma/DriverInterface.html"><abbr title="Plasma\DriverInterface">DriverInterface</abbr></a> $driver, <a href="../Plasma/CommandInterface.html"><abbr title="Plasma\CommandInterface">CommandInterface</abbr></a> $command, int $affectedRows = 0, int $warningsCount = 0, array|null $fields = null, int|null $insertID = null)
+                    <a href="#method___construct">__construct</a>(<a href="../Plasma/DriverInterface.html"><abbr title="Plasma\DriverInterface">DriverInterface</abbr></a> $driver, <a href="../Plasma/CommandInterface.html"><abbr title="Plasma\CommandInterface">CommandInterface</abbr></a> $command, int $affectedRows = 0, int $warningsCount = 0, int|null $insertID = null, array|null $columns = null)
         
                                             <p>Constructor.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <abbr title="React\Promise\PromiseInterface">PromiseInterface</abbr>
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_all">all</a>()
+        
+                                            <p>Buffers all rows and returns a promise which resolves with an instance of <code>QueryResultInterface</code>.</p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -159,6 +169,16 @@
                     <a href="#method_getInsertID">getInsertID</a>()
         
                                             <p>Get the used insert ID for the row, if any. <code>INSERT</code> statements only.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array|null
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_getRows">getRows</a>()
+        
+                                            <p>Get the rows, if any. Returns always <code>null</code>.</p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -219,9 +239,9 @@
             <div id="method-details">
                     <div class="method-item">
                     <h3 id="method___construct">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/StreamQueryResult.php#L72">line 72</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/StreamQueryResult.php#L77">line 77</a></div>
         <code>                    
-    <strong>__construct</strong>(<a href="../Plasma/DriverInterface.html"><abbr title="Plasma\DriverInterface">DriverInterface</abbr></a> $driver, <a href="../Plasma/CommandInterface.html"><abbr title="Plasma\CommandInterface">CommandInterface</abbr></a> $command, int $affectedRows = 0, int $warningsCount = 0, array|null $fields = null, int|null $insertID = null)
+    <strong>__construct</strong>(<a href="../Plasma/DriverInterface.html"><abbr title="Plasma\DriverInterface">DriverInterface</abbr></a> $driver, <a href="../Plasma/CommandInterface.html"><abbr title="Plasma\CommandInterface">CommandInterface</abbr></a> $command, int $affectedRows = 0, int $warningsCount = 0, int|null $insertID = null, array|null $columns = null)
         </code>
     </h3>
     <div class="details">
@@ -255,13 +275,13 @@
                 <td></td>
             </tr>
                     <tr>
-                <td>array|null</td>
-                <td>$fields</td>
+                <td>int|null</td>
+                <td>$insertID</td>
                 <td></td>
             </tr>
                     <tr>
-                <td>int|null</td>
-                <td>$insertID</td>
+                <td>array|null</td>
+                <td>$columns</td>
                 <td></td>
             </tr>
             </table>
@@ -276,8 +296,40 @@
 
             </div>
                     <div class="method-item">
+                    <h3 id="method_all">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/StreamQueryResult.php#L151">line 151</a></div>
+        <code>                    <abbr title="React\Promise\PromiseInterface">PromiseInterface</abbr>
+    <strong>all</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Buffers all rows and returns a promise which resolves with an instance of <code>QueryResultInterface</code>.</p>                                                </div>
+                <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><abbr title="React\Promise\PromiseInterface">PromiseInterface</abbr></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
                     <h3 id="method_close">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/StreamQueryResult.php#L172">line 172</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/StreamQueryResult.php#L195">line 195</a></div>
         <code>                    void
     <strong>close</strong>()
         </code>
@@ -309,7 +361,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getAffectedRows">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/StreamQueryResult.php#L106">line 106</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/StreamQueryResult.php#L111">line 111</a></div>
         <code>                    int
     <strong>getAffectedRows</strong>()
         </code>
@@ -341,7 +393,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getFieldDefinitions">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/StreamQueryResult.php#L122">line 122</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/StreamQueryResult.php#L135">line 135</a></div>
         <code>                    array|null
     <strong>getFieldDefinitions</strong>()
         </code>
@@ -373,7 +425,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getInsertID">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/StreamQueryResult.php#L130">line 130</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/StreamQueryResult.php#L127">line 127</a></div>
         <code>                    int|null
     <strong>getInsertID</strong>()
         </code>
@@ -404,8 +456,40 @@
 
             </div>
                     <div class="method-item">
+                    <h3 id="method_getRows">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/StreamQueryResult.php#L143">line 143</a></div>
+        <code>                    array|null
+    <strong>getRows</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Get the rows, if any. Returns always <code>null</code>.</p>                                                </div>
+                <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array|null</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
                     <h3 id="method_getWarningsCount">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/StreamQueryResult.php#L114">line 114</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/StreamQueryResult.php#L119">line 119</a></div>
         <code>                    int
     <strong>getWarningsCount</strong>()
         </code>
@@ -437,7 +521,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_isReadable">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/StreamQueryResult.php#L138">line 138</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/StreamQueryResult.php#L161">line 161</a></div>
         <code>                    bool
     <strong>isReadable</strong>()
         </code>
@@ -469,7 +553,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_pause">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/StreamQueryResult.php#L148">line 148</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/StreamQueryResult.php#L171">line 171</a></div>
         <code>                    void
     <strong>pause</strong>()
         </code>
@@ -502,7 +586,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_pipe">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/StreamQueryResult.php#L194">line 194</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/StreamQueryResult.php#L217">line 217</a></div>
         <code>                    <abbr title="React\Stream\WritableStreamInterface">WritableStreamInterface</abbr>
     <strong>pipe</strong>(<abbr title="React\Stream\WritableStreamInterface">WritableStreamInterface</abbr> $dest, array $options = array())
         </code>
@@ -550,7 +634,7 @@ Automatically throttles the source based on what the destination can handle.</p>
             </div>
                     <div class="method-item">
                     <h3 id="method_resume">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/StreamQueryResult.php#L160">line 160</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/StreamQueryResult.php#L183">line 183</a></div>
         <code>                    void
     <strong>resume</strong>()
         </code>
