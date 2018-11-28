@@ -21,7 +21,7 @@ class Utility {
      * @param string                $regex
      * @return array  `[ 'query' => string, 'parameters' => array ]`  The `parameters` array is an numeric array (= position, starting at 1), which map to the original parameter.
      */
-    static function parseParameters(string $query, $replaceParams = '?', string $regex = '/(:[a-z]+)|\?|\$\d+/i'): array {
+    static function parseParameters(string $query, $replaceParams = null, string $regex = '/(:[a-z]+)|\?|\$\d+/i'): array {
         $params = array();
         $position = 1;
         
@@ -36,5 +36,33 @@ class Utility {
         }, $query);
         
         return array('query' => $query, 'parameters' => $params);
+    }
+    
+    /**
+     * Replaces the user parameters keys with the correct parameters for the DBMS.
+     * @param array  $paramsInfo  The parameters array from `parseParameters`.
+     * @param array  $params      The parameters of the user.
+     * @return array
+     * @throws \Plasma\Exception
+     */
+    static function replaceParameters(array $paramsInfo, array $params): array {
+        if(\count($params) !== \count($paramsInfo)) {
+            throw new \Plasma\Exception('Insufficient amount of parameters passed, expected '.\count($paramsInfo).', got '.\count($params));
+        }
+        
+        $realParams = array();
+        $pos = (\array_key_exists(0, $params) ? 0 : 1);
+        
+        foreach($paramsInfo as $param) {
+            $key = ($param[0] === ':' ? $param : ($pos++));
+            
+            if(!\array_key_exists($key, $params)) {
+                throw new \Plasma\Exception('Missing parameter with key "'.$key.'"');
+            }
+            
+            $realParams[] = $params[$key];
+        }
+        
+        return $realParams;
     }
 }

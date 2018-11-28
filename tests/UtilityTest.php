@@ -11,7 +11,7 @@ namespace Plasma\Tests;
 
 class UtilityTest extends TestCase {
     function testParseParameters() {
-        [ 'query' => $query, 'parameters' => $params] = \Plasma\Utility::parseParameters(
+        [ 'query' => $query, 'parameters' => $params ] = \Plasma\Utility::parseParameters(
             'SELECT `a` FROM `HERE_WE_GO` WHERE a < ? AND b = :named OR  c = $1',
             null
         );
@@ -25,7 +25,7 @@ class UtilityTest extends TestCase {
     }
     
     function testParseParametersReplace() {
-        [ 'query' => $query, 'parameters' => $params] = \Plasma\Utility::parseParameters(
+        [ 'query' => $query, 'parameters' => $params ] = \Plasma\Utility::parseParameters(
             'SELECT `a` FROM `HERE_WE_GO` WHERE a < ? AND b = :named OR  c = $1',
             '?'
         );
@@ -39,7 +39,7 @@ class UtilityTest extends TestCase {
     }
     
     function testParseParametersCallback() {
-        [ 'query' => $query, 'parameters' => $params] = \Plasma\Utility::parseParameters(
+        [ 'query' => $query, 'parameters' => $params ] = \Plasma\Utility::parseParameters(
             'SELECT `a` FROM `HERE_WE_GO` WHERE a < :na AND b = $5 OR  c = ?',
             function () {
                 static $i;
@@ -58,5 +58,46 @@ class UtilityTest extends TestCase {
             2 => '$5',
             3 => '?'
         ), $params);
+    }
+    
+    function testReplaceParameters() {
+        [ 'parameters' => $params ] = \Plasma\Utility::parseParameters('SELECT `a` FROM `HERE_WE_GO` WHERE a < :na AND b = $5 OR  c = ?', '?');
+        
+        $myParams = array(
+            ':na' => 5,
+            1 => true,
+            2 => 'hello'
+        );
+        
+        $this->assertSame(array(
+            0 => 5,
+            1 => true,
+            2 => 'hello'
+        ), \Plasma\Utility::replaceParameters($params, $myParams));
+    }
+    
+    function testReplaceParametersInsufficientParams() {
+        [ 'parameters' => $params ] = \Plasma\Utility::parseParameters('SELECT `a` FROM `HERE_WE_GO` WHERE a < :na AND b = $5 OR  c = ?', '?');
+        
+        $myParams = array();
+        
+        $this->expectException(\Plasma\Exception::class);
+        \Plasma\Utility::replaceParameters($params, $myParams);
+    }
+    
+    function testReplaceParametersInsufficientParams2() {
+        [ 'parameters' => $params ] = \Plasma\Utility::parseParameters('SELECT `a` FROM `HERE_WE_GO` WHERE a < :na AND b = $5 OR  c = ?', '?');
+        
+        $myParams = array(
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+        );
+        
+        $this->expectException(\Plasma\Exception::class);
+        \Plasma\Utility::replaceParameters($params, $myParams);
     }
 }
