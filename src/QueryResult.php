@@ -29,15 +29,29 @@ class QueryResult implements QueryResultInterface {
     protected $insertID;
     
     /**
-     * Constructor.
-     * @param int       $affectedRows
-     * @param int       $warningsCount
-     * @param int|null  $insertID
+     * @var \Plasma\ColumnDefinitionInterface[]|null
      */
-    function __construct(int $affectedRows, int $warningsCount, ?int $insertID) {
+    protected $columns;
+    
+    /**
+     * @var array|null
+     */
+    protected $rows;
+    
+    /**
+     * Constructor.
+     * @param int                                       $affectedRows
+     * @param int                                       $warningsCount
+     * @param int|null                                  $insertID
+     * @param \Plasma\ColumnDefinitionInterface[]|null  $columns
+     * @param array|null                                $rows
+     */
+    function __construct(int $affectedRows, int $warningsCount, ?int $insertID, ?array $columns, ?array $rows) {
         $this->affectedRows = $affectedRows;
         $this->warningsCount = $warningsCount;
         $this->insertID = $insertID;
+        $this->columns = $columns;
+        $this->rows = $rows;
     }
     
     /**
@@ -57,18 +71,26 @@ class QueryResult implements QueryResultInterface {
     }
     
     /**
-     * Get the field definitions, if any. `SELECT` statements only.
-     * @return array|null
-     */
-    function getFieldDefinitions(): ?array {
-        return null;
-    }
-    
-    /**
      * Get the used insert ID for the row, if any. `INSERT` statements only.
      * @return int|null
      */
     function getInsertID(): ?int {
         return $this->insertID;
+    }
+    
+    /**
+     * Get the field definitions, if any. `SELECT` statements only.
+     * @return \Plasma\ColumnDefinitionInterface[]|null
+     */
+    function getFieldDefinitions(): ?array {
+        return $this->columns;
+    }
+    
+    /**
+     * Get the rows, if any. `SELECT` statements only.
+     * @return array|null
+     */
+    function getRows(): ?array {
+        return $this->rows;
     }
 }

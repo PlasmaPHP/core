@@ -15,6 +15,7 @@
         "charlottedunois/validator": "^0.3|^0.2.2",
         "evenement/evenement": "^3.0|^2.0",
         "react/promise": "^2.7",
+        "react/promise-stream": "^1.1",
         "react/stream": "^1.0"
     },
     "require-dev": {

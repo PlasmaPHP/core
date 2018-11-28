@@ -27,14 +27,20 @@ interface QueryResultInterface {
     function getWarningsCount(): int;
     
     /**
+     * Get the used insert ID for the row, if any. `INSERT` statements only.
+     * @return int|null
+     */
+    function getInsertID(): ?int;
+    
+    /**
      * Get the field definitions, if any. `SELECT` statements only.
      * @return \Plasma\ColumnDefinitionInterface[]|null
      */
     function getFieldDefinitions(): ?array;
     
     /**
-     * Get the used insert ID for the row, if any. `INSERT` statements only.
-     * @return int|null
+     * Get the rows, if any. `SELECT` statements only.
+     * @return array|null
      */
-    function getInsertID(): ?int;
+    function getRows(): ?array;
 }

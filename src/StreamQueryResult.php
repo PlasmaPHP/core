@@ -28,22 +28,27 @@ class StreamQueryResult implements StreamQueryResultInterface {
     /**
      * @var int
      */
-    protected $affectedRows = 0;
+    protected $affectedRows;
     
     /**
      * @var int
      */
-    protected $warningsCount = 0;
-    
-    /**
-     * @var \Plasma\ColumnDefinitionInterface[]|null
-     */
-    protected $fields;
+    protected $warningsCount;
     
     /**
      * @var int|null
      */
-    protected $insertID = 0;
+    protected $insertID;
+    
+    /**
+     * @var \Plasma\ColumnDefinitionInterface[]|null
+     */
+    protected $columns;
+    
+    /**
+     * @var array|null
+     */
+    protected $rows;
     
     /**
      * @var bool
@@ -66,18 +71,18 @@ class StreamQueryResult implements StreamQueryResultInterface {
      * @param \Plasma\CommandInterface                  $command
      * @param int                                       $affectedRows
      * @param int                                       $warningsCount
-     * @param \Plasma\ColumnDefinitionInterface[]|null  $fields
      * @param int|null                                  $insertID
+     * @param \Plasma\ColumnDefinitionInterface[]|null  $columns
      */
-    function __construct(\Plasma\DriverInterface $driver, \Plasma\CommandInterface $command, int $affectedRows = 0, int $warningsCount = 0, ?array $fields = null, ?int $insertID = null) {
+    function __construct(\Plasma\DriverInterface $driver, \Plasma\CommandInterface $command, int $affectedRows = 0, int $warningsCount = 0, ?int $insertID = null, ?array $columns = null) {
         $this->driver = $driver;
         $this->command = $command;
         
         $this->affectedRows = $affectedRows;
         $this->warningsCount = $warningsCount;
         
-        $this->fields = $fields;
         $this->insertID = $insertID;
+        $this->columns = $columns;
         
         $command->on('data', function ($row) {
             if(!$this->started && $this->paused) {
@@ -116,19 +121,37 @@ class StreamQueryResult implements StreamQueryResultInterface {
     }
     
     /**
-     * Get the field definitions, if any. `SELECT` statements only.
-     * @return \Plasma\ColumnDefinitionInterface[]|null
-     */
-    function getFieldDefinitions(): ?array {
-        return $this->fields;
-    }
-    
-    /**
      * Get the used insert ID for the row, if any. `INSERT` statements only.
      * @return int|null
      */
     function getInsertID(): ?int {
         return $this->insertID;
+    }
+    
+    /**
+     * Get the field definitions, if any. `SELECT` statements only.
+     * @return \Plasma\ColumnDefinitionInterface[]|null
+     */
+    function getFieldDefinitions(): ?array {
+        return $this->columns;
+    }
+    
+    /**
+     * Get the rows, if any. Returns always `null`.
+     * @return array|null
+     */
+    function getRows(): ?array {
+        return null;
+    }
+    
+    /**
+     * Buffers all rows and returns a promise which resolves with an instance of `QueryResultInterface`.
+     * @return \React\Promise\PromiseInterface
+     */
+    function all(): \React\Promise\PromiseInterface {
+        return \React\Promise\Stream\all($this)->then(function (array $rows) {
+            return (new \Plasma\QueryResult($this->affectedRows, $this->warningsCount, $this->insertID, $this->columns, $rows));
+        });
     }
     
     /**

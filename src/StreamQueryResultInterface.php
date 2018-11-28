@@ -15,5 +15,9 @@ namespace Plasma;
  * At the end of a query, a `end` event will be emitted to notify of the completion.
  */
 interface StreamQueryResultInterface extends \React\Stream\ReadableStreamInterface, QueryResultInterface {
-    
+    /**
+     * Buffers all rows and returns a promise which resolves with an instance of `QueryResultInterface`.
+     * @return \React\Promise\PromiseInterface
+     */
+    function all(): \React\Promise\PromiseInterface;
 }

@@ -26,6 +26,17 @@ class StreamQueryResultTest extends ClientTestHelpers {
         $this->assertSame(1, $result->getWarningsCount());
     }
     
+    function testGetInsertID() {
+        $driver = $this->getDriverMock();
+        $command = $this->getCommandMock();
+        
+        $result = new \Plasma\StreamQueryResult($driver, $command, 0, 1, null, null);
+        $this->assertNull($result->getInsertID());
+        
+        $result2 = new \Plasma\StreamQueryResult($driver, $command, 0, 1, 42, null);
+        $this->assertSame(42, $result2->getInsertID());
+    }
+    
     function testGetFieldDefinitions() {
         $driver = $this->getDriverMock();
         $command = $this->getCommandMock();
@@ -37,19 +48,16 @@ class StreamQueryResultTest extends ClientTestHelpers {
             (new \Plasma\ColumnDefinition('test', 'test2', 'coltest', 'BIGINT', 'utf8mb4', 20, false, 0, null))
         );
         
-        $result2 = new \Plasma\StreamQueryResult($driver, $command, 0, 1, $fields, null);
+        $result2 = new \Plasma\StreamQueryResult($driver, $command, 0, 1, null, $fields);
         $this->assertSame($fields, $result2->getFieldDefinitions());
     }
     
-    function testGetInsertID() {
+    function testGetRows() {
         $driver = $this->getDriverMock();
         $command = $this->getCommandMock();
         
         $result = new \Plasma\StreamQueryResult($driver, $command, 0, 1, null, null);
-        $this->assertNull($result->getInsertID());
-        
-        $result2 = new \Plasma\StreamQueryResult($driver, $command, 0, 1, null, 42);
-        $this->assertSame(42, $result2->getInsertID());
+        $this->assertNull($result->getRows());
     }
     
     function testIsReadable() {
@@ -252,6 +260,29 @@ class StreamQueryResultTest extends ClientTestHelpers {
         
         // Test double close
         $this->assertNull($result->close());
+    }
+    
+    function testAll() {
+        $driver = $this->getDriverMock();
+        $command = $this->getCommandMock();
+        
+        $result = new \Plasma\StreamQueryResult($driver, $command, 0, 1, null, null);
+        
+        $prom = $result->all();
+        $this->assertInstanceOf(\React\Promise\PromiseInterface::class, $prom);
+        
+        $result->emit('data', array(5));
+        $result->emit('data', array(255));
+        $result->emit('data', array(851));
+        
+        $result->emit('end');
+        $result->emit('close');
+        
+        $result = $this->await($prom);
+        $this->assertInstanceOf(\Plasma\QueryResultInterface::class, $result);
+        
+        $rows = $result->getRows();
+        $this->assertSame(array(5, 255, 851), $rows);
     }
     
     function getCommandMock(): \Plasma\CommandInterface {

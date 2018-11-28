@@ -209,7 +209,7 @@ class ClientTest extends ClientTestHelpers {
             ->expects($this->once())
             ->method('query')
             ->with($client, 'SELECT 1')
-            ->will($this->returnValue(\React\Promise\resolve((new \Plasma\QueryResult(0, 0, null)))));
+            ->will($this->returnValue(\React\Promise\resolve((new \Plasma\QueryResult(0, 0, null, null, null)))));
         
         $prom = $client->query('SELECT 1');
         $this->assertInstanceOf(\React\Promise\PromiseInterface::class, $prom);
@@ -298,7 +298,7 @@ class ClientTest extends ClientTestHelpers {
             ->expects($this->once())
             ->method('execute')
             ->with($client, 'SELECT 1')
-            ->will($this->returnValue(\React\Promise\resolve((new \Plasma\QueryResult(0, 0, null)))));
+            ->will($this->returnValue(\React\Promise\resolve((new \Plasma\QueryResult(0, 0, null, null, null)))));
         
         $prom = $client->execute('SELECT 1');
         $this->assertInstanceOf(\React\Promise\PromiseInterface::class, $prom);
