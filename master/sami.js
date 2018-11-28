@@ -196,6 +196,7 @@ window.projectVersion = 'master';
                     {"type": "Method", "fromName": "Plasma\\Types\\TypeExtensionsManager", "fromLink": "Plasma/Types/TypeExtensionsManager.html", "link": "Plasma/Types/TypeExtensionsManager.html#method_decodeType", "name": "Plasma\\Types\\TypeExtensionsManager::decodeType", "doc": "&quot;Tries to decode a value.&quot;"},
             {"type": "Class", "fromName": "Plasma", "fromLink": "Plasma.html", "link": "Plasma/Utility.html", "name": "Plasma\\Utility", "doc": "&quot;Common utilities for components.&quot;"},
                                                         {"type": "Method", "fromName": "Plasma\\Utility", "fromLink": "Plasma/Utility.html", "link": "Plasma/Utility.html#method_parseParameters", "name": "Plasma\\Utility::parseParameters", "doc": "&quot;Parses a query containing parameters into an array, and can replace them with a predefined replacement (can be a callable).&quot;"},
+                    {"type": "Method", "fromName": "Plasma\\Utility", "fromLink": "Plasma/Utility.html", "link": "Plasma/Utility.html#method_replaceParameters", "name": "Plasma\\Utility::replaceParameters", "doc": "&quot;Replaces the user parameters keys with the correct parameters for the DBMS.&quot;"},
             
                                         // Fix trailing commas in the index
         {}
