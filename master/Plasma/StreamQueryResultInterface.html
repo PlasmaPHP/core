@@ -166,7 +166,7 @@ At the end of a query, a <code>end</code> event will be emitted to notify of the
             <div id="method-details">
                     <div class="method-item">
                     <h3 id="method_all">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/StreamQueryResultInterface.php#L22">line 22</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/StreamQueryResultInterface.php#L25">line 25</a></div>
         <code>                    <abbr title="React\Promise\PromiseInterface">PromiseInterface</abbr>
     <strong>all</strong>()
         </code>
@@ -176,7 +176,9 @@ At the end of a query, a <code>end</code> event will be emitted to notify of the
     
 
                     <div class="method-description">
-                                    <p>Buffers all rows and returns a promise which resolves with an instance of <code>QueryResultInterface</code>.</p>                                                </div>
+                                    <p>Buffers all rows and returns a promise which resolves with an instance of <code>QueryResultInterface</code>.</p>                    <p>This method does not guarantee that all rows get returned, as the buffering depends on when this
+method gets invoked. As such implementations may buffer rows directly from the start to ensure
+all rows get returned. But users must not assume this behaviour is the case.</p>                            </div>
                 <div class="tags">
             
                             <h4>Return Value</h4>
