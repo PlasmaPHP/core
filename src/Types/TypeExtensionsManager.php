@@ -18,7 +18,7 @@ namespace Plasma\Types;
  * UNLESS the user opts-out of this behaviour.
  *
  * For standard PHP types (such as `string`, `float`, etc.),
- * the type identifier is the type name (`float is used instead of `double`).
+ * the type identifier is the type name (`float` is used instead of `double`).
  * For classes you can also use an interface name (e.g. `JsonSerializable`).
  *
  * Anyone can register a specific manager under a name and access it statically.
