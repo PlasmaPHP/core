@@ -297,7 +297,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_all">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/StreamQueryResult.php#L154">line 154</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/StreamQueryResult.php#L153">line 153</a></div>
         <code>                    <abbr title="React\Promise\PromiseInterface">PromiseInterface</abbr>
     <strong>all</strong>()
         </code>
@@ -308,8 +308,7 @@
 
                     <div class="method-description">
                                     <p>Buffers all rows and returns a promise which resolves with an instance of <code>QueryResultInterface</code>.</p>                    <p>This method does not guarantee that all rows get returned, as the buffering depends on when this
-method gets invoked. As such implementations may buffer rows directly from the start to ensure
-all rows get returned. But users must not assume this behaviour is the case.</p>                            </div>
+method gets invoked. There's no automatic buffering, as such rows may be missing if invoked too late.</p>                            </div>
                 <div class="tags">
             
                             <h4>Return Value</h4>
@@ -331,7 +330,7 @@ all rows get returned. But users must not assume this behaviour is the case.</p>
             </div>
                     <div class="method-item">
                     <h3 id="method_close">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/StreamQueryResult.php#L198">line 198</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/StreamQueryResult.php#L197">line 197</a></div>
         <code>                    void
     <strong>close</strong>()
         </code>
@@ -523,7 +522,7 @@ all rows get returned. But users must not assume this behaviour is the case.</p>
             </div>
                     <div class="method-item">
                     <h3 id="method_isReadable">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/StreamQueryResult.php#L164">line 164</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/StreamQueryResult.php#L163">line 163</a></div>
         <code>                    bool
     <strong>isReadable</strong>()
         </code>
@@ -555,7 +554,7 @@ all rows get returned. But users must not assume this behaviour is the case.</p>
             </div>
                     <div class="method-item">
                     <h3 id="method_pause">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/StreamQueryResult.php#L174">line 174</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/StreamQueryResult.php#L173">line 173</a></div>
         <code>                    void
     <strong>pause</strong>()
         </code>
@@ -588,7 +587,7 @@ all rows get returned. But users must not assume this behaviour is the case.</p>
             </div>
                     <div class="method-item">
                     <h3 id="method_pipe">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/StreamQueryResult.php#L220">line 220</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/StreamQueryResult.php#L219">line 219</a></div>
         <code>                    <abbr title="React\Stream\WritableStreamInterface">WritableStreamInterface</abbr>
     <strong>pipe</strong>(<abbr title="React\Stream\WritableStreamInterface">WritableStreamInterface</abbr> $dest, array $options = array())
         </code>
@@ -636,7 +635,7 @@ Automatically throttles the source based on what the destination can handle.</p>
             </div>
                     <div class="method-item">
                     <h3 id="method_resume">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/StreamQueryResult.php#L186">line 186</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/StreamQueryResult.php#L185">line 185</a></div>
         <code>                    void
     <strong>resume</strong>()
         </code>
