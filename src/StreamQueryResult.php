@@ -147,8 +147,7 @@ class StreamQueryResult implements StreamQueryResultInterface {
     /**
      * Buffers all rows and returns a promise which resolves with an instance of `QueryResultInterface`.
      * This method does not guarantee that all rows get returned, as the buffering depends on when this
-     * method gets invoked. As such implementations may buffer rows directly from the start to ensure
-     * all rows get returned. But users must not assume this behaviour is the case.
+     * method gets invoked. There's no automatic buffering, as such rows may be missing if invoked too late.
      * @return \React\Promise\PromiseInterface
      */
     function all(): \React\Promise\PromiseInterface {
