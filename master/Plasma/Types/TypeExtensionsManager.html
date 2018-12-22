@@ -163,7 +163,7 @@ One use case would be to create one specific manager per driver (type), if more 
                     <a href="../../Plasma/Types/TypeExtensionResultInterface.html"><abbr title="Plasma\Types\TypeExtensionResultInterface">TypeExtensionResultInterface</abbr></a>
                 </div>
                 <div class="col-md-8 type">
-                    <a href="#method_encodeType">encodeType</a>(mixed $value)
+                    <a href="#method_encodeType">encodeType</a>(mixed $value, <a href="../../Plasma/ColumnDefinitionInterface.html"><abbr title="Plasma\ColumnDefinitionInterface">ColumnDefinitionInterface</abbr></a> $column)
         
                                             <p>Tries to encode a value.</p>                </div>
                 <div class="col-md-2"></div>
@@ -246,7 +246,7 @@ One use case would be to create one specific manager per driver (type), if more 
             <div id="method-details">
                     <div class="method-item">
                     <h3 id="method_decodeType">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/Types/TypeExtensionsManager.php#L245">line 245</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/Types/TypeExtensionsManager.php#L246">line 246</a></div>
         <code>                    <a href="../../Plasma/Types/TypeExtensionResultInterface.html"><abbr title="Plasma\Types\TypeExtensionResultInterface">TypeExtensionResultInterface</abbr></a>
     <strong>decodeType</strong>(mixed|null $type, mixed $value)
         </code>
@@ -366,9 +366,9 @@ One use case would be to create one specific manager per driver (type), if more 
             </div>
                     <div class="method-item">
                     <h3 id="method_encodeType">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/Types/TypeExtensionsManager.php#L191">line 191</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/Types/TypeExtensionsManager.php#L192">line 192</a></div>
         <code>                    <a href="../../Plasma/Types/TypeExtensionResultInterface.html"><abbr title="Plasma\Types\TypeExtensionResultInterface">TypeExtensionResultInterface</abbr></a>
-    <strong>encodeType</strong>(mixed $value)
+    <strong>encodeType</strong>(mixed $value, <a href="../../Plasma/ColumnDefinitionInterface.html"><abbr title="Plasma\ColumnDefinitionInterface">ColumnDefinitionInterface</abbr></a> $column)
         </code>
     </h3>
     <div class="details">
@@ -384,6 +384,11 @@ One use case would be to create one specific manager per driver (type), if more 
                     <tr>
                 <td>mixed</td>
                 <td>$value</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td><a href="../../Plasma/ColumnDefinitionInterface.html"><abbr title="Plasma\ColumnDefinitionInterface">ColumnDefinitionInterface</abbr></a></td>
+                <td>$column</td>
                 <td></td>
             </tr>
             </table>

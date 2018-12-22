@@ -112,7 +112,7 @@
                     bool
                 </div>
                 <div class="col-md-8 type">
-                    <a href="#method_canHandleType">canHandleType</a>(mixed $value)
+                    <a href="#method_canHandleType">canHandleType</a>(mixed $value, <a href="../../Plasma/ColumnDefinitionInterface.html"><abbr title="Plasma\ColumnDefinitionInterface">ColumnDefinitionInterface</abbr></a>|null $column)
         
                                             <p>Whether the type extension can handle the conversion of the passed value.</p>                </div>
                 <div class="col-md-2"></div>
@@ -132,7 +132,7 @@
                     <a href="../../Plasma/Types/TypeExtensionResultInterface.html"><abbr title="Plasma\Types\TypeExtensionResultInterface">TypeExtensionResultInterface</abbr></a>
                 </div>
                 <div class="col-md-8 type">
-                    <a href="#method_encode">encode</a>(mixed $value)
+                    <a href="#method_encode">encode</a>(mixed $value, <a href="../../Plasma/ColumnDefinitionInterface.html"><abbr title="Plasma\ColumnDefinitionInterface">ColumnDefinitionInterface</abbr></a> $column)
         
                                             <p>Encodes a PHP value into a binary SQL value.</p>                </div>
                 <div class="col-md-2"></div>
@@ -208,9 +208,9 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_canHandleType">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/Types/AbstractTypeExtension.php#L50">line 50</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/Types/AbstractTypeExtension.php#L51">line 51</a></div>
         <code>                    bool
-    <strong>canHandleType</strong>(mixed $value)
+    <strong>canHandleType</strong>(mixed $value, <a href="../../Plasma/ColumnDefinitionInterface.html"><abbr title="Plasma\ColumnDefinitionInterface">ColumnDefinitionInterface</abbr></a>|null $column)
         </code>
     </h3>
     <div class="details">
@@ -227,6 +227,11 @@
                     <tr>
                 <td>mixed</td>
                 <td>$value</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td><a href="../../Plasma/ColumnDefinitionInterface.html"><abbr title="Plasma\ColumnDefinitionInterface">ColumnDefinitionInterface</abbr></a>|null</td>
+                <td>$column</td>
                 <td></td>
             </tr>
             </table>
@@ -251,7 +256,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_decode">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/Types/AbstractTypeExtension.php#L83">line 83</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/Types/AbstractTypeExtension.php#L85">line 85</a></div>
         <code>    abstract                <a href="../../Plasma/Types/TypeExtensionResultInterface.html"><abbr title="Plasma\Types\TypeExtensionResultInterface">TypeExtensionResultInterface</abbr></a>
     <strong>decode</strong>(mixed $value)
         </code>
@@ -293,9 +298,9 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_encode">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/Types/AbstractTypeExtension.php#L76">line 76</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/Types/AbstractTypeExtension.php#L78">line 78</a></div>
         <code>    abstract                <a href="../../Plasma/Types/TypeExtensionResultInterface.html"><abbr title="Plasma\Types\TypeExtensionResultInterface">TypeExtensionResultInterface</abbr></a>
-    <strong>encode</strong>(mixed $value)
+    <strong>encode</strong>(mixed $value, <a href="../../Plasma/ColumnDefinitionInterface.html"><abbr title="Plasma\ColumnDefinitionInterface">ColumnDefinitionInterface</abbr></a> $column)
         </code>
     </h3>
     <div class="details">
@@ -312,6 +317,11 @@
                 <td>mixed</td>
                 <td>$value</td>
                 <td>The value to encode.</td>
+            </tr>
+                    <tr>
+                <td><a href="../../Plasma/ColumnDefinitionInterface.html"><abbr title="Plasma\ColumnDefinitionInterface">ColumnDefinitionInterface</abbr></a></td>
+                <td>$column</td>
+                <td></td>
             </tr>
             </table>
 
@@ -335,7 +345,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getHumanType">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/Types/AbstractTypeExtension.php#L59">line 59</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/Types/AbstractTypeExtension.php#L60">line 60</a></div>
         <code>                    string
     <strong>getHumanType</strong>()
         </code>
@@ -367,7 +377,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getSQLType">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/Types/AbstractTypeExtension.php#L67">line 67</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/Types/AbstractTypeExtension.php#L68">line 68</a></div>
         <code>                    mixed
     <strong>getSQLType</strong>()
         </code>
