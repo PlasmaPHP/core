@@ -20,10 +20,11 @@ interface TypeExtensionInterface {
      * Whether the type extension can handle the conversion of the passed value.
      * Before this method is used, the common types are checked first.
      * `class` -> `interface` -> `type` -> this.
-     * @param mixed  $value
+     * @param mixed                                   $value
+     * @param \Plasma\ColumnDefinitionInterface|null  $column
      * @return bool
      */
-    function canHandleType($value): bool;
+    function canHandleType($value, ?\Plasma\ColumnDefinitionInterface $column): bool;
     
     /**
      * Get the human-readable type this Type Extension is for.
@@ -33,10 +34,11 @@ interface TypeExtensionInterface {
     
     /**
      * Encodes a PHP value into a binary SQL value.
-     * @param mixed   $value  The value to encode.
+     * @param mixed                              $value   The value to encode.
+     * @param \Plasma\ColumnDefinitionInterface  $column
      * @return \Plasma\Types\TypeExtensionResultInterface
      */
-    function encode($value): \Plasma\Types\TypeExtensionResultInterface;
+    function encode($value, \Plasma\ColumnDefinitionInterface $column): \Plasma\Types\TypeExtensionResultInterface;
     
     /**
      * Decodes a binary SQL value into a PHP value.

@@ -68,7 +68,7 @@ class ColumnDefinitionTest extends TestCase {
     
     function testParseValue() {
         $type = (new class('int', 'BIGINT', 'is_numeric') extends \Plasma\Types\AbstractTypeExtension {
-            function encode($value): \Plasma\Types\TypeExtensionResultInterface {
+            function encode($value, \Plasma\ColumnDefinitionInterface $a): \Plasma\Types\TypeExtensionResultInterface {
                 return (new \Plasma\Types\TypeExtensionResult(0, false, $value));
             }
             

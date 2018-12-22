@@ -11,7 +11,7 @@ namespace Plasma\Tests;
 
 class TransactionTest extends ClientTestHelpers {
     function testConstruct() {
-        $client = $this->createClient(array('connect.lazy' => true));
+        $client = $this->createClient(array('connections.lazy' => true));
         $driver = $this->getDriverMock();
         
         $transaction = new \Plasma\Transaction($client, $driver, \Plasma\TransactionInterface::ISOLATION_UNCOMMITTED);
@@ -19,7 +19,7 @@ class TransactionTest extends ClientTestHelpers {
     }
     
     function testConstruct2() {
-        $client = $this->createClient(array('connect.lazy' => true));
+        $client = $this->createClient(array('connections.lazy' => true));
         $driver = $this->getDriverMock();
         
         $transaction = new \Plasma\Transaction($client, $driver, \Plasma\TransactionInterface::ISOLATION_COMMITTED);
@@ -27,7 +27,7 @@ class TransactionTest extends ClientTestHelpers {
     }
     
     function testConstruct3() {
-        $client = $this->createClient(array('connect.lazy' => true));
+        $client = $this->createClient(array('connections.lazy' => true));
         $driver = $this->getDriverMock();
         
         $transaction = new \Plasma\Transaction($client, $driver, \Plasma\TransactionInterface::ISOLATION_REPEATABLE);
@@ -35,7 +35,7 @@ class TransactionTest extends ClientTestHelpers {
     }
     
     function testConstruct4() {
-        $client = $this->createClient(array('connect.lazy' => true));
+        $client = $this->createClient(array('connections.lazy' => true));
         $driver = $this->getDriverMock();
         
         $transaction = new \Plasma\Transaction($client, $driver, \Plasma\TransactionInterface::ISOLATION_SERIALIZABLE);
@@ -43,7 +43,7 @@ class TransactionTest extends ClientTestHelpers {
     }
     
     function testConstructFail() {
-        $client = $this->createClient(array('connect.lazy' => true));
+        $client = $this->createClient(array('connections.lazy' => true));
         $driver = $this->getDriverMock();
         
         $this->expectException(\Plasma\Exception::class);
@@ -51,7 +51,7 @@ class TransactionTest extends ClientTestHelpers {
     }
     
     function testDestruct() {
-        $client = $this->createClient(array('connect.lazy' => true));
+        $client = $this->createClient(array('connections.lazy' => true));
         $driver = $this->getDriverMock();
         
         $driver->expects($this->atMost(2))
@@ -69,7 +69,7 @@ class TransactionTest extends ClientTestHelpers {
     }
     
     function testDestructFail() {
-        $client = $this->createClient(array('connect.lazy' => true));
+        $client = $this->createClient(array('connections.lazy' => true));
         $driver = $this->getDriverMock();
         
         $driver->expects($this->atMost(2))
@@ -91,7 +91,7 @@ class TransactionTest extends ClientTestHelpers {
     }
     
     function testGetIsolationLevel() {
-        $client = $this->createClient(array('connect.lazy' => true));
+        $client = $this->createClient(array('connections.lazy' => true));
         $driver = $this->getDriverMock();
         
         $transaction = new \Plasma\Transaction($client, $driver, \Plasma\TransactionInterface::ISOLATION_SERIALIZABLE);
@@ -99,7 +99,7 @@ class TransactionTest extends ClientTestHelpers {
     }
     
     function testIsActive() {
-        $client = $this->createClient(array('connect.lazy' => true));
+        $client = $this->createClient(array('connections.lazy' => true));
         $driver = $this->getDriverMock();
         
         $transaction = new \Plasma\Transaction($client, $driver, \Plasma\TransactionInterface::ISOLATION_SERIALIZABLE);
@@ -107,7 +107,7 @@ class TransactionTest extends ClientTestHelpers {
     }
     
     function testIsActiveFalse() {
-        $client = $this->createClient(array('connect.lazy' => true));
+        $client = $this->createClient(array('connections.lazy' => true));
         $driver = $this->getDriverMock();
         
         $transaction = new \Plasma\Transaction($client, $driver, \Plasma\TransactionInterface::ISOLATION_SERIALIZABLE);
@@ -125,7 +125,7 @@ class TransactionTest extends ClientTestHelpers {
     }
     
     function testCommit() {
-        $client = $this->createClient(array('connect.lazy' => true));
+        $client = $this->createClient(array('connections.lazy' => true));
         $driver = $this->getDriverMock();
         
         $transaction = new \Plasma\Transaction($client, $driver, \Plasma\TransactionInterface::ISOLATION_SERIALIZABLE);
@@ -142,7 +142,7 @@ class TransactionTest extends ClientTestHelpers {
     }
     
     function testRollback() {
-        $client = $this->createClient(array('connect.lazy' => true));
+        $client = $this->createClient(array('connections.lazy' => true));
         $driver = $this->getDriverMock();
         
         $transaction = new \Plasma\Transaction($client, $driver, \Plasma\TransactionInterface::ISOLATION_SERIALIZABLE);
@@ -159,7 +159,7 @@ class TransactionTest extends ClientTestHelpers {
     }
     
     function testCreateSavepoint() {
-        $client = $this->createClient(array('connect.lazy' => true));
+        $client = $this->createClient(array('connections.lazy' => true));
         $driver = $this->getDriverMock();
         
         $transaction = new \Plasma\Transaction($client, $driver, \Plasma\TransactionInterface::ISOLATION_SERIALIZABLE);
@@ -181,7 +181,7 @@ class TransactionTest extends ClientTestHelpers {
     }
     
     function testRollbackTo() {
-        $client = $this->createClient(array('connect.lazy' => true));
+        $client = $this->createClient(array('connections.lazy' => true));
         $driver = $this->getDriverMock();
         
         $transaction = new \Plasma\Transaction($client, $driver, \Plasma\TransactionInterface::ISOLATION_SERIALIZABLE);
@@ -203,7 +203,7 @@ class TransactionTest extends ClientTestHelpers {
     }
     
     function testReleaseSavepoint() {
-        $client = $this->createClient(array('connect.lazy' => true));
+        $client = $this->createClient(array('connections.lazy' => true));
         $driver = $this->getDriverMock();
         
         $transaction = new \Plasma\Transaction($client, $driver, \Plasma\TransactionInterface::ISOLATION_SERIALIZABLE);
@@ -225,7 +225,7 @@ class TransactionTest extends ClientTestHelpers {
     }
     
     function testPrepare() {
-        $client = $this->createClient(array('connect.lazy' => true));
+        $client = $this->createClient(array('connections.lazy' => true));
         $driver = $this->getDriverMock();
         
         $transaction = new \Plasma\Transaction($client, $driver, \Plasma\TransactionInterface::ISOLATION_SERIALIZABLE);
@@ -242,7 +242,7 @@ class TransactionTest extends ClientTestHelpers {
     }
     
     function testPrepareFail() {
-        $client = $this->createClient(array('connect.lazy' => true));
+        $client = $this->createClient(array('connections.lazy' => true));
         $driver = $this->getDriverMock();
         
         $transaction = new \Plasma\Transaction($client, $driver, \Plasma\TransactionInterface::ISOLATION_SERIALIZABLE);
@@ -267,7 +267,7 @@ class TransactionTest extends ClientTestHelpers {
     }
     
     function testQuery() {
-        $client = $this->createClient(array('connect.lazy' => true));
+        $client = $this->createClient(array('connections.lazy' => true));
         $driver = $this->getDriverMock();
         
         $transaction = new \Plasma\Transaction($client, $driver, \Plasma\TransactionInterface::ISOLATION_SERIALIZABLE);
@@ -284,7 +284,7 @@ class TransactionTest extends ClientTestHelpers {
     }
     
     function testQueryFail() {
-        $client = $this->createClient(array('connect.lazy' => true));
+        $client = $this->createClient(array('connections.lazy' => true));
         $driver = $this->getDriverMock();
         
         $transaction = new \Plasma\Transaction($client, $driver, \Plasma\TransactionInterface::ISOLATION_SERIALIZABLE);
@@ -309,7 +309,7 @@ class TransactionTest extends ClientTestHelpers {
     }
     
     function testExecute() {
-        $client = $this->createClient(array('connect.lazy' => true));
+        $client = $this->createClient(array('connections.lazy' => true));
         $driver = $this->getDriverMock();
         
         $transaction = new \Plasma\Transaction($client, $driver, \Plasma\TransactionInterface::ISOLATION_SERIALIZABLE);
@@ -326,7 +326,7 @@ class TransactionTest extends ClientTestHelpers {
     }
     
     function testExecuteFail() {
-        $client = $this->createClient(array('connect.lazy' => true));
+        $client = $this->createClient(array('connections.lazy' => true));
         $driver = $this->getDriverMock();
         
         $transaction = new \Plasma\Transaction($client, $driver, \Plasma\TransactionInterface::ISOLATION_SERIALIZABLE);
@@ -351,7 +351,7 @@ class TransactionTest extends ClientTestHelpers {
     }
     
     function testQuote() {
-        $client = $this->createClient(array('connect.lazy' => true));
+        $client = $this->createClient(array('connections.lazy' => true));
         $driver = $this->getDriverMock();
         
         $transaction = new \Plasma\Transaction($client, $driver, \Plasma\TransactionInterface::ISOLATION_SERIALIZABLE);
@@ -366,7 +366,7 @@ class TransactionTest extends ClientTestHelpers {
     }
     
     function testQuoteFail() {
-        $client = $this->createClient(array('connect.lazy' => true));
+        $client = $this->createClient(array('connections.lazy' => true));
         $driver = $this->getDriverMock();
         
         $transaction = new \Plasma\Transaction($client, $driver, \Plasma\TransactionInterface::ISOLATION_SERIALIZABLE);

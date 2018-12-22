@@ -62,7 +62,7 @@ class ClientTest extends ClientTestHelpers {
     }
     
     function testGetConnectionCountLazy() {
-        $client = $this->createClient(array('connect.lazy' => true));
+        $client = $this->createClient(array('connections.lazy' => true));
         $this->assertSame(0, $client->getConnectionCount());
     }
     
@@ -383,7 +383,7 @@ class ClientTest extends ClientTestHelpers {
     }
     
     function testLazyCreateConnection() {
-        $client = $this->createClient(array('connect.lazy' => true));
+        $client = $this->createClient(array('connections.lazy' => true));
         
         $command = $this->getMockBuilder(\Plasma\CommandInterface::class)
             ->getMock();

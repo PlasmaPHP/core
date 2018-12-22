@@ -75,7 +75,7 @@ class TypeExtensionsManagerTest extends \Plasma\Tests\TestCase {
         $manager = new \Plasma\Types\TypeExtensionsManager();
         
         $type = (new class('string', 0xFB, 'is_string') extends \Plasma\Types\AbstractTypeExtension {
-            function encode($value): \Plasma\Types\TypeExtensionResultInterface {
+            function encode($value, \Plasma\ColumnDefinitionInterface $col): \Plasma\Types\TypeExtensionResultInterface {
                 return (new \Plasma\Types\TypeExtensionResult($this->getSQLType(), false, ((string) $value)));
             }
             function decode($value): \Plasma\Types\TypeExtensionResultInterface {
@@ -85,7 +85,7 @@ class TypeExtensionsManagerTest extends \Plasma\Tests\TestCase {
         
         $this->assertNull($manager->registerType('string', $type));
         
-        $encoded = $manager->encodeType('hello');
+        $encoded = $manager->encodeType('hello', (new \Plasma\ColumnDefinition('hello', 'world', 'a', 'b', 'c', 0, false, 0, null)));
         $this->assertInstanceOf(\Plasma\Types\TypeExtensionResultInterface::class, $encoded);
     }
     
@@ -93,7 +93,7 @@ class TypeExtensionsManagerTest extends \Plasma\Tests\TestCase {
         $manager = new \Plasma\Types\TypeExtensionsManager();
         
         $type = (new class('string', 0xFB, 'is_string') extends \Plasma\Types\AbstractTypeExtension {
-            function encode($value): \Plasma\Types\TypeExtensionResultInterface {}
+            function encode($value, \Plasma\ColumnDefinitionInterface $col): \Plasma\Types\TypeExtensionResultInterface {}
             function decode($value): \Plasma\Types\TypeExtensionResultInterface {}
         });
         
@@ -107,7 +107,7 @@ class TypeExtensionsManagerTest extends \Plasma\Tests\TestCase {
         $manager = new \Plasma\Types\TypeExtensionsManager();
         
         $type = (new class('string', 0xFB, 'is_string') extends \Plasma\Types\AbstractTypeExtension {
-            function encode($value): \Plasma\Types\TypeExtensionResultInterface {
+            function encode($value, \Plasma\ColumnDefinitionInterface $col): \Plasma\Types\TypeExtensionResultInterface {
                 return (new \Plasma\Types\TypeExtensionResult($this->getSQLType(), false, ((string) $value)));
             }
             function decode($value): \Plasma\Types\TypeExtensionResultInterface {
@@ -117,15 +117,15 @@ class TypeExtensionsManagerTest extends \Plasma\Tests\TestCase {
         
         $this->assertNull($manager->registerType('string', $type));
         
-        $encoded = $manager->encodeType('hello');
+        $encoded = $manager->encodeType('hello', (new \Plasma\ColumnDefinition('hello', 'world', 'a', 'b', 'c', 0, false, 0, null)));
         $this->assertInstanceOf(\Plasma\Types\TypeExtensionResultInterface::class, $encoded);
         
         $this->assertNull($manager->unregisterType('string'));
         
         try {
-            $this->assertInstanceOf(\Throwable::class, $manager->encodeType('hello'));
+            $this->assertInstanceOf(\Throwable::class, $manager->encodeType('hello', (new \Plasma\ColumnDefinition('hello', 'world', 'a', 'b', 'c', 0, false, 0, null))));
         } catch (\Plasma\Exception $e) {
-            $this->assertInstanceOf(\Plasma\Exception::class, $e);
+            /* Continue */
         }
         
         // Check double unregister
@@ -142,7 +142,7 @@ class TypeExtensionsManagerTest extends \Plasma\Tests\TestCase {
         $manager = new \Plasma\Types\TypeExtensionsManager();
         
         $type = (new class('string', 0xFB, 'is_string') extends \Plasma\Types\AbstractTypeExtension {
-            function encode($value): \Plasma\Types\TypeExtensionResultInterface {
+            function encode($value, \Plasma\ColumnDefinitionInterface $col): \Plasma\Types\TypeExtensionResultInterface {
                 return (new \Plasma\Types\TypeExtensionResult($this->getSQLType(), false, ((string) $value)));
             }
             function decode($value): \Plasma\Types\TypeExtensionResultInterface {
@@ -162,7 +162,7 @@ class TypeExtensionsManagerTest extends \Plasma\Tests\TestCase {
         $manager = new \Plasma\Types\TypeExtensionsManager();
         
         $type = (new class('string', 0xFB, 'is_string') extends \Plasma\Types\AbstractTypeExtension {
-            function encode($value): \Plasma\Types\TypeExtensionResultInterface {}
+            function encode($value, \Plasma\ColumnDefinitionInterface $col): \Plasma\Types\TypeExtensionResultInterface {}
             function decode($value): \Plasma\Types\TypeExtensionResultInterface {}
         });
         
@@ -176,7 +176,7 @@ class TypeExtensionsManagerTest extends \Plasma\Tests\TestCase {
         $manager = new \Plasma\Types\TypeExtensionsManager();
         
         $type = (new class('string', 0xFB, function () { return true; }) extends \Plasma\Types\AbstractTypeExtension {
-            function encode($value): \Plasma\Types\TypeExtensionResultInterface {
+            function encode($value, \Plasma\ColumnDefinitionInterface $col): \Plasma\Types\TypeExtensionResultInterface {
                 return (new \Plasma\Types\TypeExtensionResult($this->getSQLType(), false, ((string) $value)));
             }
             function decode($value): \Plasma\Types\TypeExtensionResultInterface {
@@ -230,7 +230,7 @@ class TypeExtensionsManagerTest extends \Plasma\Tests\TestCase {
         }
         
         $type = (new class('string', 0xFB, 'is_string') extends \Plasma\Types\AbstractTypeExtension {
-            function encode($value): \Plasma\Types\TypeExtensionResultInterface {}
+            function encode($value, \Plasma\ColumnDefinitionInterface $col): \Plasma\Types\TypeExtensionResultInterface {}
             function decode($value): \Plasma\Types\TypeExtensionResultInterface {
                 return (new \Plasma\Types\TypeExtensionResult('string', false, true));
             }
@@ -250,7 +250,7 @@ class TypeExtensionsManagerTest extends \Plasma\Tests\TestCase {
         $type = (new class('string', 0xFB, function () {
             throw new \Exception('canHandleType invoked');
          }) extends \Plasma\Types\AbstractTypeExtension {
-            function encode($value): \Plasma\Types\TypeExtensionResultInterface {}
+            function encode($value, \Plasma\ColumnDefinitionInterface $col): \Plasma\Types\TypeExtensionResultInterface {}
             function decode($value): \Plasma\Types\TypeExtensionResultInterface {
                 return (new \Plasma\Types\TypeExtensionResult('string', false, true));
             }
@@ -266,7 +266,7 @@ class TypeExtensionsManagerTest extends \Plasma\Tests\TestCase {
         $manager = new \Plasma\Types\TypeExtensionsManager();
         
         $type = (new class('string', 0xFE, 'is_string') extends \Plasma\Types\AbstractTypeExtension {
-            function encode($value): \Plasma\Types\TypeExtensionResultInterface {
+            function encode($value, \Plasma\ColumnDefinitionInterface $col): \Plasma\Types\TypeExtensionResultInterface {
                 return (new \Plasma\Types\TypeExtensionResult('string', false, \pack('C*', $value)));
             }
             
@@ -275,7 +275,7 @@ class TypeExtensionsManagerTest extends \Plasma\Tests\TestCase {
         
         $manager->registerType('string', $type);
         
-        $encoded = $manager->encodeType('hello it is me');
+        $encoded = $manager->encodeType('hello it is me', (new \Plasma\ColumnDefinition('hello', 'world', 'a', 'b', 'c', 0, false, 0, null)));
         
         $this->assertInstanceOf(\Plasma\Types\TypeExtensionResultInterface::class, $encoded);
         $this->assertSame(\pack('C*', 'hello it is me'), $encoded->getValue());
@@ -284,8 +284,10 @@ class TypeExtensionsManagerTest extends \Plasma\Tests\TestCase {
     function testDecodeType() {
         $manager = new \Plasma\Types\TypeExtensionsManager();
         
-        $type = (new class('string', 0xFE, 'is_string') extends \Plasma\Types\AbstractTypeExtension {
-            function encode($value): \Plasma\Types\TypeExtensionResultInterface {}
+        $type = (new class('string', 0xFE, function ($a, $b) {
+            return \is_string($a);
+        }) extends \Plasma\Types\AbstractTypeExtension {
+            function encode($value, \Plasma\ColumnDefinitionInterface $col): \Plasma\Types\TypeExtensionResultInterface {}
             
             function decode($value): \Plasma\Types\TypeExtensionResultInterface {
                 return (new \Plasma\Types\TypeExtensionResult('string', false, \unpack('C*', $value)));
@@ -311,7 +313,7 @@ class TypeExtensionsManagerTest extends \Plasma\Tests\TestCase {
         $type = (new class('string', 0xFE, function ($value) {
             return ($value instanceof \stdClass);
         }) extends \Plasma\Types\AbstractTypeExtension {
-            function encode($value): \Plasma\Types\TypeExtensionResultInterface {
+            function encode($value, \Plasma\ColumnDefinitionInterface $col): \Plasma\Types\TypeExtensionResultInterface {
                 return (new \Plasma\Types\TypeExtensionResult('json', false, \json_encode($value)));
             }
             
@@ -328,7 +330,7 @@ class TypeExtensionsManagerTest extends \Plasma\Tests\TestCase {
             }
         });
         
-        $encoded = $manager->encodeType($class);
+        $encoded = $manager->encodeType($class, (new \Plasma\ColumnDefinition('hello', 'world', 'a', 'b', 'c', 0, false, 0, null)));
         
         $this->assertInstanceOf(\Plasma\Types\TypeExtensionResultInterface::class, $encoded);
         $this->assertSame(\json_encode(array('hello' => true)), $encoded->getValue());
@@ -336,7 +338,7 @@ class TypeExtensionsManagerTest extends \Plasma\Tests\TestCase {
         $class = new \stdClass();
         $class->hello = true;
         
-        $encoded2 = $manager->encodeType($class);
+        $encoded2 = $manager->encodeType($class, (new \Plasma\ColumnDefinition('hello', 'world', 'a', 'b', 'c', 0, false, 0, null)));
         
         $this->assertInstanceOf(\Plasma\Types\TypeExtensionResultInterface::class, $encoded2);
         $this->assertSame(\json_encode(array('hello' => true)), $encoded2->getValue());
@@ -345,8 +347,10 @@ class TypeExtensionsManagerTest extends \Plasma\Tests\TestCase {
     function testDecodeTypeClass() {
         $manager = new \Plasma\Types\TypeExtensionsManager();
         
-        $type = (new class('string', 0xFE, 'is_string') extends \Plasma\Types\AbstractTypeExtension {
-            function encode($value): \Plasma\Types\TypeExtensionResultInterface {
+        $type = (new class('string', 0xFE, function ($a, $b) {
+            return \is_string($a);
+        }) extends \Plasma\Types\AbstractTypeExtension {
+            function encode($value, \Plasma\ColumnDefinitionInterface $col): \Plasma\Types\TypeExtensionResultInterface {
                 return (new \Plasma\Types\TypeExtensionResult('json', false, \json_encode($value)));
             }
             

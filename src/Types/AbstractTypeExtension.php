@@ -44,12 +44,13 @@ abstract class AbstractTypeExtension implements TypeExtensionInterface {
      * Whether the type extension can handle the conversion of the passed value.
      * Before this method is used, the common types are checked first.
      * `class` -> `interface` -> `type` -> this.
-     * @param mixed  $value
+     * @param mixed                                   $value
+     * @param \Plasma\ColumnDefinitionInterface|null  $column
      * @return bool
      */
-    function canHandleType($value): bool {
+    function canHandleType($value, ?\Plasma\ColumnDefinitionInterface $column): bool {
         $cb = $this->filter;
-        return $cb($value);
+        return $cb($value, $column);
     }
     
     /**
@@ -70,10 +71,11 @@ abstract class AbstractTypeExtension implements TypeExtensionInterface {
     
     /**
      * Encodes a PHP value into a binary SQL value.
-     * @param mixed   $value  The value to encode.
+     * @param mixed                              $value   The value to encode.
+     * @param \Plasma\ColumnDefinitionInterface  $column
      * @return \Plasma\Types\TypeExtensionResultInterface
      */
-    abstract function encode($value): \Plasma\Types\TypeExtensionResultInterface;
+    abstract function encode($value, \Plasma\ColumnDefinitionInterface $column): \Plasma\Types\TypeExtensionResultInterface;
     
     /**
      * Decodes a binary SQL value into a PHP value.

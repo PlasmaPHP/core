@@ -29,8 +29,8 @@ class Client implements ClientInterface {
      * @var array
      */
     protected $options = array(
-        'maxConnections' => 5,
-        'connect.lazy' => false
+        'connections.max' => 5,
+        'connections.lazy' => false
     );
     
     /**
@@ -54,8 +54,8 @@ class Client implements ClientInterface {
      * Available options:
      * ```
      * array(
-     *     'maxConnections' => int, (the maximum amount of connections to open, defaults to 5)
-     *     'connect.lazy' => bool, (whether the connection should be established lazily (on first request), defaults to false)
+     *     'connections.max' => int, (the maximum amount of connections to open, defaults to 5)
+     *     'connections.lazy' => bool, (whether the first connection should be established lazily (on first request), defaults to false)
      * )
      * ```
      *
@@ -74,7 +74,7 @@ class Client implements ClientInterface {
         $this->connections = new \CharlotteDunois\Collect\Set();
         $this->busyConnections = new \CharlotteDunois\Collect\Set();
         
-        if(!$this->options['connect.lazy']) {
+        if(!$this->options['connections.lazy']) {
             $connection = $this->createNewConnection();
             if($connection->getConnectionState() !== \Plasma\DriverInterface::CONNECTION_OK) {
                 $this->busyConnections->add($connection);
@@ -330,7 +330,7 @@ class Client implements ClientInterface {
             }
         }
         
-        if($this->getConnectionCount() < $this->options['maxConnections']) {
+        if($this->getConnectionCount() < $this->options['connections.max']) {
             return $this->createNewConnection();
         }
         
@@ -385,8 +385,8 @@ class Client implements ClientInterface {
      */
     protected function validateOptions(array $options) {
         $validator = \CharlotteDunois\Validation\Validator::make($options, array(
-            'maxConnections' => 'integer|min:1',
-            'connect.lazy' => 'boolean'
+            'connections.max' => 'integer|min:1',
+            'connections.lazy' => 'boolean'
         ));
         
         $validator->throw(\InvalidArgumentException::class);

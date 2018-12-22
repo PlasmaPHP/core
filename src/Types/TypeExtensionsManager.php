@@ -184,11 +184,12 @@ class TypeExtensionsManager {
     
     /**
      * Tries to encode a value.
-     * @param mixed  $value
+     * @param mixed                              $value
+     * @param \Plasma\ColumnDefinitionInterface  $column
      * @return \Plasma\Types\TypeExtensionResultInterface
      * @throws \Plasma\Exception  Thrown if unable to encode the value.
      */
-    function encodeType($value): \Plasma\Types\TypeExtensionResultInterface {
+    function encodeType($value, \Plasma\ColumnDefinitionInterface $column): \Plasma\Types\TypeExtensionResultInterface {
         $type = \gettype($value);
         if($type === 'double') {
             $type = 'float';
@@ -204,7 +205,7 @@ class TypeExtensionsManager {
             /** @var \Plasma\Types\TypeExtensionInterface  $encoder */
             foreach($this->classTypes as $key => $encoder) {
                 if(\in_array($key, $classes, true)) {
-                    return $encoder->encode($value);
+                    return $encoder->encode($value, $column);
                 }
             }
         }
@@ -212,22 +213,22 @@ class TypeExtensionsManager {
         /** @var \Plasma\Types\TypeExtensionInterface  $encoder */
         foreach($this->regularTypes as $key => $encoder) {
             if($type === $key) {
-                return $encoder->encode($value);
+                return $encoder->encode($value, $column);
             }
         }
         
         if($this->enabledFuzzySearch) {
             /** @var \Plasma\Types\TypeExtensionInterface  $encoder */
             foreach($this->classTypes as $key => $encoder) {
-                if($encoder->canHandleType($value)) {
-                    return $encoder->encode($value);
+                if($encoder->canHandleType($value, $column)) {
+                    return $encoder->encode($value, $column);
                 }
             }
             
             /** @var \Plasma\Types\TypeExtensionInterface  $encoder */
             foreach($this->regularTypes as $key => $encoder) {
-                if($encoder->canHandleType($value)) {
-                    return $encoder->encode($value);
+                if($encoder->canHandleType($value, $column)) {
+                    return $encoder->encode($value, $column);
                 }
             }
         }
@@ -246,7 +247,7 @@ class TypeExtensionsManager {
         if($type === null && $this->enabledFuzzySearch) {
             /** @var \Plasma\Types\TypeExtensionInterface  $decoder */
             foreach($this->sqlTypes as $sqlType => $decoder) {
-                if($decoder->canHandleType($value)) {
+                if($decoder->canHandleType($value, null)) {
                     return $decoder->decode($value);
                 }
             }
