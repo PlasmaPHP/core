@@ -1,6 +1,6 @@
 # Plasma [![Build Status](https://travis-ci.org/PlasmaPHP/core.svg?branch=master)](https://travis-ci.org/PlasmaPHP/core) [![Build Status](https://scrutinizer-ci.com/g/PlasmaPHP/core/badges/build.png?b=master)](https://scrutinizer-ci.com/g/PlasmaPHP/core/build-status/master) [![Code Coverage](https://scrutinizer-ci.com/g/PlasmaPHP/core/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/PlasmaPHP/core/?branch=master)
 
-Plasma aims to be an asynchronous, non-blocking (data access) Database Abstraction Layer. This is the core component, defining common parts and interfaces.
+Plasma provides an asynchronous, non-blocking (data access) Database Abstraction Layer. This is the core component, defining common parts and interfaces.
 
 The core component alone does __nothing__, you need a Plasma driver, which does all the handling of the DBMS.
 
