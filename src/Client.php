@@ -241,13 +241,13 @@ class Client implements ClientInterface {
         $closes = array();
         
         /** @var \Plasma\DriverInterface  $conn */
-        foreach($this->connections as $conn) {
+        foreach($this->connections->all() as $conn) {
             $closes[] = $conn->close();
             $this->connections->delete($conn);
         }
         
         /** @var \Plasma\DriverInterface  $conn */
-        foreach($this->busyConnections as $conn) {
+        foreach($this->busyConnections->all() as $conn) {
             $closes[] = $conn->close();
             $this->busyConnections->delete($conn);
         }
@@ -268,13 +268,13 @@ class Client implements ClientInterface {
         $this->goingAway = \React\Promise\resolve();
         
         /** @var \Plasma\DriverInterface  $conn */
-        foreach($this->connections as $conn) {
+        foreach($this->connections->all() as $conn) {
             $conn->quit();
             $this->connections->delete($conn);
         }
         
         /** @var \Plasma\DriverInterface  $conn */
-        foreach($this->busyConnections as $conn) {
+        foreach($this->busyConnections->all() as $conn) {
             $conn->quit();
             $this->busyConnections->delete($conn);
         }
@@ -301,7 +301,10 @@ class Client implements ClientInterface {
      */
     protected function getOptimalConnection(): \Plasma\DriverInterface {
         if(\count($this->connections) === 0) {
-            return $this->createNewConnection();
+            $connection = $this->createNewConnection();
+            $this->busyConnections->add($connection);
+            
+            return $connection;
         }
         
         /** @var \Plasma\DriverInterface  $connection */
@@ -318,7 +321,7 @@ class Client implements ClientInterface {
             
             if($cbacklog === 0 && $conn->getConnectionState() === \Plasma\DriverInterface::CONNECTION_OK && $cstate == \Plasma\DriverInterface::STATE_IDLE) {
                 $this->connections->delete($conn);
-                $this->busyConnections->add($connection);
+                $this->busyConnections->add($conn);
                 
                 return $conn;
             }
@@ -331,7 +334,7 @@ class Client implements ClientInterface {
         }
         
         if($this->getConnectionCount() < $this->options['connections.max']) {
-            return $this->createNewConnection();
+            $connection = $this->createNewConnection();
         }
         
         $this->connections->delete($connection);
