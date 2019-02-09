@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="robots" content="index, follow, all" />
+    <title>Plasma\Types\TypeExtensionsManager | core</title>
+
+            <link rel="stylesheet" type="text/css" href="../../css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="../../css/bootstrap-theme.min.css">
+        <link rel="stylesheet" type="text/css" href="../../css/sami.css">
+        <link rel="stylesheet" type="text/css" href="../../css/prism.css">
+        <script src="../../js/jquery-1.11.1.min.js"></script>
+        <script src="../../js/bootstrap.min.js"></script>
+        <script src="../../js/typeahead.min.js"></script>
+        <script src="../../sami.js"></script>
+        <script src="../../js/prism.js"></script>
+        <meta name="MobileOptimized" content="width">
+        <meta name="HandheldFriendly" content="true">
+        <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+    
+    
+    </head>
+
+    <body id="class" data-name="class:Plasma_Types_TypeExtensionsManager" data-root-path="../../">
+            <div id="content">
+        <div id="left-column">
+                <div id="control-panel">
+                    <form action="#" method="GET">
+                <select id="version-switcher" name="version">
+                                            <option value="../../../v0.1.0/index.html" data-version="v0.1.0">v0.1.0</option>
+                                            <option value="../../../v0.1.1/index.html" data-version="v0.1.1">v0.1.1</option>
+                                            <option value="../../../master/index.html" data-version="master">master</option>
+                                    </select>
+            </form>
+                <script>
+            $('option[data-version="'+window.projectVersion+'"]').prop('selected', true);
+        </script>
+        <form id="search-form" action="../../search.html" method="GET">
+            <span class="glyphicon glyphicon-search"></span>
+            <input name="search"
+                   class="typeahead form-control"
+                   type="search"
+                   placeholder="Search">
+        </form>
+    </div>
+
+                <div id="api-tree"></div>
+
+        </div>
+        <div id="right-column">
+                <nav id="site-nav" class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-elements">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="../../index.html">core</a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-elements">
+                <ul class="nav navbar-nav">
+                    <li><a href="../../classes.html">Classes</a></li>
+                                                                <li><a href="../../namespaces.html">Namespaces</a></li>
+                                        <li><a href="../../interfaces.html">Interfaces</a></li>
+                    <li><a href="../../traits.html">Traits</a></li>
+                    <li><a href="../../doc-index.html">Index</a></li>
+                    <li><a href="../../search.html">Search</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+                        <div class="namespace-breadcrumbs">
+            <ol class="breadcrumb">
+                <li><span class="label label-default">class</span></li>
+                        <li><a href="../../Plasma.html">Plasma</a></li><li class="backslash">\</li><li><a href="../../Plasma/Types.html">Types</a></li><li class="backslash">\</li><li>TypeExtensionsManager</li>
+            </ol>
+        </div>
+                <div id="page-content">
+                
+    <div class="page-header">
+        <h1>
+            TypeExtensionsManager
+                
+        </h1>
+    </div>
+
+    <p>    class
+    <strong>TypeExtensionsManager</strong>        (<a href="https://github.com/PlasmaPHP/core/blob/v0.1.1/src/Types/TypeExtensionsManager.php" target="_blank">View source</a>)
+</p>
+
+        
+    
+
+            <div class="description">
+            <p>The Type Extension Manager manages type extensions globally.</p>            <p>A case, where two different drivers are used in the same application,
+is very rare. As such the normal use case is accessing statically (through the default manager).</p>
+
+<p>Types should be automatically registered by the driver factory,
+UNLESS the user opts-out of this behaviour.</p>
+
+<p>For standard PHP types (such as <code>string</code>, <code>float</code>, etc.),
+the type identifier is the type name (<code>float</code> is used instead of <code>double</code>).
+For classes you can also use an interface name (e.g. <code>JsonSerializable</code>).</p>
+
+<p>Anyone can register a specific manager under a name and access it statically.
+One use case would be to create one specific manager per driver (type), if more than one is used.</p>                    </div>
+    
+    
+            <h2>Constants</h2>
+
+            <table class="table table-condensed">
+                    <tr>
+                <td>GLOBAL_NAME</td>
+                <td class="last">
+                    <p><em>The name for the global Type Extensions Manager.</em></p>
+                    <p></p>
+                                            <pre><code class="language-php">const GLOBAL_NAME = &#039;@me&#039;;</code></pre>
+                                    </td>
+            </tr>
+                    <tr>
+                <td>PHP_TYPES</td>
+                <td class="last">
+                    <p><em>List of PHP types.</em></p>
+                    <p></p>
+                                            <pre><code class="language-php">const PHP_TYPES = array(&#039;string&#039;, &#039;boolean&#039;, &#039;float&#039;, &#039;integer&#039;, &#039;object&#039;, &#039;array&#039;, &#039;resource&#039;, &#039;resource (closed)&#039;, &#039;NULL&#039;);</code></pre>
+                                    </td>
+            </tr>
+            </table>
+
+    
+    
+            <h2>Methods</h2>
+
+            <div class="container-fluid underlined">
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../Plasma/Types/TypeExtensionResultInterface.html"><abbr title="Plasma\Types\TypeExtensionResultInterface">TypeExtensionResultInterface</abbr></a>
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_decodeType">decodeType</a>(mixed|null $type, mixed $value)
+        
+                                            <p>Tries to decode a value.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_disableFuzzySearch">disableFuzzySearch</a>()
+        
+                                            <p>Disables iterating over all types and invoking <code>canHandleType</code>, if quick type check is failing.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_enableFuzzySearch">enableFuzzySearch</a>()
+        
+                                            <p>Enables iterating over all types and invoking <code>canHandleType</code>, if quick type check is failing.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../Plasma/Types/TypeExtensionResultInterface.html"><abbr title="Plasma\Types\TypeExtensionResultInterface">TypeExtensionResultInterface</abbr></a>
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_encodeType">encodeType</a>(mixed $value, <a href="../../Plasma/ColumnDefinitionInterface.html"><abbr title="Plasma\ColumnDefinitionInterface">ColumnDefinitionInterface</abbr></a> $column)
+        
+                                            <p>Tries to encode a value.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    static&nbsp;<a href="../../Plasma/Types/TypeExtensionsManager.html"><abbr title="Plasma\Types\TypeExtensionsManager">TypeExtensionsManager</abbr></a>
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_getManager">getManager</a>(string|null $name = null)
+        
+                                            <p>Get a specific Type Extensions Manager under a specific name.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    static&nbsp;void
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_registerManager">registerManager</a>(string $name, <a href="../../Plasma/Types/TypeExtensionsManager.html"><abbr title="Plasma\Types\TypeExtensionsManager">TypeExtensionsManager</abbr></a>|null $manager = null)
+        
+                                            <p>Registers a specific Type Extensions Manager under a specific name.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_registerSQLType">registerSQLType</a>(mixed $typeIdentifier, <a href="../../Plasma/Types/TypeExtensionInterface.html"><abbr title="Plasma\Types\TypeExtensionInterface">TypeExtensionInterface</abbr></a> $type)
+        
+                                            <p>Registers a type.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_registerType">registerType</a>(mixed $typeIdentifier, <a href="../../Plasma/Types/TypeExtensionInterface.html"><abbr title="Plasma\Types\TypeExtensionInterface">TypeExtensionInterface</abbr></a> $type)
+        
+                                            <p>Registers a type.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    static&nbsp;void
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_unregisterManager">unregisterManager</a>(string $name)
+        
+                                            <p>Unregisters a name. If the name does not exist, this will do nothing.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_unregisterSQLType">unregisterSQLType</a>(mixed $typeIdentifier)
+        
+                                            <p>Unregisters a SQL type. A non-existent type identifier does nothing.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_unregisterType">unregisterType</a>(mixed $typeIdentifier)
+        
+                                            <p>Unregisters a type. A non-existent type identifier does nothing.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+            </div>
+
+
+        <h2>Details</h2>
+
+            <div id="method-details">
+                    <div class="method-item">
+                    <h3 id="method_decodeType">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/v0.1.1/src/Types/TypeExtensionsManager.php#L246">line 246</a></div>
+        <code>                    <a href="../../Plasma/Types/TypeExtensionResultInterface.html"><abbr title="Plasma\Types\TypeExtensionResultInterface">TypeExtensionResultInterface</abbr></a>
+    <strong>decodeType</strong>(mixed|null $type, mixed $value)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Tries to decode a value.</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>mixed|null</td>
+                <td>$type</td>
+                <td>The driver-dependent SQL type identifier. Can be <code>null</code> to not use the fast-path.</td>
+            </tr>
+                    <tr>
+                <td>mixed</td>
+                <td>$value</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../Plasma/Types/TypeExtensionResultInterface.html"><abbr title="Plasma\Types\TypeExtensionResultInterface">TypeExtensionResultInterface</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../../Plasma/Exception.html"><abbr title="Plasma\Exception">Exception</abbr></a></td>
+                <td>Thrown if unable to decode the value.</td>
+            </tr>
+            </table>
+
+            
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_disableFuzzySearch">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/v0.1.1/src/Types/TypeExtensionsManager.php#L181">line 181</a></div>
+        <code>                    void
+    <strong>disableFuzzySearch</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Disables iterating over all types and invoking <code>canHandleType</code>, if quick type check is failing.</p>                                                </div>
+                <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_enableFuzzySearch">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/v0.1.1/src/Types/TypeExtensionsManager.php#L173">line 173</a></div>
+        <code>                    void
+    <strong>enableFuzzySearch</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Enables iterating over all types and invoking <code>canHandleType</code>, if quick type check is failing.</p>                                                </div>
+                <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_encodeType">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/v0.1.1/src/Types/TypeExtensionsManager.php#L192">line 192</a></div>
+        <code>                    <a href="../../Plasma/Types/TypeExtensionResultInterface.html"><abbr title="Plasma\Types\TypeExtensionResultInterface">TypeExtensionResultInterface</abbr></a>
+    <strong>encodeType</strong>(mixed $value, <a href="../../Plasma/ColumnDefinitionInterface.html"><abbr title="Plasma\ColumnDefinitionInterface">ColumnDefinitionInterface</abbr></a> $column)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Tries to encode a value.</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>mixed</td>
+                <td>$value</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td><a href="../../Plasma/ColumnDefinitionInterface.html"><abbr title="Plasma\ColumnDefinitionInterface">ColumnDefinitionInterface</abbr></a></td>
+                <td>$column</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../Plasma/Types/TypeExtensionResultInterface.html"><abbr title="Plasma\Types\TypeExtensionResultInterface">TypeExtensionResultInterface</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../../Plasma/Exception.html"><abbr title="Plasma\Exception">Exception</abbr></a></td>
+                <td>Thrown if unable to encode the value.</td>
+            </tr>
+            </table>
+
+            
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getManager">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/v0.1.1/src/Types/TypeExtensionsManager.php#L73">line 73</a></div>
+        <code>        static            <a href="../../Plasma/Types/TypeExtensionsManager.html"><abbr title="Plasma\Types\TypeExtensionsManager">TypeExtensionsManager</abbr></a>
+    <strong>getManager</strong>(string|null $name = null)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Get a specific Type Extensions Manager under a specific name.</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string|null</td>
+                <td>$name</td>
+                <td>If <code>null</code> is passed, the generic global one will be returned.</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../Plasma/Types/TypeExtensionsManager.html"><abbr title="Plasma\Types\TypeExtensionsManager">TypeExtensionsManager</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../../Plasma/Exception.html"><abbr title="Plasma\Exception">Exception</abbr></a></td>
+                <td>Thrown if the name does not exist.</td>
+            </tr>
+            </table>
+
+            
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_registerManager">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/v0.1.1/src/Types/TypeExtensionsManager.php#L96">line 96</a></div>
+        <code>        static            void
+    <strong>registerManager</strong>(string $name, <a href="../../Plasma/Types/TypeExtensionsManager.html"><abbr title="Plasma\Types\TypeExtensionsManager">TypeExtensionsManager</abbr></a>|null $manager = null)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Registers a specific Type Extensions Manager under a specific name.</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$name</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td><a href="../../Plasma/Types/TypeExtensionsManager.html"><abbr title="Plasma\Types\TypeExtensionsManager">TypeExtensionsManager</abbr></a>|null</td>
+                <td>$manager</td>
+                <td>If <code>null</code> is passed, one will be created.</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../../Plasma/Exception.html"><abbr title="Plasma\Exception">Exception</abbr></a></td>
+                <td>Thrown if the name is already in use.</td>
+            </tr>
+            </table>
+
+            
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_registerSQLType">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/v0.1.1/src/Types/TypeExtensionsManager.php#L152">line 152</a></div>
+        <code>                    void
+    <strong>registerSQLType</strong>(mixed $typeIdentifier, <a href="../../Plasma/Types/TypeExtensionInterface.html"><abbr title="Plasma\Types\TypeExtensionInterface">TypeExtensionInterface</abbr></a> $type)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Registers a type.</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>mixed</td>
+                <td>$typeIdentifier</td>
+                <td>Depends on the driver.</td>
+            </tr>
+                    <tr>
+                <td><a href="../../Plasma/Types/TypeExtensionInterface.html"><abbr title="Plasma\Types\TypeExtensionInterface">TypeExtensionInterface</abbr></a></td>
+                <td>$type</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../../Plasma/Exception.html"><abbr title="Plasma\Exception">Exception</abbr></a></td>
+                <td>Thrown if the type identifier is already in use.</td>
+            </tr>
+            </table>
+
+            
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_registerType">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/v0.1.1/src/Types/TypeExtensionsManager.php#L124">line 124</a></div>
+        <code>                    void
+    <strong>registerType</strong>(mixed $typeIdentifier, <a href="../../Plasma/Types/TypeExtensionInterface.html"><abbr title="Plasma\Types\TypeExtensionInterface">TypeExtensionInterface</abbr></a> $type)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Registers a type.</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>mixed</td>
+                <td>$typeIdentifier</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td><a href="../../Plasma/Types/TypeExtensionInterface.html"><abbr title="Plasma\Types\TypeExtensionInterface">TypeExtensionInterface</abbr></a></td>
+                <td>$type</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../../Plasma/Exception.html"><abbr title="Plasma\Exception">Exception</abbr></a></td>
+                <td>Thrown if the type identifier is already in use.</td>
+            </tr>
+            </table>
+
+            
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_unregisterManager">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/v0.1.1/src/Types/TypeExtensionsManager.php#L113">line 113</a></div>
+        <code>        static            void
+    <strong>unregisterManager</strong>(string $name)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Unregisters a name. If the name does not exist, this will do nothing.</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$name</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_unregisterSQLType">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/v0.1.1/src/Types/TypeExtensionsManager.php#L165">line 165</a></div>
+        <code>                    void
+    <strong>unregisterSQLType</strong>(mixed $typeIdentifier)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Unregisters a SQL type. A non-existent type identifier does nothing.</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>mixed</td>
+                <td>$typeIdentifier</td>
+                <td>The used type identifier. Depends on the driver.</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_unregisterType">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/v0.1.1/src/Types/TypeExtensionsManager.php#L141">line 141</a></div>
+        <code>                    void
+    <strong>unregisterType</strong>(mixed $typeIdentifier)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Unregisters a type. A non-existent type identifier does nothing.</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>mixed</td>
+                <td>$typeIdentifier</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+            </div>
+
+    
+            </div>
+                <div id="footer">
+        Generated by <a href="http://sami.sensiolabs.org/">Sami, the API Documentation Generator</a>.
+    </div>
+
+        </div>
+    </div>
+    </body>
+
+</html>

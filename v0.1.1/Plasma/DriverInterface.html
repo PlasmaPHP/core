@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="robots" content="index, follow, all" />
+    <title>Plasma\DriverInterface | core</title>
+
+            <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="../css/bootstrap-theme.min.css">
+        <link rel="stylesheet" type="text/css" href="../css/sami.css">
+        <link rel="stylesheet" type="text/css" href="../css/prism.css">
+        <script src="../js/jquery-1.11.1.min.js"></script>
+        <script src="../js/bootstrap.min.js"></script>
+        <script src="../js/typeahead.min.js"></script>
+        <script src="../sami.js"></script>
+        <script src="../js/prism.js"></script>
+        <meta name="MobileOptimized" content="width">
+        <meta name="HandheldFriendly" content="true">
+        <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+    
+    
+    </head>
+
+    <body id="class" data-name="class:Plasma_DriverInterface" data-root-path="../">
+            <div id="content">
+        <div id="left-column">
+                <div id="control-panel">
+                    <form action="#" method="GET">
+                <select id="version-switcher" name="version">
+                                            <option value="../../v0.1.0/index.html" data-version="v0.1.0">v0.1.0</option>
+                                            <option value="../../v0.1.1/index.html" data-version="v0.1.1">v0.1.1</option>
+                                            <option value="../../master/index.html" data-version="master">master</option>
+                                    </select>
+            </form>
+                <script>
+            $('option[data-version="'+window.projectVersion+'"]').prop('selected', true);
+        </script>
+        <form id="search-form" action="../search.html" method="GET">
+            <span class="glyphicon glyphicon-search"></span>
+            <input name="search"
+                   class="typeahead form-control"
+                   type="search"
+                   placeholder="Search">
+        </form>
+    </div>
+
+                <div id="api-tree"></div>
+
+        </div>
+        <div id="right-column">
+                <nav id="site-nav" class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-elements">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="../index.html">core</a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-elements">
+                <ul class="nav navbar-nav">
+                    <li><a href="../classes.html">Classes</a></li>
+                                                                <li><a href="../namespaces.html">Namespaces</a></li>
+                                        <li><a href="../interfaces.html">Interfaces</a></li>
+                    <li><a href="../traits.html">Traits</a></li>
+                    <li><a href="../doc-index.html">Index</a></li>
+                    <li><a href="../search.html">Search</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+                        <div class="namespace-breadcrumbs">
+            <ol class="breadcrumb">
+                <li><span class="label label-default">interface</span></li>
+                        <li><a href="../Plasma.html">Plasma</a></li><li class="backslash">\</li><li>DriverInterface</li>
+            </ol>
+        </div>
+                <div id="page-content">
+                
+    <div class="page-header">
+        <h1>
+            DriverInterface
+                
+        </h1>
+    </div>
+
+    <p>    interface
+    <strong>DriverInterface</strong>        implements
+        <abbr title="Evenement\EventEmitterInterface">EventEmitterInterface</abbr>        (<a href="https://github.com/PlasmaPHP/core/blob/v0.1.1/src/DriverInterface.php" target="_blank">View source</a>)
+</p>
+
+        
+    
+
+            <div class="description">
+            <p>The minimum public API a driver has to maintain. The driver MUST emit a <code>close</code> event when it gets disconnected from the server.</p>                                </div>
+    
+    
+            <h2>Constants</h2>
+
+            <table class="table table-condensed">
+                    <tr>
+                <td>CONNECTION_AUTH_OK</td>
+                <td class="last">
+                    <p><em>Received authentication; waiting for backend startup.</em></p>
+                    <p></p>
+                                            <pre><code class="language-php">const CONNECTION_AUTH_OK = 5;</code></pre>
+                                    </td>
+            </tr>
+                    <tr>
+                <td>CONNECTION_AWAITING_RESPONSE</td>
+                <td class="last">
+                    <p><em>Waiting for a response from the server.</em></p>
+                    <p></p>
+                                            <pre><code class="language-php">const CONNECTION_AWAITING_RESPONSE = 4;</code></pre>
+                                    </td>
+            </tr>
+                    <tr>
+                <td>CONNECTION_CLOSED</td>
+                <td class="last">
+                    <p><em>Connection closed.</em></p>
+                    <p></p>
+                                            <pre><code class="language-php">const CONNECTION_CLOSED = 1;</code></pre>
+                                    </td>
+            </tr>
+                    <tr>
+                <td>CONNECTION_MADE</td>
+                <td class="last">
+                    <p><em>Connection OK; waiting to send.</em></p>
+                    <p></p>
+                                            <pre><code class="language-php">const CONNECTION_MADE = 3;</code></pre>
+                                    </td>
+            </tr>
+                    <tr>
+                <td>CONNECTION_OK</td>
+                <td class="last">
+                    <p><em>Connection is made and ready for use.</em></p>
+                    <p></p>
+                                            <pre><code class="language-php">const CONNECTION_OK = 8;</code></pre>
+                                    </td>
+            </tr>
+                    <tr>
+                <td>CONNECTION_SETENV</td>
+                <td class="last">
+                    <p><em>Negotiating environment.</em></p>
+                    <p></p>
+                                            <pre><code class="language-php">const CONNECTION_SETENV = 6;</code></pre>
+                                    </td>
+            </tr>
+                    <tr>
+                <td>CONNECTION_SSL_STARTUP</td>
+                <td class="last">
+                    <p><em>Negotiating SSL.</em></p>
+                    <p></p>
+                                            <pre><code class="language-php">const CONNECTION_SSL_STARTUP = 7;</code></pre>
+                                    </td>
+            </tr>
+                    <tr>
+                <td>CONNECTION_STARTED</td>
+                <td class="last">
+                    <p><em>Waiting for connection to be made.</em></p>
+                    <p></p>
+                                            <pre><code class="language-php">const CONNECTION_STARTED = 2;</code></pre>
+                                    </td>
+            </tr>
+                    <tr>
+                <td>CONNECTION_UNUSABLE</td>
+                <td class="last">
+                    <p><em>The connection is closed and can not be reused.</em></p>
+                    <p></p>
+                                            <pre><code class="language-php">const CONNECTION_UNUSABLE = 0;</code></pre>
+                                    </td>
+            </tr>
+                    <tr>
+                <td>QUOTE_TYPE_IDENTIFIER</td>
+                <td class="last">
+                    <p><em>Quoting should be applied on an identifier (such as table name, column name, etc.)</em></p>
+                    <p></p>
+                                            <pre><code class="language-php">const QUOTE_TYPE_IDENTIFIER = 0;</code></pre>
+                                    </td>
+            </tr>
+                    <tr>
+                <td>QUOTE_TYPE_VALUE</td>
+                <td class="last">
+                    <p><em>Quoting should be applied on a value.</em></p>
+                    <p></p>
+                                            <pre><code class="language-php">const QUOTE_TYPE_VALUE = 1;</code></pre>
+                                    </td>
+            </tr>
+                    <tr>
+                <td>STATE_BUSY</td>
+                <td class="last">
+                    <p><em>Driver is busy.</em></p>
+                    <p></p>
+                                            <pre><code class="language-php">const STATE_BUSY = 1;</code></pre>
+                                    </td>
+            </tr>
+                    <tr>
+                <td>STATE_IDLE</td>
+                <td class="last">
+                    <p><em>Driver is idling and ready for requests.</em></p>
+                    <p></p>
+                                            <pre><code class="language-php">const STATE_IDLE = 0;</code></pre>
+                                    </td>
+            </tr>
+            </table>
+
+    
+    
+            <h2>Methods</h2>
+
+            <div class="container-fluid underlined">
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <abbr title="React\Promise\PromiseInterface">PromiseInterface</abbr>
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_beginTransaction">beginTransaction</a>(<a href="../Plasma/ClientInterface.html"><abbr title="Plasma\ClientInterface">ClientInterface</abbr></a> $client, int $isolation = \Plasma\TransactionInterface::ISOLATION_COMMITTED)
+        
+                                            <p>Begins a transaction. Resolves with a <code>TransactionInterface</code> instance.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <abbr title="React\Promise\PromiseInterface">PromiseInterface</abbr>
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_close">close</a>()
+        
+                                            <p>Closes all connections gracefully after processing all outstanding requests.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <abbr title="React\Promise\PromiseInterface">PromiseInterface</abbr>
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_connect">connect</a>(string $uri)
+        
+                                            <p>Connects to the given URI.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_endTransaction">endTransaction</a>()
+        
+                                            <p>Informationally closes a transaction. This method is used by <code>Transaction</code> to inform the driver of the end of the transaction.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <abbr title="React\Promise\PromiseInterface">PromiseInterface</abbr>
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_execute">execute</a>(<a href="../Plasma/ClientInterface.html"><abbr title="Plasma\ClientInterface">ClientInterface</abbr></a> $client, string $query, array $params = array())
+        
+                                            <p>Prepares and executes a query. Resolves with a <code>QueryResultInterface</code> instance.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    int
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_getBacklogLength">getBacklogLength</a>()
+        
+                                            <p>Get the length of the driver backlog queue.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    int
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_getBusyState">getBusyState</a>()
+        
+                                            <p>Retrieves the current busy state.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    int
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_getConnectionState">getConnectionState</a>()
+        
+                                            <p>Retrieves the current connection state.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_isInTransaction">isInTransaction</a>()
+        
+                                            <p>Whether this driver is currently in a transaction.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_pauseStreamConsumption">pauseStreamConsumption</a>()
+        
+                                            <p>Pauses the underlying stream I/O consumption.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <abbr title="React\Promise\PromiseInterface">PromiseInterface</abbr>
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_prepare">prepare</a>(<a href="../Plasma/ClientInterface.html"><abbr title="Plasma\ClientInterface">ClientInterface</abbr></a> $client, string $query)
+        
+                                            <p>Prepares a query. Resolves with a <code>StatementInterface</code> instance.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <abbr title="React\Promise\PromiseInterface">PromiseInterface</abbr>
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_query">query</a>(<a href="../Plasma/ClientInterface.html"><abbr title="Plasma\ClientInterface">ClientInterface</abbr></a> $client, string $query)
+        
+                                            <p>Executes a plain query. Resolves with a <code>QueryResultInterface</code> instance.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_quit">quit</a>()
+        
+                                            <p>Forcefully closes the connection, without waiting for any outstanding requests. This will reject all outstanding requests.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_quote">quote</a>(string $str, int $type = \Plasma\DriverInterface::QUOTE_TYPE_VALUE)
+        
+                                            <p>Quotes the string for use in the query.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_resumeStreamConsumption">resumeStreamConsumption</a>()
+        
+                                            <p>Resumes the underlying stream I/O consumption.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    mixed
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_runCommand">runCommand</a>(<a href="../Plasma/ClientInterface.html"><abbr title="Plasma\ClientInterface">ClientInterface</abbr></a> $client, <a href="../Plasma/CommandInterface.html"><abbr title="Plasma\CommandInterface">CommandInterface</abbr></a> $command)
+        
+                                            <p>Runs the given command.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+            </div>
+
+
+        <h2>Details</h2>
+
+            <div id="method-details">
+                    <div class="method-item">
+                    <h3 id="method_beginTransaction">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/v0.1.1/src/DriverInterface.php#L225">line 225</a></div>
+        <code>                    <abbr title="React\Promise\PromiseInterface">PromiseInterface</abbr>
+    <strong>beginTransaction</strong>(<a href="../Plasma/ClientInterface.html"><abbr title="Plasma\ClientInterface">ClientInterface</abbr></a> $client, int $isolation = \Plasma\TransactionInterface::ISOLATION_COMMITTED)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Begins a transaction. Resolves with a <code>TransactionInterface</code> instance.</p>                    <p>Checks out a connection until the transaction gets committed or rolled back.
+It must be noted that the user is responsible for finishing the transaction. The client WILL NOT automatically
+check the connection back into the pool, as long as the transaction is not finished.</p>
+
+<p>Some databases, including MySQL, automatically issue an implicit COMMIT when a database definition language (DDL)
+statement such as DROP TABLE or CREATE TABLE is issued within a transaction.
+The implicit COMMIT will prevent you from rolling back any other changes within the transaction boundary.</p>                            </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../Plasma/ClientInterface.html"><abbr title="Plasma\ClientInterface">ClientInterface</abbr></a></td>
+                <td>$client</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>int</td>
+                <td>$isolation</td>
+                <td>See the <code>TransactionInterface</code> constants.</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><abbr title="React\Promise\PromiseInterface">PromiseInterface</abbr></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../Plasma/Exception.html"><abbr title="Plasma\Exception">Exception</abbr></a></td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>See also</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>
+                                            <a href="../Plasma/TransactionInterface.html"><abbr title="Plasma\TransactionInterface">TransactionInterface</abbr></a>
+                                    </td>
+                <td></td>
+            </tr>
+            </table>
+
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_close">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/v0.1.1/src/DriverInterface.php#L150">line 150</a></div>
+        <code>                    <abbr title="React\Promise\PromiseInterface">PromiseInterface</abbr>
+    <strong>close</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Closes all connections gracefully after processing all outstanding requests.</p>                                                </div>
+                <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><abbr title="React\Promise\PromiseInterface">PromiseInterface</abbr></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_connect">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/v0.1.1/src/DriverInterface.php#L130">line 130</a></div>
+        <code>                    <abbr title="React\Promise\PromiseInterface">PromiseInterface</abbr>
+    <strong>connect</strong>(string $uri)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Connects to the given URI.</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$uri</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><abbr title="React\Promise\PromiseInterface">PromiseInterface</abbr></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_endTransaction">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/v0.1.1/src/DriverInterface.php#L231">line 231</a></div>
+        <code>                    void
+    <strong>endTransaction</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Informationally closes a transaction. This method is used by <code>Transaction</code> to inform the driver of the end of the transaction.</p>                                                </div>
+                <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_execute">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/v0.1.1/src/DriverInterface.php#L197">line 197</a></div>
+        <code>                    <abbr title="React\Promise\PromiseInterface">PromiseInterface</abbr>
+    <strong>execute</strong>(<a href="../Plasma/ClientInterface.html"><abbr title="Plasma\ClientInterface">ClientInterface</abbr></a> $client, string $query, array $params = array())
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Prepares and executes a query. Resolves with a <code>QueryResultInterface</code> instance.</p>                    <p>This is equivalent to prepare -> execute -> close.
+If you need to execute a query multiple times, prepare the query manually for performance reasons.</p>                            </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../Plasma/ClientInterface.html"><abbr title="Plasma\ClientInterface">ClientInterface</abbr></a></td>
+                <td>$client</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$query</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$params</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><abbr title="React\Promise\PromiseInterface">PromiseInterface</abbr></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../Plasma/Exception.html"><abbr title="Plasma\Exception">Exception</abbr></a></td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>See also</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>
+                                            <a href="../Plasma/StatementInterface.html"><abbr title="Plasma\StatementInterface">StatementInterface</abbr></a>
+                                    </td>
+                <td></td>
+            </tr>
+            </table>
+
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getBacklogLength">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/v0.1.1/src/DriverInterface.php#L123">line 123</a></div>
+        <code>                    int
+    <strong>getBacklogLength</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Get the length of the driver backlog queue.</p>                                                </div>
+                <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>int</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getBusyState">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/v0.1.1/src/DriverInterface.php#L117">line 117</a></div>
+        <code>                    int
+    <strong>getBusyState</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Retrieves the current busy state.</p>                                                </div>
+                <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>int</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getConnectionState">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/v0.1.1/src/DriverInterface.php#L111">line 111</a></div>
+        <code>                    int
+    <strong>getConnectionState</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Retrieves the current connection state.</p>                                                </div>
+                <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>int</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_isInTransaction">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/v0.1.1/src/DriverInterface.php#L162">line 162</a></div>
+        <code>                    bool
+    <strong>isInTransaction</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Whether this driver is currently in a transaction.</p>                                                </div>
+                <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_pauseStreamConsumption">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/v0.1.1/src/DriverInterface.php#L137">line 137</a></div>
+        <code>                    bool
+    <strong>pauseStreamConsumption</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Pauses the underlying stream I/O consumption.</p>                    <p>If consumption is already paused, this will do nothing.</p>                            </div>
+                <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td>Whether the operation was successful.</td>
+        </tr>
+    </table>
+
+            
+            
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_prepare">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/v0.1.1/src/DriverInterface.php#L184">line 184</a></div>
+        <code>                    <abbr title="React\Promise\PromiseInterface">PromiseInterface</abbr>
+    <strong>prepare</strong>(<a href="../Plasma/ClientInterface.html"><abbr title="Plasma\ClientInterface">ClientInterface</abbr></a> $client, string $query)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Prepares a query. Resolves with a <code>StatementInterface</code> instance.</p>                    <p>When the command is done, the driver must check itself back into the client.</p>                            </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../Plasma/ClientInterface.html"><abbr title="Plasma\ClientInterface">ClientInterface</abbr></a></td>
+                <td>$client</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$query</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><abbr title="React\Promise\PromiseInterface">PromiseInterface</abbr></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../Plasma/Exception.html"><abbr title="Plasma\Exception">Exception</abbr></a></td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>See also</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>
+                                            <a href="../Plasma/StatementInterface.html"><abbr title="Plasma\StatementInterface">StatementInterface</abbr></a>
+                                    </td>
+                <td></td>
+            </tr>
+            </table>
+
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_query">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/v0.1.1/src/DriverInterface.php#L173">line 173</a></div>
+        <code>                    <abbr title="React\Promise\PromiseInterface">PromiseInterface</abbr>
+    <strong>query</strong>(<a href="../Plasma/ClientInterface.html"><abbr title="Plasma\ClientInterface">ClientInterface</abbr></a> $client, string $query)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Executes a plain query. Resolves with a <code>QueryResultInterface</code> instance.</p>                    <p>When the command is done, the driver must check itself back into the client.</p>                            </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../Plasma/ClientInterface.html"><abbr title="Plasma\ClientInterface">ClientInterface</abbr></a></td>
+                <td>$client</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$query</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><abbr title="React\Promise\PromiseInterface">PromiseInterface</abbr></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../Plasma/Exception.html"><abbr title="Plasma\Exception">Exception</abbr></a></td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>See also</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>
+                                            <a href="../Plasma/QueryResultInterface.html"><abbr title="Plasma\QueryResultInterface">QueryResultInterface</abbr></a>
+                                    </td>
+                <td></td>
+            </tr>
+            </table>
+
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_quit">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/v0.1.1/src/DriverInterface.php#L156">line 156</a></div>
+        <code>                    void
+    <strong>quit</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Forcefully closes the connection, without waiting for any outstanding requests. This will reject all outstanding requests.</p>                                                </div>
+                <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_quote">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/v0.1.1/src/DriverInterface.php#L207">line 207</a></div>
+        <code>                    string
+    <strong>quote</strong>(string $str, int $type = \Plasma\DriverInterface::QUOTE_TYPE_VALUE)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Quotes the string for use in the query.</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$str</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>int</td>
+                <td>$type</td>
+                <td>For types, see the constants.</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="https://secure.php.net/LogicException" target="_blank">LogicException</a></td>
+                <td>Thrown if the driver does not support quoting.</td>
+            </tr>
+                    <tr>
+                <td><a href="../Plasma/Exception.html"><abbr title="Plasma\Exception">Exception</abbr></a></td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_resumeStreamConsumption">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/v0.1.1/src/DriverInterface.php#L144">line 144</a></div>
+        <code>                    bool
+    <strong>resumeStreamConsumption</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Resumes the underlying stream I/O consumption.</p>                    <p>If consumption is not paused, this will do nothing.</p>                            </div>
+                <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td>Whether the operation was successful.</td>
+        </tr>
+    </table>
+
+            
+            
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_runCommand">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/v0.1.1/src/DriverInterface.php#L240">line 240</a></div>
+        <code>                    mixed
+    <strong>runCommand</strong>(<a href="../Plasma/ClientInterface.html"><abbr title="Plasma\ClientInterface">ClientInterface</abbr></a> $client, <a href="../Plasma/CommandInterface.html"><abbr title="Plasma\CommandInterface">CommandInterface</abbr></a> $command)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Runs the given command.</p>                    <p>When the command is done, the driver must check itself back into the client.</p>                            </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../Plasma/ClientInterface.html"><abbr title="Plasma\ClientInterface">ClientInterface</abbr></a></td>
+                <td>$client</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td><a href="../Plasma/CommandInterface.html"><abbr title="Plasma\CommandInterface">CommandInterface</abbr></a></td>
+                <td>$command</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>mixed</td>
+            <td>Return depends on command and driver.</td>
+        </tr>
+    </table>
+
+            
+            
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+            </div>
+
+    
+            </div>
+                <div id="footer">
+        Generated by <a href="http://sami.sensiolabs.org/">Sami, the API Documentation Generator</a>.
+    </div>
+
+        </div>
+    </div>
+    </body>
+
+</html>

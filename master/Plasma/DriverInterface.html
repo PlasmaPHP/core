@@ -28,6 +28,7 @@
                     <form action="#" method="GET">
                 <select id="version-switcher" name="version">
                                             <option value="../../v0.1.0/index.html" data-version="v0.1.0">v0.1.0</option>
+                                            <option value="../../v0.1.1/index.html" data-version="v0.1.1">v0.1.1</option>
                                             <option value="../../master/index.html" data-version="master">master</option>
                                     </select>
             </form>
@@ -370,6 +371,16 @@
                     <a href="#method_runCommand">runCommand</a>(<a href="../Plasma/ClientInterface.html"><abbr title="Plasma\ClientInterface">ClientInterface</abbr></a> $client, <a href="../Plasma/CommandInterface.html"><abbr title="Plasma\CommandInterface">CommandInterface</abbr></a> $command)
         
                                             <p>Runs the given command.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <abbr title="React\Promise\PromiseInterface">PromiseInterface</abbr>
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_runQuery">runQuery</a>(<a href="../Plasma/ClientInterface.html"><abbr title="Plasma\ClientInterface">ClientInterface</abbr></a> $client, <a href="../Plasma/QuerybuilderInterface.html"><abbr title="Plasma\QuerybuilderInterface">QuerybuilderInterface</abbr></a> $query)
+        
+                                            <p>Runs the given querybuilder.</p>                </div>
                 <div class="col-md-2"></div>
             </div>
             </div>
@@ -1088,6 +1099,63 @@ If you need to execute a query multiple times, prepare the query manually for pe
     </table>
 
             
+            
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_runQuery">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/DriverInterface.php#L251">line 251</a></div>
+        <code>                    <abbr title="React\Promise\PromiseInterface">PromiseInterface</abbr>
+    <strong>runQuery</strong>(<a href="../Plasma/ClientInterface.html"><abbr title="Plasma\ClientInterface">ClientInterface</abbr></a> $client, <a href="../Plasma/QuerybuilderInterface.html"><abbr title="Plasma\QuerybuilderInterface">QuerybuilderInterface</abbr></a> $query)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Runs the given querybuilder.</p>                    <p>The driver CAN throw an exception if the given querybuilder is not supported.
+An example would be a SQL querybuilder and a Cassandra driver.</p>                            </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../Plasma/ClientInterface.html"><abbr title="Plasma\ClientInterface">ClientInterface</abbr></a></td>
+                <td>$client</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td><a href="../Plasma/QuerybuilderInterface.html"><abbr title="Plasma\QuerybuilderInterface">QuerybuilderInterface</abbr></a></td>
+                <td>$query</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><abbr title="React\Promise\PromiseInterface">PromiseInterface</abbr></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../Plasma/Exception.html"><abbr title="Plasma\Exception">Exception</abbr></a></td>
+                <td></td>
+            </tr>
+            </table>
+
             
                         
                         
