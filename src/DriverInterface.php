@@ -238,4 +238,15 @@ interface DriverInterface extends \Evenement\EventEmitterInterface {
      * @return mixed  Return depends on command and driver.
      */
     function runCommand(\Plasma\ClientInterface $client, \Plasma\CommandInterface $command);
+    
+    /**
+     * Runs the given querybuilder.
+     * The driver CAN throw an exception if the given querybuilder is not supported.
+     * An example would be a SQL querybuilder and a Cassandra driver.
+     * @param \Plasma\ClientInterface        $client
+     * @param \Plasma\QuerybuilderInterface  $query
+     * @return \React\Promise\PromiseInterface
+     * @throws \Plasma\Exception
+     */
+    function runQuery(\Plasma\ClientInterface $client, \Plasma\QuerybuilderInterface $query): \React\Promise\PromiseInterface;
 }

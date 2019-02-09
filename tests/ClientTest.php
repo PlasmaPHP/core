@@ -382,6 +382,37 @@ class ClientTest extends ClientTestHelpers {
         $client->runCommand($command);
     }
     
+    function testRunQuery() {
+        $client = $this->createClient();
+        
+        $query = $this->getMockBuilder(\Plasma\QuerybuilderInterface::class)
+            ->getMock();
+        
+        $this->driver
+            ->expects($this->once())
+            ->method('runQuery')
+            ->with($client, $query)
+            ->will($this->returnValue(\React\Promise\resolve()));
+        
+        $promise = $client->runQuery($query);
+        $this->assertInstanceOf(\React\Promise\PromiseInterface::class, $promise);
+    }
+    
+    function testRunQueryGoingAway() {
+        $client = $this->createClient();
+        
+        $this->assertNull($client->quit());
+        
+        $query = $this->getMockBuilder(\Plasma\QuerybuilderInterface::class)
+            ->getMock();
+        
+        $promise = $client->runQuery($query);
+        $this->assertInstanceOf(\React\Promise\PromiseInterface::class, $promise);
+        
+        $this->expectException(\Plasma\Exception::class);
+        $this->await($promise);
+    }
+    
     function testLazyCreateConnection() {
         $client = $this->createClient(array('connections.lazy' => true));
         

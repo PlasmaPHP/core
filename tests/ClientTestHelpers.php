@@ -69,7 +69,8 @@ class ClientTestHelpers extends TestCase {
                 'checkinConnection',
                 'close',
                 'quit',
-                'runCommand'
+                'runCommand',
+                'runQuery'
             ))
             ->getMock();
     }
@@ -93,6 +94,7 @@ class ClientTestHelpers extends TestCase {
                 'beginTransaction',
                 'endTransaction',
                 'runCommand',
+                'runQuery',
                 'listeners',
                 'on',
                 'once',
