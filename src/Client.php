@@ -223,8 +223,9 @@ class Client implements ClientInterface {
         
         try {
             $quoted = $connection->quote($str, $type);
-        } finally {
+        } catch (\Throwable $e) {
             $this->checkinConnection($connection);
+            throw $e;
         }
         
         return $quoted;
@@ -299,8 +300,9 @@ class Client implements ClientInterface {
         
         try {
             return $connection->runCommand($this, $command);
-        } finally {
+        } catch (\Throwable $e) {
             $this->checkinConnection($connection);
+            throw $e;
         }
     }
     
@@ -321,8 +323,9 @@ class Client implements ClientInterface {
         
         try {
             return $connection->runQuery($this, $query);
-        } finally {
+        } catch (\Throwable $e) {
             $this->checkinConnection($connection);
+            throw $e;
         }
     }
     
