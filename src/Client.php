@@ -220,9 +220,13 @@ class Client implements ClientInterface {
         }
         
         $connection = $this->getOptimalConnection();
-        $quoted = $connection->quote($str, $type);
         
-        $this->checkinConnection($connection);
+        try {
+            $quoted = $connection->quote($str, $type);
+        } finally {
+            $this->checkinConnection($connection);
+        }
+        
         return $quoted;
     }
     
@@ -292,7 +296,12 @@ class Client implements ClientInterface {
         }
         
         $connection = $this->getOptimalConnection();
-        return $connection->runCommand($this, $command);
+        
+        try {
+            return $connection->runCommand($this, $command);
+        } finally {
+            $this->checkinConnection($connection);
+        }
     }
     
     /**
@@ -309,7 +318,12 @@ class Client implements ClientInterface {
         }
         
         $connection = $this->getOptimalConnection();
-        return $connection->runQuery($this, $query);
+        
+        try {
+            return $connection->runQuery($this, $query);
+        } finally {
+            $this->checkinConnection($connection);
+        }
     }
     
     /**
