@@ -126,6 +126,7 @@ interface DriverInterface extends \Evenement\EventEmitterInterface {
      * Connects to the given URI.
      * @param string  $uri
      * @return \React\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     function connect(string $uri): \React\Promise\PromiseInterface;
     

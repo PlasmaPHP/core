@@ -63,6 +63,7 @@ class Client implements ClientInterface {
      * @param string                          $uri
      * @param array                           $options
      * @throws \InvalidArgumentException
+     * @throws \InvalidArgumentException  The driver may throw this exception when invalid arguments (connect uri) were given, this may be thrown later when connecting lazy.
      */
     function __construct(\Plasma\DriverFactoryInterface $factory, string $uri, array $options = array()) {
         $this->validateOptions($options);
