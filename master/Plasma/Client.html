@@ -256,7 +256,7 @@
             <div id="method-details">
                     <div class="method-item">
                     <h3 id="method___construct">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/Client.php#L67">line 67</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/Client.php#L68">line 68</a></div>
         <code>                    
     <strong>__construct</strong>(<a href="../Plasma/DriverFactoryInterface.html"><abbr title="Plasma\DriverFactoryInterface">DriverFactoryInterface</abbr></a> $factory, string $uri, array $options = array())
         </code>
@@ -304,6 +304,10 @@
                 <td><a href="https://secure.php.net/InvalidArgumentException" target="_blank">InvalidArgumentException</a></td>
                 <td></td>
             </tr>
+                    <tr>
+                <td><a href="https://secure.php.net/InvalidArgumentException" target="_blank">InvalidArgumentException</a></td>
+                <td>The driver may throw this exception when invalid arguments (connect uri) were given, this may be thrown later when connecting lazy.</td>
+            </tr>
             </table>
 
             
@@ -315,7 +319,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_beginTransaction">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/Client.php#L132">line 132</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/Client.php#L133">line 133</a></div>
         <code>                    <abbr title="React\Promise\PromiseInterface">PromiseInterface</abbr>
     <strong>beginTransaction</strong>(int $isolation = \Plasma\TransactionInterface::ISOLATION_COMMITTED)
         </code>
@@ -382,7 +386,7 @@ The implicit COMMIT will prevent you from rolling back any other changes within 
             </div>
                     <div class="method-item">
                     <h3 id="method_checkinConnection">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/Client.php#L111">line 111</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/Client.php#L112">line 112</a></div>
         <code>                    void
     <strong>checkinConnection</strong>(<a href="../Plasma/DriverInterface.html"><abbr title="Plasma\DriverInterface">DriverInterface</abbr></a> $driver)
         </code>
@@ -424,7 +428,7 @@ The implicit COMMIT will prevent you from rolling back any other changes within 
             </div>
                     <div class="method-item">
                     <h3 id="method_close">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/Client.php#L238">line 238</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/Client.php#L239">line 239</a></div>
         <code>                    <abbr title="React\Promise\PromiseInterface">PromiseInterface</abbr>
     <strong>close</strong>()
         </code>
@@ -456,7 +460,7 @@ The implicit COMMIT will prevent you from rolling back any other changes within 
             </div>
                     <div class="method-item">
                     <h3 id="method_create">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/Client.php#L94">line 94</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/Client.php#L95">line 95</a></div>
         <code>        static            <a href="../Plasma/ClientInterface.html"><abbr title="Plasma\ClientInterface">ClientInterface</abbr></a>
     <strong>create</strong>(<a href="../Plasma/DriverFactoryInterface.html"><abbr title="Plasma\DriverFactoryInterface">DriverFactoryInterface</abbr></a> $factory, string $uri, array $options = array())
         </code>
@@ -528,7 +532,7 @@ The implicit COMMIT will prevent you from rolling back any other changes within 
             </div>
                     <div class="method-item">
                     <h3 id="method_execute">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/Client.php#L193">line 193</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/Client.php#L194">line 194</a></div>
         <code>                    <abbr title="React\Promise\PromiseInterface">PromiseInterface</abbr>
     <strong>execute</strong>(string $query, array $params = array())
         </code>
@@ -596,7 +600,7 @@ If you need to execute a query multiple times, prepare the query manually for pe
             </div>
                     <div class="method-item">
                     <h3 id="method_getConnectionCount">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/Client.php#L102">line 102</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/Client.php#L103">line 103</a></div>
         <code>                    int
     <strong>getConnectionCount</strong>()
         </code>
@@ -628,7 +632,7 @@ If you need to execute a query multiple times, prepare the query manually for pe
             </div>
                     <div class="method-item">
                     <h3 id="method_prepare">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/Client.php#L170">line 170</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/Client.php#L171">line 171</a></div>
         <code>                    <abbr title="React\Promise\PromiseInterface">PromiseInterface</abbr>
     <strong>prepare</strong>(string $query)
         </code>
@@ -681,7 +685,7 @@ If you need to execute a query multiple times, prepare the query manually for pe
             </div>
                     <div class="method-item">
                     <h3 id="method_query">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/Client.php#L151">line 151</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/Client.php#L152">line 152</a></div>
         <code>                    <abbr title="React\Promise\PromiseInterface">PromiseInterface</abbr>
     <strong>query</strong>(string $query)
         </code>
@@ -734,7 +738,7 @@ If you need to execute a query multiple times, prepare the query manually for pe
             </div>
                     <div class="method-item">
                     <h3 id="method_quit">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/Client.php#L268">line 268</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/Client.php#L269">line 269</a></div>
         <code>                    void
     <strong>quit</strong>()
         </code>
@@ -766,7 +770,7 @@ If you need to execute a query multiple times, prepare the query manually for pe
             </div>
                     <div class="method-item">
                     <h3 id="method_quote">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/Client.php#L217">line 217</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/Client.php#L218">line 218</a></div>
         <code>                    string
     <strong>quote</strong>(string $str, int $type = \Plasma\DriverInterface::QUOTE_TYPE_VALUE)
         </code>
@@ -826,7 +830,7 @@ If you need to execute a query multiple times, prepare the query manually for pe
             </div>
                     <div class="method-item">
                     <h3 id="method_runCommand">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/Client.php#L294">line 294</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/Client.php#L295">line 295</a></div>
         <code>                    mixed
     <strong>runCommand</strong>(<a href="../Plasma/CommandInterface.html"><abbr title="Plasma\CommandInterface">CommandInterface</abbr></a> $command)
         </code>
@@ -877,7 +881,7 @@ If you need to execute a query multiple times, prepare the query manually for pe
             </div>
                     <div class="method-item">
                     <h3 id="method_runQuery">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/Client.php#L317">line 317</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/Client.php#L318">line 318</a></div>
         <code>                    <abbr title="React\Promise\PromiseInterface">PromiseInterface</abbr>
     <strong>runQuery</strong>(<a href="../Plasma/QuerybuilderInterface.html"><abbr title="Plasma\QuerybuilderInterface">QuerybuilderInterface</abbr></a> $query)
         </code>
