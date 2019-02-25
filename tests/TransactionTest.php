@@ -350,6 +350,64 @@ class TransactionTest extends ClientTestHelpers {
         $prom2 = $transaction->execute('SELECT 1');
     }
     
+    function testRunQuery() {
+        $client = $this->createClient(array('connections.lazy' => true));
+        $driver = $this->getDriverMock();
+        
+        $transaction = new \Plasma\Transaction($client, $driver, \Plasma\TransactionInterface::ISOLATION_SERIALIZABLE);
+        
+        $qb = $this->getMockBuilder(\Plasma\QuerybuilderInterface::class)
+            ->setMethods(array(
+                'create',
+                'getQuery',
+                'getParameters'
+            ))
+            ->getMock();
+        
+        $driver->expects($this->once())
+            ->method('runQuery')
+            ->with($client, $qb)
+            ->will($this->returnValue(\React\Promise\resolve()));
+        
+        $prom = $transaction->runQuery($qb);
+        $this->assertInstanceOf(\React\Promise\PromiseInterface::class, $prom);
+        
+        $this->await($prom);
+    }
+    
+    function testRunQueryFail() {
+        $client = $this->createClient(array('connections.lazy' => true));
+        $driver = $this->getDriverMock();
+        
+        $transaction = new \Plasma\Transaction($client, $driver, \Plasma\TransactionInterface::ISOLATION_SERIALIZABLE);
+        
+        $driver->expects($this->once())
+            ->method('query')
+            ->with($client, 'COMMIT')
+            ->will($this->returnValue(\React\Promise\resolve()));
+        
+        $prom = $transaction->commit();
+        $this->assertInstanceOf(\React\Promise\PromiseInterface::class, $prom);
+        
+        $this->await($prom);
+        
+        $qb = $this->getMockBuilder(\Plasma\QuerybuilderInterface::class)
+            ->setMethods(array(
+                'create',
+                'getQuery',
+                'getParameters'
+            ))
+            ->getMock();
+        
+        $driver->expects($this->never())
+            ->method('runQuery')
+            ->with($client, $qb)
+            ->will($this->returnValue(\React\Promise\resolve()));
+        
+        $this->expectException(\Plasma\TransactionException::class);
+        $prom2 = $transaction->runQuery($qb);
+    }
+    
     function testQuote() {
         $client = $this->createClient(array('connections.lazy' => true));
         $driver = $this->getDriverMock();
