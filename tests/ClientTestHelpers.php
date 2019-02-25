@@ -104,4 +104,19 @@ class ClientTestHelpers extends TestCase {
             ))
             ->getMock();
     }
+    
+    function getColDefMock(...$args): \Plasma\ColumnDefinitionInterface {
+        return $this->getMockBuilder(\Plasma\ColumnDefinition::class)
+            ->setMethods(array(
+                'isNullable',
+                'isAutoIncrement',
+                'isPrimaryKey',
+                'isUniqueKey',
+                'isMultipleKey',
+                'isUnsigned',
+                'isZerofilled'
+            ))
+            ->setConstructorArgs($args)
+            ->getMockForAbstractClass();
+    }
 }

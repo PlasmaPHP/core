@@ -56,6 +56,42 @@ interface ColumnDefinitionInterface {
     function isNullable(): bool;
     
     /**
+     * Whether the column is auto incremented.
+     * @return bool
+     */
+    function isAutoIncrement(): bool;
+    
+    /**
+     * Whether the column is the primary key.
+     * @return bool
+     */
+    function isPrimaryKey(): bool;
+    
+    /**
+     * Whether the column is the unique key.
+     * @return bool
+     */
+    function isUniqueKey(): bool;
+    
+    /**
+     * Whether the column is part of a multiple/composite key.
+     * @return bool
+     */
+    function isMultipleKey(): bool;
+    
+    /**
+     * Whether the column is unsigned (only makes sense for numeric types).
+     * @return bool
+     */
+    function isUnsigned(): bool;
+    
+    /**
+     * Whether the column gets zerofilled to the length.
+     * @return bool
+     */
+    function isZerofilled(): bool;
+    
+    /**
      * Get the column flags.
      * @return int
      */

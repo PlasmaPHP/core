@@ -12,7 +12,7 @@ namespace Plasma;
 /**
  * Column Definitions define columns (who would've thought of that?). Such as their name, type, length, etc.
  */
-class ColumnDefinition implements ColumnDefinitionInterface {
+abstract class ColumnDefinition implements ColumnDefinitionInterface {
     /**
      * @var string
      */
@@ -44,11 +44,6 @@ class ColumnDefinition implements ColumnDefinitionInterface {
     protected $length;
     
     /**
-     * @var bool
-     */
-    protected $nullable;
-    
-    /**
      * @var int
      */
     protected $flags;
@@ -66,18 +61,16 @@ class ColumnDefinition implements ColumnDefinitionInterface {
      * @param string    $type
      * @param string    $charset
      * @param int|null  $length
-     * @param bool      $nullable
      * @param int       $flags
      * @param int|null  $decimals
      */
-    function __construct(string $database, string $table, string $name, string $type, string $charset, ?int $length, bool $nullable, int $flags, ?int $decimals) {
+    function __construct(string $database, string $table, string $name, string $type, string $charset, ?int $length, int $flags, ?int $decimals) {
         $this->database = $database;
         $this->table = $table;
         $this->name = $name;
         $this->type = $type;
         $this->charset = $charset;
         $this->length = $length;
-        $this->nullable = $nullable;
         $this->flags = $flags;
         $this->decimals = $decimals;
     }
@@ -128,14 +121,6 @@ class ColumnDefinition implements ColumnDefinitionInterface {
      */
     function getLength(): ?int {
         return $this->length;
-    }
-    
-    /**
-     * Whether the column is nullable (not `NOT NULL`).
-     * @return bool
-     */
-    function isNullable(): bool {
-        return $this->nullable;
     }
     
     /**
