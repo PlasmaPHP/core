@@ -87,7 +87,7 @@
         </h1>
     </div>
 
-    <p>    class
+    <p>abstract     class
     <strong>ColumnDefinition</strong>        implements
         <a href="../Plasma/ColumnDefinitionInterface.html"><abbr title="Plasma\ColumnDefinitionInterface">ColumnDefinitionInterface</abbr></a>        (<a href="https://github.com/PlasmaPHP/core/blob/master/src/ColumnDefinition.php" target="_blank">View source</a>)
 </p>
@@ -109,7 +109,7 @@
                     
                 </div>
                 <div class="col-md-8 type">
-                    <a href="#method___construct">__construct</a>(string $database, string $table, string $name, string $type, string $charset, int|null $length, bool $nullable, int $flags, int|null $decimals)
+                    <a href="#method___construct">__construct</a>(string $database, string $table, string $name, string $type, string $charset, int|null $length, int $flags, int|null $decimals)
         
                                             <p>Constructor.</p>                </div>
                 <div class="col-md-2"></div>
@@ -196,16 +196,6 @@
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    bool
-                </div>
-                <div class="col-md-8 type">
-                    <a href="#method_isNullable">isNullable</a>()
-        
-                                            <p>Whether the column is nullable (not <code>NOT NULL</code>).</p>                </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
                     mixed
                 </div>
                 <div class="col-md-8 type">
@@ -222,9 +212,9 @@
             <div id="method-details">
                     <div class="method-item">
                     <h3 id="method___construct">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/ColumnDefinition.php#L73">line 73</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/ColumnDefinition.php#L67">line 67</a></div>
         <code>                    
-    <strong>__construct</strong>(string $database, string $table, string $name, string $type, string $charset, int|null $length, bool $nullable, int $flags, int|null $decimals)
+    <strong>__construct</strong>(string $database, string $table, string $name, string $type, string $charset, int|null $length, int $flags, int|null $decimals)
         </code>
     </h3>
     <div class="details">
@@ -268,11 +258,6 @@
                 <td></td>
             </tr>
                     <tr>
-                <td>bool</td>
-                <td>$nullable</td>
-                <td></td>
-            </tr>
-                    <tr>
                 <td>int</td>
                 <td>$flags</td>
                 <td></td>
@@ -295,7 +280,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getCharset">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/ColumnDefinition.php#L121">line 121</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/ColumnDefinition.php#L114">line 114</a></div>
         <code>                    string
     <strong>getCharset</strong>()
         </code>
@@ -327,7 +312,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getDatabaseName">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/ColumnDefinition.php#L89">line 89</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/ColumnDefinition.php#L82">line 82</a></div>
         <code>                    string
     <strong>getDatabaseName</strong>()
         </code>
@@ -359,7 +344,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getDecimals">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/ColumnDefinition.php#L153">line 153</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/ColumnDefinition.php#L138">line 138</a></div>
         <code>                    int|null
     <strong>getDecimals</strong>()
         </code>
@@ -391,7 +376,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getFlags">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/ColumnDefinition.php#L145">line 145</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/ColumnDefinition.php#L130">line 130</a></div>
         <code>                    int
     <strong>getFlags</strong>()
         </code>
@@ -423,7 +408,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getLength">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/ColumnDefinition.php#L129">line 129</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/ColumnDefinition.php#L122">line 122</a></div>
         <code>                    int|null
     <strong>getLength</strong>()
         </code>
@@ -455,7 +440,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getName">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/ColumnDefinition.php#L105">line 105</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/ColumnDefinition.php#L98">line 98</a></div>
         <code>                    string
     <strong>getName</strong>()
         </code>
@@ -487,7 +472,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getTableName">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/ColumnDefinition.php#L97">line 97</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/ColumnDefinition.php#L90">line 90</a></div>
         <code>                    string
     <strong>getTableName</strong>()
         </code>
@@ -519,7 +504,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getType">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/ColumnDefinition.php#L113">line 113</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/ColumnDefinition.php#L106">line 106</a></div>
         <code>                    string
     <strong>getType</strong>()
         </code>
@@ -550,40 +535,8 @@
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_isNullable">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/ColumnDefinition.php#L137">line 137</a></div>
-        <code>                    bool
-    <strong>isNullable</strong>()
-        </code>
-    </h3>
-    <div class="details">
-            
-    
-
-                    <div class="method-description">
-                                    <p>Whether the column is nullable (not <code>NOT NULL</code>).</p>                                                </div>
-                <div class="tags">
-            
-                            <h4>Return Value</h4>
-
-                    <table class="table table-condensed">
-        <tr>
-            <td>bool</td>
-            <td></td>
-        </tr>
-    </table>
-
-            
-            
-                        
-                        
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
                     <h3 id="method_parseValue">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/ColumnDefinition.php#L162">line 162</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/ColumnDefinition.php#L147">line 147</a></div>
         <code>                    mixed
     <strong>parseValue</strong>(mixed $value)
         </code>

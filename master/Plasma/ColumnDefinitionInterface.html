@@ -188,9 +188,69 @@
                     bool
                 </div>
                 <div class="col-md-8 type">
+                    <a href="#method_isAutoIncrement">isAutoIncrement</a>()
+        
+                                            <p>Whether the column is auto incremented.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_isMultipleKey">isMultipleKey</a>()
+        
+                                            <p>Whether the column is part of a multiple/composite key.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8 type">
                     <a href="#method_isNullable">isNullable</a>()
         
                                             <p>Whether the column is nullable (not <code>NOT NULL</code>).</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_isPrimaryKey">isPrimaryKey</a>()
+        
+                                            <p>Whether the column is the primary key.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_isUniqueKey">isUniqueKey</a>()
+        
+                                            <p>Whether the column is the unique key.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_isUnsigned">isUnsigned</a>()
+        
+                                            <p>Whether the column is unsigned (only makes sense for numeric types).</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_isZerofilled">isZerofilled</a>()
+        
+                                            <p>Whether the column gets zerofilled to the length.</p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -275,7 +335,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getDecimals">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/ColumnDefinitionInterface.php#L68">line 68</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/ColumnDefinitionInterface.php#L104">line 104</a></div>
         <code>                    int|null
     <strong>getDecimals</strong>()
         </code>
@@ -307,7 +367,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getFlags">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/ColumnDefinitionInterface.php#L62">line 62</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/ColumnDefinitionInterface.php#L98">line 98</a></div>
         <code>                    int
     <strong>getFlags</strong>()
         </code>
@@ -466,6 +526,70 @@
 
             </div>
                     <div class="method-item">
+                    <h3 id="method_isAutoIncrement">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/ColumnDefinitionInterface.php#L62">line 62</a></div>
+        <code>                    bool
+    <strong>isAutoIncrement</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Whether the column is auto incremented.</p>                                                </div>
+                <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_isMultipleKey">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/ColumnDefinitionInterface.php#L80">line 80</a></div>
+        <code>                    bool
+    <strong>isMultipleKey</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Whether the column is part of a multiple/composite key.</p>                                                </div>
+                <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
                     <h3 id="method_isNullable">
         <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/ColumnDefinitionInterface.php#L56">line 56</a></div>
         <code>                    bool
@@ -498,8 +622,136 @@
 
             </div>
                     <div class="method-item">
+                    <h3 id="method_isPrimaryKey">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/ColumnDefinitionInterface.php#L68">line 68</a></div>
+        <code>                    bool
+    <strong>isPrimaryKey</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Whether the column is the primary key.</p>                                                </div>
+                <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_isUniqueKey">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/ColumnDefinitionInterface.php#L74">line 74</a></div>
+        <code>                    bool
+    <strong>isUniqueKey</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Whether the column is the unique key.</p>                                                </div>
+                <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_isUnsigned">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/ColumnDefinitionInterface.php#L86">line 86</a></div>
+        <code>                    bool
+    <strong>isUnsigned</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Whether the column is unsigned (only makes sense for numeric types).</p>                                                </div>
+                <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_isZerofilled">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/ColumnDefinitionInterface.php#L92">line 92</a></div>
+        <code>                    bool
+    <strong>isZerofilled</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Whether the column gets zerofilled to the length.</p>                                                </div>
+                <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
                     <h3 id="method_parseValue">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/ColumnDefinitionInterface.php#L75">line 75</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/ColumnDefinitionInterface.php#L111">line 111</a></div>
         <code>                    mixed
     <strong>parseValue</strong>(mixed $value)
         </code>
