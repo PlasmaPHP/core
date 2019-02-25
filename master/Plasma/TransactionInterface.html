@@ -29,6 +29,7 @@
                 <select id="version-switcher" name="version">
                                             <option value="../../v0.1.0/index.html" data-version="v0.1.0">v0.1.0</option>
                                             <option value="../../v0.1.1/index.html" data-version="v0.1.1">v0.1.1</option>
+                                            <option value="../../v0.2.0/index.html" data-version="v0.2.0">v0.2.0</option>
                                             <option value="../../master/index.html" data-version="master">master</option>
                                     </select>
             </form>
@@ -266,6 +267,16 @@ In this level, transactions are not isolated from each other.</p>
         
                                             <p>Rolls back to the savepoint with the given identifier.</p>                </div>
                 <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <abbr title="React\Promise\PromiseInterface">PromiseInterface</abbr>
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_runQuery">runQuery</a>(<a href="../Plasma/QuerybuilderInterface.html"><abbr title="Plasma\QuerybuilderInterface">QuerybuilderInterface</abbr></a> $query)
+        
+                                            <p>Runs the given querybuilder on an underlying driver instance.</p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../Plasma/QueryableInterface.html#method_runQuery"><abbr title="Plasma\QueryableInterface">QueryableInterface</abbr></a></small></div>
             </div>
             </div>
 
@@ -646,7 +657,7 @@ If you need to execute a query multiple times, prepare the query manually for pe
             </div>
                     <div class="method-item">
                     <h3 id="method_quote">
-        <div class="location">in <a href="../Plasma/QueryableInterface.html#method_quote"><abbr title="Plasma\QueryableInterface">QueryableInterface</abbr></a> at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/QueryableInterface.php#L54">line 54</a></div>
+        <div class="location">in <a href="../Plasma/QueryableInterface.html#method_quote"><abbr title="Plasma\QueryableInterface">QueryableInterface</abbr></a> at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/QueryableInterface.php#L64">line 64</a></div>
         <code>                    string
     <strong>quote</strong>(string $str, int $type = \Plasma\DriverInterface::QUOTE_TYPE_VALUE)
         </code>
@@ -837,6 +848,58 @@ If you need to execute a query multiple times, prepare the query manually for pe
                     <tr>
                 <td><a href="../Plasma/TransactionException.html"><abbr title="Plasma\TransactionException">TransactionException</abbr></a></td>
                 <td>Thrown if the transaction has been committed or rolled back.</td>
+            </tr>
+            </table>
+
+            
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_runQuery">
+        <div class="location">in <a href="../Plasma/QueryableInterface.html#method_runQuery"><abbr title="Plasma\QueryableInterface">QueryableInterface</abbr></a> at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/QueryableInterface.php#L54">line 54</a></div>
+        <code>                    <abbr title="React\Promise\PromiseInterface">PromiseInterface</abbr>
+    <strong>runQuery</strong>(<a href="../Plasma/QuerybuilderInterface.html"><abbr title="Plasma\QuerybuilderInterface">QuerybuilderInterface</abbr></a> $query)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Runs the given querybuilder on an underlying driver instance.</p>                    <p>The driver CAN throw an exception if the given querybuilder is not supported.
+An example would be a SQL querybuilder and a Cassandra driver.</p>                            </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../Plasma/QuerybuilderInterface.html"><abbr title="Plasma\QuerybuilderInterface">QuerybuilderInterface</abbr></a></td>
+                <td>$query</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><abbr title="React\Promise\PromiseInterface">PromiseInterface</abbr></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../Plasma/Exception.html"><abbr title="Plasma\Exception">Exception</abbr></a></td>
+                <td></td>
             </tr>
             </table>
 
