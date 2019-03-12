@@ -14,13 +14,13 @@ namespace Plasma\Types;
  */
 interface TypeExtensionResultInterface {
     /**
-     * Get the SQL type.
+     * Get the database type.
      * @return mixed  Driver-dependent.
      */
-    function getSQLType();
+    function getDatabaseType();
     
     /**
-     * Get the encoded value.
+     * Whether it's unsigned.
      * @return bool
      */
     function isUnsigned(): bool;

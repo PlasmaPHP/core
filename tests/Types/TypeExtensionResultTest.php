@@ -10,9 +10,9 @@
 namespace Plasma\Tests\Types;
 
 class TypeExtensionResultTest extends \Plasma\Tests\TestCase {
-    function testGetSQLType() {
+    function testGetDatabaseType() {
         $result = new \Plasma\Types\TypeExtensionResult('VARCHAR', false, 'hello mine turtle');
-        $this->assertSame('VARCHAR', $result->getSQLType());
+        $this->assertSame('VARCHAR', $result->getDatabaseType());
     }
     
     function testIsUnsigned() {

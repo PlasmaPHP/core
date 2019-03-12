@@ -21,7 +21,7 @@ abstract class AbstractTypeExtension implements TypeExtensionInterface {
     /**
      * @var mixed
      */
-    protected $sqlType;
+    protected $dbType;
     
     /**
      * @var callable
@@ -31,12 +31,12 @@ abstract class AbstractTypeExtension implements TypeExtensionInterface {
     /**
      * Constructor.
      * @param string    $type
-     * @param mixed     $sqlType
+     * @param mixed     $dbType
      * @param callable  $filter
      */
-    function __construct(string $type, $sqlType, callable $filter) {
+    function __construct(string $type, $dbType, callable $filter) {
         $this->type = $type;
-        $this->sqlType = $sqlType;
+        $this->dbType = $dbType;
         $this->filter = $filter;
     }
     
@@ -62,15 +62,15 @@ abstract class AbstractTypeExtension implements TypeExtensionInterface {
     }
     
     /**
-     * Get the SQL type this Type Extension is for.
+     * Get the database type this Type Extension is for.
      * @return mixed
      */
-    function getSQLType() {
-        return $this->sqlType;
+    function getDatabaseType() {
+        return $this->dbType;
     }
     
     /**
-     * Encodes a PHP value into a binary SQL value.
+     * Encodes a PHP value into a binary database value.
      * @param mixed                              $value   The value to encode.
      * @param \Plasma\ColumnDefinitionInterface  $column
      * @return \Plasma\Types\TypeExtensionResultInterface
@@ -78,7 +78,7 @@ abstract class AbstractTypeExtension implements TypeExtensionInterface {
     abstract function encode($value, \Plasma\ColumnDefinitionInterface $column): \Plasma\Types\TypeExtensionResultInterface;
     
     /**
-     * Decodes a binary SQL value into a PHP value.
+     * Decodes a binary database value into a PHP value.
      * @param mixed  $value  The encoded binary. Actual type depends on the driver.
      * @return \Plasma\Types\TypeExtensionResultInterface
      */

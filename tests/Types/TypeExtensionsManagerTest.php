@@ -76,7 +76,7 @@ class TypeExtensionsManagerTest extends \Plasma\Tests\ClientTestHelpers {
         
         $type = (new class('string', 0xFB, 'is_string') extends \Plasma\Types\AbstractTypeExtension {
             function encode($value, \Plasma\ColumnDefinitionInterface $col): \Plasma\Types\TypeExtensionResultInterface {
-                return (new \Plasma\Types\TypeExtensionResult($this->getSQLType(), false, ((string) $value)));
+                return (new \Plasma\Types\TypeExtensionResult($this->getDatabaseType(), false, ((string) $value)));
             }
             function decode($value): \Plasma\Types\TypeExtensionResultInterface {
                 return (new \Plasma\Types\TypeExtensionResult('string', false, ((string) $value)));
@@ -108,7 +108,7 @@ class TypeExtensionsManagerTest extends \Plasma\Tests\ClientTestHelpers {
         
         $type = (new class('string', 0xFB, 'is_string') extends \Plasma\Types\AbstractTypeExtension {
             function encode($value, \Plasma\ColumnDefinitionInterface $col): \Plasma\Types\TypeExtensionResultInterface {
-                return (new \Plasma\Types\TypeExtensionResult($this->getSQLType(), false, ((string) $value)));
+                return (new \Plasma\Types\TypeExtensionResult($this->getDatabaseType(), false, ((string) $value)));
             }
             function decode($value): \Plasma\Types\TypeExtensionResultInterface {
                 return (new \Plasma\Types\TypeExtensionResult('string', false, ((string) $value)));
@@ -138,19 +138,19 @@ class TypeExtensionsManagerTest extends \Plasma\Tests\ClientTestHelpers {
         $this->assertNull($manager->unregisterType('string'));
     }
     
-    function testRegisterSQLType() {
+    function testRegisterDatabaseType() {
         $manager = new \Plasma\Types\TypeExtensionsManager();
         
         $type = (new class('string', 0xFB, 'is_string') extends \Plasma\Types\AbstractTypeExtension {
             function encode($value, \Plasma\ColumnDefinitionInterface $col): \Plasma\Types\TypeExtensionResultInterface {
-                return (new \Plasma\Types\TypeExtensionResult($this->getSQLType(), false, ((string) $value)));
+                return (new \Plasma\Types\TypeExtensionResult($this->getDatabaseType(), false, ((string) $value)));
             }
             function decode($value): \Plasma\Types\TypeExtensionResultInterface {
                 return (new \Plasma\Types\TypeExtensionResult('string', false, ((string) $value)));
             }
         });
         
-        $this->assertNull($manager->registerSQLType(0xFB, $type));
+        $this->assertNull($manager->registerDatabaseType(0xFB, $type));
         
         $decoded = $manager->decodeType(0xFB, 500);
         
@@ -158,7 +158,7 @@ class TypeExtensionsManagerTest extends \Plasma\Tests\ClientTestHelpers {
         $this->assertsame('500', $decoded->getValue());
     }
     
-    function testRegisterSQLTypeFail() {
+    function testRegisterDatabaseTypeFail() {
         $manager = new \Plasma\Types\TypeExtensionsManager();
         
         $type = (new class('string', 0xFB, 'is_string') extends \Plasma\Types\AbstractTypeExtension {
@@ -166,32 +166,32 @@ class TypeExtensionsManagerTest extends \Plasma\Tests\ClientTestHelpers {
             function decode($value): \Plasma\Types\TypeExtensionResultInterface {}
         });
         
-        $this->assertNull($manager->registerSQLType(0xFB, $type));
+        $this->assertNull($manager->registerDatabaseType(0xFB, $type));
         
         $this->expectException(\Plasma\Exception::class);
-        $manager->registerSQLType(0xFB, $type);
+        $manager->registerDatabaseType(0xFB, $type);
     }
     
-    function testUnregisterSQLType() {
+    function testUnregisterDatabaseType() {
         $manager = new \Plasma\Types\TypeExtensionsManager();
         
         $type = (new class('string', 0xFB, function () { return true; }) extends \Plasma\Types\AbstractTypeExtension {
             function encode($value, \Plasma\ColumnDefinitionInterface $col): \Plasma\Types\TypeExtensionResultInterface {
-                return (new \Plasma\Types\TypeExtensionResult($this->getSQLType(), false, ((string) $value)));
+                return (new \Plasma\Types\TypeExtensionResult($this->getDatabaseType(), false, ((string) $value)));
             }
             function decode($value): \Plasma\Types\TypeExtensionResultInterface {
                 return (new \Plasma\Types\TypeExtensionResult('string', false, ((string) $value)));
             }
         });
         
-        $this->assertNull($manager->registerSQLType(0xFB, $type));
+        $this->assertNull($manager->registerDatabaseType(0xFB, $type));
         
         $decoded = $manager->decodeType(null, true);
         
         $this->assertInstanceOf(\Plasma\Types\TypeExtensionResultInterface::class, $decoded);
         $this->assertSame('1', $decoded->getValue());
         
-        $this->assertNull($manager->unregisterSQLType(0xFB));
+        $this->assertNull($manager->unregisterDatabaseType(0xFB));
         
         try {
             $this->assertInstanceOf(\Throwable::class, $manager->decodeType(null, 'hello'));
@@ -200,10 +200,10 @@ class TypeExtensionsManagerTest extends \Plasma\Tests\ClientTestHelpers {
         }
         
         // Check double unregister
-        $this->assertNull($manager->unregisterSQLType(0xFB));
+        $this->assertNull($manager->unregisterDatabaseType(0xFB));
     }
     
-    function testUnregisterSQLUnknownType() {
+    function testUnregisterDatabaseUnknownType() {
         $manager = new \Plasma\Types\TypeExtensionsManager();
         
         try {
@@ -212,10 +212,10 @@ class TypeExtensionsManagerTest extends \Plasma\Tests\ClientTestHelpers {
             $this->assertInstanceOf(\Plasma\Exception::class, $e);
         }
         
-        $this->assertNull($manager->unregisterSQLType(0xFB));
+        $this->assertNull($manager->unregisterDatabaseType(0xFB));
         
         // Check double unregister
-        $this->assertNull($manager->unregisterSQLType(0xFB));
+        $this->assertNull($manager->unregisterDatabaseType(0xFB));
     }
     
     function testEnableFuzzySearch() {
@@ -236,7 +236,7 @@ class TypeExtensionsManagerTest extends \Plasma\Tests\ClientTestHelpers {
             }
         });
         
-        $this->assertNull($manager->registerSQLType(0xFB, $type));
+        $this->assertNull($manager->registerDatabaseType(0xFB, $type));
         
         $this->assertNull($manager->enableFuzzySearch());
         $this->assertTrue($manager->decodeType(0xFB, 'hello')->getValue());
@@ -256,7 +256,7 @@ class TypeExtensionsManagerTest extends \Plasma\Tests\ClientTestHelpers {
             }
         });
         
-        $this->assertNull($manager->registerSQLType(0xFB, $type));
+        $this->assertNull($manager->registerDatabaseType(0xFB, $type));
         
         $this->expectException(\Plasma\Exception::class);
         $this->assertTrue($manager->decodeType(null, 'hello'));
@@ -294,7 +294,7 @@ class TypeExtensionsManagerTest extends \Plasma\Tests\ClientTestHelpers {
             }
         });
         
-        $manager->registerSQLType(0xFE, $type);
+        $manager->registerDatabaseType(0xFE, $type);
         
         $decoded = $manager->decodeType(0xFE, \pack('C*', 0, 20, 15, 30));
         
@@ -359,7 +359,7 @@ class TypeExtensionsManagerTest extends \Plasma\Tests\ClientTestHelpers {
             }
         });
         
-        $manager->registerSQLType(0xFE, $type);
+        $manager->registerDatabaseType(0xFE, $type);
         
         $decoded = $manager->decodeType(0xFE, \json_encode(array('hello' => true)));
         

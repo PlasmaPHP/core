@@ -41,15 +41,15 @@ class TypeExtensionResult implements TypeExtensionResultInterface {
     }
     
     /**
-     * Get the SQL type.
+     * Get the database type.
      * @return mixed  Driver-dependent.
      */
-    function getSQLType() {
+    function getDatabaseType() {
         return $this->type;
     }
     
     /**
-     * Get the encoded value.
+     * Whether it's unsigned.
      * @return bool
      */
     function isUnsigned(): bool {

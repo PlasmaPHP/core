@@ -72,7 +72,7 @@ class ColumnDefinitionTest extends ClientTestHelpers {
             }
         });
         
-        \Plasma\Types\TypeExtensionsManager::getManager()->registerSQLType('BIGINT', $type);
+        \Plasma\Types\TypeExtensionsManager::getManager()->registerDatabaseType('BIGINT', $type);
         
         $coldef = $this->getColDefMock('test', 'test2', 'coltest', 'BIGINT', 'utf8mb4', 20, 0, null);
         $this->assertSame(500, $coldef->parseValue('500'));

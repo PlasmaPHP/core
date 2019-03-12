@@ -33,12 +33,12 @@ class AbtractTypeExtensionTest extends \Plasma\Tests\TestCase {
         $this->assertSame('VARCHAR', $type->getHumanType());
     }
     
-    function testGetSQLType() {
+    function testGetDatabaseType() {
         $type = (new class('VARCHAR', 0xFB, 'is_string') extends \Plasma\Types\AbstractTypeExtension {
             function encode($value, \Plasma\ColumnDefinitionInterface $a): \Plasma\Types\TypeExtensionResultInterface {}
             function decode($value): \Plasma\Types\TypeExtensionResultInterface {}
         });
         
-        $this->assertSame(0xFB, $type->getSQLType());
+        $this->assertSame(0xFB, $type->getDatabaseType());
     }
 }

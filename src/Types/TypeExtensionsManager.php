@@ -52,7 +52,7 @@ class TypeExtensionsManager {
     /**
      * @var \Plasma\Types\TypeExtensionInterface[]
      */
-    protected $sqlTypes = array();
+    protected $dbTypes = array();
     
     /**
      * @var bool
@@ -149,21 +149,21 @@ class TypeExtensionsManager {
      * @return void
      * @throws \Plasma\Exception  Thrown if the type identifier is already in use.
      */
-    function registerSQLType($typeIdentifier, \Plasma\Types\TypeExtensionInterface $type): void {
-        if(isset($this->sqlTypes[$typeIdentifier])) {
-            throw new \Plasma\Exception('SQL Type identifier is already in use');
+    function registerDatabaseType($typeIdentifier, \Plasma\Types\TypeExtensionInterface $type): void {
+        if(isset($this->dbTypes[$typeIdentifier])) {
+            throw new \Plasma\Exception('Database Type identifier is already in use');
         }
         
-        $this->sqlTypes[$typeIdentifier] = $type;
+        $this->dbTypes[$typeIdentifier] = $type;
     }
     
     /**
-     * Unregisters a SQL type. A non-existent type identifier does nothing.
+     * Unregisters a Database type. A non-existent type identifier does nothing.
      * @param mixed  $typeIdentifier  The used type identifier. Depends on the driver.
      * @return void
      */
-    function unregisterSQLType($typeIdentifier): void {
-        unset($this->sqlTypes[$typeIdentifier]);
+    function unregisterDatabaseType($typeIdentifier): void {
+        unset($this->dbTypes[$typeIdentifier]);
     }
     
     /**
@@ -238,7 +238,7 @@ class TypeExtensionsManager {
     
     /**
      * Tries to decode a value.
-     * @param mixed|null  $type   The driver-dependent SQL type identifier. Can be `null` to not use the fast-path.
+     * @param mixed|null  $type   The driver-dependent database type identifier. Can be `null` to not use the fast-path.
      * @param mixed       $value
      * @return \Plasma\Types\TypeExtensionResultInterface
      * @throws \Plasma\Exception  Thrown if unable to decode the value.
@@ -246,13 +246,13 @@ class TypeExtensionsManager {
     function decodeType($type, $value): \Plasma\Types\TypeExtensionResultInterface {
         if($type === null && $this->enabledFuzzySearch) {
             /** @var \Plasma\Types\TypeExtensionInterface  $decoder */
-            foreach($this->sqlTypes as $sqlType => $decoder) {
+            foreach($this->dbTypes as $dbType => $decoder) {
                 if($decoder->canHandleType($value, null)) {
                     return $decoder->decode($value);
                 }
             }
-        } elseif(isset($this->sqlTypes[$type])) {
-            return $this->sqlTypes[$type]->decode($value);
+        } elseif(isset($this->dbTypes[$type])) {
+            return $this->dbTypes[$type]->decode($value);
         }
         
         throw new \Plasma\Exception('Unable to decode given value');
