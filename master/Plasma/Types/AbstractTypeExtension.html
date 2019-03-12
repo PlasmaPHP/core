@@ -110,7 +110,7 @@
                     
                 </div>
                 <div class="col-md-8 type">
-                    <a href="#method___construct">__construct</a>(string $type, mixed $sqlType, callable $filter)
+                    <a href="#method___construct">__construct</a>(string $type, mixed $dbType, callable $filter)
         
                                             <p>Constructor.</p>                </div>
                 <div class="col-md-2"></div>
@@ -132,7 +132,7 @@
                 <div class="col-md-8 type">
                     <a href="#method_decode">decode</a>(mixed $value)
         
-                                            <p>Decodes a binary SQL value into a PHP value.</p>                </div>
+                                            <p>Decodes a binary database value into a PHP value.</p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -142,7 +142,17 @@
                 <div class="col-md-8 type">
                     <a href="#method_encode">encode</a>(mixed $value, <a href="../../Plasma/ColumnDefinitionInterface.html"><abbr title="Plasma\ColumnDefinitionInterface">ColumnDefinitionInterface</abbr></a> $column)
         
-                                            <p>Encodes a PHP value into a binary SQL value.</p>                </div>
+                                            <p>Encodes a PHP value into a binary database value.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    mixed
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_getDatabaseType">getDatabaseType</a>()
+        
+                                            <p>Get the database type this Type Extension is for.</p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -155,16 +165,6 @@
                                             <p>Get the human-readable type this Type Extension is for.</p>                </div>
                 <div class="col-md-2"></div>
             </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    mixed
-                </div>
-                <div class="col-md-8 type">
-                    <a href="#method_getSQLType">getSQLType</a>()
-        
-                                            <p>Get the SQL type this Type Extension is for.</p>                </div>
-                <div class="col-md-2"></div>
-            </div>
             </div>
 
 
@@ -175,7 +175,7 @@
                     <h3 id="method___construct">
         <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/Types/AbstractTypeExtension.php#L37">line 37</a></div>
         <code>                    
-    <strong>__construct</strong>(string $type, mixed $sqlType, callable $filter)
+    <strong>__construct</strong>(string $type, mixed $dbType, callable $filter)
         </code>
     </h3>
     <div class="details">
@@ -195,7 +195,7 @@
             </tr>
                     <tr>
                 <td>mixed</td>
-                <td>$sqlType</td>
+                <td>$dbType</td>
                 <td></td>
             </tr>
                     <tr>
@@ -274,7 +274,7 @@
     
 
                     <div class="method-description">
-                                    <p>Decodes a binary SQL value into a PHP value.</p>                                                </div>
+                                    <p>Decodes a binary database value into a PHP value.</p>                                                </div>
                 <div class="tags">
                             <h4>Parameters</h4>
 
@@ -316,7 +316,7 @@
     
 
                     <div class="method-description">
-                                    <p>Encodes a PHP value into a binary SQL value.</p>                                                </div>
+                                    <p>Encodes a PHP value into a binary database value.</p>                                                </div>
                 <div class="tags">
                             <h4>Parameters</h4>
 
@@ -352,6 +352,38 @@
 
             </div>
                     <div class="method-item">
+                    <h3 id="method_getDatabaseType">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/Types/AbstractTypeExtension.php#L68">line 68</a></div>
+        <code>                    mixed
+    <strong>getDatabaseType</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Get the database type this Type Extension is for.</p>                                                </div>
+                <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>mixed</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
                     <h3 id="method_getHumanType">
         <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/Types/AbstractTypeExtension.php#L60">line 60</a></div>
         <code>                    string
@@ -372,38 +404,6 @@
         <tr>
             <td>string</td>
             <td>E.g. <code>BIGINT</code>, <code>VARCHAR</code>, etc.</td>
-        </tr>
-    </table>
-
-            
-            
-                        
-                        
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
-                    <h3 id="method_getSQLType">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/Types/AbstractTypeExtension.php#L68">line 68</a></div>
-        <code>                    mixed
-    <strong>getSQLType</strong>()
-        </code>
-    </h3>
-    <div class="details">
-            
-    
-
-                    <div class="method-description">
-                                    <p>Get the SQL type this Type Extension is for.</p>                                                </div>
-                <div class="tags">
-            
-                            <h4>Return Value</h4>
-
-                    <table class="table table-condensed">
-        <tr>
-            <td>mixed</td>
-            <td></td>
         </tr>
     </table>
 

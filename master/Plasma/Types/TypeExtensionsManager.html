@@ -188,22 +188,22 @@ One use case would be to create one specific manager per driver (type), if more 
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_registerDatabaseType">registerDatabaseType</a>(mixed $typeIdentifier, <a href="../../Plasma/Types/TypeExtensionInterface.html"><abbr title="Plasma\Types\TypeExtensionInterface">TypeExtensionInterface</abbr></a> $type)
+        
+                                            <p>Registers a type.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
                     static&nbsp;void
                 </div>
                 <div class="col-md-8 type">
                     <a href="#method_registerManager">registerManager</a>(string $name, <a href="../../Plasma/Types/TypeExtensionsManager.html"><abbr title="Plasma\Types\TypeExtensionsManager">TypeExtensionsManager</abbr></a>|null $manager = null)
         
                                             <p>Registers a specific Type Extensions Manager under a specific name.</p>                </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    void
-                </div>
-                <div class="col-md-8 type">
-                    <a href="#method_registerSQLType">registerSQLType</a>(mixed $typeIdentifier, <a href="../../Plasma/Types/TypeExtensionInterface.html"><abbr title="Plasma\Types\TypeExtensionInterface">TypeExtensionInterface</abbr></a> $type)
-        
-                                            <p>Registers a type.</p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -218,22 +218,22 @@ One use case would be to create one specific manager per driver (type), if more 
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_unregisterDatabaseType">unregisterDatabaseType</a>(mixed $typeIdentifier)
+        
+                                            <p>Unregisters a Database type. A non-existent type identifier does nothing.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
                     static&nbsp;void
                 </div>
                 <div class="col-md-8 type">
                     <a href="#method_unregisterManager">unregisterManager</a>(string $name)
         
                                             <p>Unregisters a name. If the name does not exist, this will do nothing.</p>                </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    void
-                </div>
-                <div class="col-md-8 type">
-                    <a href="#method_unregisterSQLType">unregisterSQLType</a>(mixed $typeIdentifier)
-        
-                                            <p>Unregisters a SQL type. A non-existent type identifier does nothing.</p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -272,7 +272,7 @@ One use case would be to create one specific manager per driver (type), if more 
                     <tr>
                 <td>mixed|null</td>
                 <td>$type</td>
-                <td>The driver-dependent SQL type identifier. Can be <code>null</code> to not use the fast-path.</td>
+                <td>The driver-dependent database type identifier. Can be <code>null</code> to not use the fast-path.</td>
             </tr>
                     <tr>
                 <td>mixed</td>
@@ -480,6 +480,62 @@ One use case would be to create one specific manager per driver (type), if more 
 
             </div>
                     <div class="method-item">
+                    <h3 id="method_registerDatabaseType">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/Types/TypeExtensionsManager.php#L152">line 152</a></div>
+        <code>                    void
+    <strong>registerDatabaseType</strong>(mixed $typeIdentifier, <a href="../../Plasma/Types/TypeExtensionInterface.html"><abbr title="Plasma\Types\TypeExtensionInterface">TypeExtensionInterface</abbr></a> $type)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Registers a type.</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>mixed</td>
+                <td>$typeIdentifier</td>
+                <td>Depends on the driver.</td>
+            </tr>
+                    <tr>
+                <td><a href="../../Plasma/Types/TypeExtensionInterface.html"><abbr title="Plasma\Types\TypeExtensionInterface">TypeExtensionInterface</abbr></a></td>
+                <td>$type</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../../Plasma/Exception.html"><abbr title="Plasma\Exception">Exception</abbr></a></td>
+                <td>Thrown if the type identifier is already in use.</td>
+            </tr>
+            </table>
+
+            
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
                     <h3 id="method_registerManager">
         <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/Types/TypeExtensionsManager.php#L96">line 96</a></div>
         <code>        static            void
@@ -525,62 +581,6 @@ One use case would be to create one specific manager per driver (type), if more 
                     <tr>
                 <td><a href="../../Plasma/Exception.html"><abbr title="Plasma\Exception">Exception</abbr></a></td>
                 <td>Thrown if the name is already in use.</td>
-            </tr>
-            </table>
-
-            
-                        
-                        
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
-                    <h3 id="method_registerSQLType">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/Types/TypeExtensionsManager.php#L152">line 152</a></div>
-        <code>                    void
-    <strong>registerSQLType</strong>(mixed $typeIdentifier, <a href="../../Plasma/Types/TypeExtensionInterface.html"><abbr title="Plasma\Types\TypeExtensionInterface">TypeExtensionInterface</abbr></a> $type)
-        </code>
-    </h3>
-    <div class="details">
-            
-    
-
-                    <div class="method-description">
-                                    <p>Registers a type.</p>                                                </div>
-                <div class="tags">
-                            <h4>Parameters</h4>
-
-                    <table class="table table-condensed">
-                    <tr>
-                <td>mixed</td>
-                <td>$typeIdentifier</td>
-                <td>Depends on the driver.</td>
-            </tr>
-                    <tr>
-                <td><a href="../../Plasma/Types/TypeExtensionInterface.html"><abbr title="Plasma\Types\TypeExtensionInterface">TypeExtensionInterface</abbr></a></td>
-                <td>$type</td>
-                <td></td>
-            </tr>
-            </table>
-
-            
-                            <h4>Return Value</h4>
-
-                    <table class="table table-condensed">
-        <tr>
-            <td>void</td>
-            <td></td>
-        </tr>
-    </table>
-
-            
-                            <h4>Exceptions</h4>
-
-                    <table class="table table-condensed">
-                    <tr>
-                <td><a href="../../Plasma/Exception.html"><abbr title="Plasma\Exception">Exception</abbr></a></td>
-                <td>Thrown if the type identifier is already in use.</td>
             </tr>
             </table>
 
@@ -648,10 +648,10 @@ One use case would be to create one specific manager per driver (type), if more 
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_unregisterManager">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/Types/TypeExtensionsManager.php#L113">line 113</a></div>
-        <code>        static            void
-    <strong>unregisterManager</strong>(string $name)
+                    <h3 id="method_unregisterDatabaseType">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/Types/TypeExtensionsManager.php#L165">line 165</a></div>
+        <code>                    void
+    <strong>unregisterDatabaseType</strong>(mixed $typeIdentifier)
         </code>
     </h3>
     <div class="details">
@@ -659,15 +659,15 @@ One use case would be to create one specific manager per driver (type), if more 
     
 
                     <div class="method-description">
-                                    <p>Unregisters a name. If the name does not exist, this will do nothing.</p>                                                </div>
+                                    <p>Unregisters a Database type. A non-existent type identifier does nothing.</p>                                                </div>
                 <div class="tags">
                             <h4>Parameters</h4>
 
                     <table class="table table-condensed">
                     <tr>
-                <td>string</td>
-                <td>$name</td>
-                <td></td>
+                <td>mixed</td>
+                <td>$typeIdentifier</td>
+                <td>The used type identifier. Depends on the driver.</td>
             </tr>
             </table>
 
@@ -690,10 +690,10 @@ One use case would be to create one specific manager per driver (type), if more 
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_unregisterSQLType">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/Types/TypeExtensionsManager.php#L165">line 165</a></div>
-        <code>                    void
-    <strong>unregisterSQLType</strong>(mixed $typeIdentifier)
+                    <h3 id="method_unregisterManager">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/Types/TypeExtensionsManager.php#L113">line 113</a></div>
+        <code>        static            void
+    <strong>unregisterManager</strong>(string $name)
         </code>
     </h3>
     <div class="details">
@@ -701,15 +701,15 @@ One use case would be to create one specific manager per driver (type), if more 
     
 
                     <div class="method-description">
-                                    <p>Unregisters a SQL type. A non-existent type identifier does nothing.</p>                                                </div>
+                                    <p>Unregisters a name. If the name does not exist, this will do nothing.</p>                                                </div>
                 <div class="tags">
                             <h4>Parameters</h4>
 
                     <table class="table table-condensed">
                     <tr>
-                <td>mixed</td>
-                <td>$typeIdentifier</td>
-                <td>The used type identifier. Depends on the driver.</td>
+                <td>string</td>
+                <td>$name</td>
+                <td></td>
             </tr>
             </table>
 
