@@ -16,7 +16,7 @@ namespace Plasma;
  * Through the querybuilder interface a driver can implement a querybuilder
  * to use through the generic Plasma client interface.
  */
-interface QuerybuilderInterface {
+interface QueryBuilderInterface {
     /**
      * Creates a new instance of the querybuilder.
      * @return self

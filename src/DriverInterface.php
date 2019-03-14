@@ -245,9 +245,9 @@ interface DriverInterface extends \Evenement\EventEmitterInterface {
      * The driver CAN throw an exception if the given querybuilder is not supported.
      * An example would be a SQL querybuilder and a Cassandra driver.
      * @param \Plasma\ClientInterface        $client
-     * @param \Plasma\QuerybuilderInterface  $query
+     * @param \Plasma\QueryBuilderInterface  $query
      * @return \React\Promise\PromiseInterface
      * @throws \Plasma\Exception
      */
-    function runQuery(\Plasma\ClientInterface $client, \Plasma\QuerybuilderInterface $query): \React\Promise\PromiseInterface;
+    function runQuery(\Plasma\ClientInterface $client, \Plasma\QueryBuilderInterface $query): \React\Promise\PromiseInterface;
 }

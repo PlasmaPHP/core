@@ -12,6 +12,6 @@ namespace Plasma;
 /**
  * Represents a SQL querybuilder.
  */
-interface SQLQuerybuilderInterface extends QuerybuilderInterface {
+interface SQLQueryBuilderInterface extends QueryBuilderInterface {
     
 }
