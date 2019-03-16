@@ -223,7 +223,7 @@ interface DriverInterface extends \Evenement\EventEmitterInterface {
      * @throws \Plasma\Exception
      * @see \Plasma\TransactionInterface
      */
-    function beginTransaction(\Plasma\ClientInterface $client, int $isolation = \Plasma\TransactionInterface::ISOLATION_COMMITTED): \React\Promise\PromiseInterface;
+    function beginTransaction(\Plasma\ClientInterface $client, int $isolation = \Plasma\TransactionInterface::ISOLATION_NO_CHANGE): \React\Promise\PromiseInterface;
     
     /**
      * Informationally closes a transaction. This method is used by `Transaction` to inform the driver of the end of the transaction.

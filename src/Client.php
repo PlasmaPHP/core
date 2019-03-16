@@ -130,7 +130,7 @@ class Client implements ClientInterface {
      * @throws \Plasma\Exception
      * @see \Plasma\Transaction
      */
-    function beginTransaction(int $isolation = \Plasma\TransactionInterface::ISOLATION_COMMITTED): \React\Promise\PromiseInterface {
+    function beginTransaction(int $isolation = \Plasma\TransactionInterface::ISOLATION_NO_CHANGE): \React\Promise\PromiseInterface {
         if($this->goingAway) {
             return \React\Promise\reject((new \Plasma\Exception('Client is closing all connections')));
         }
