@@ -356,7 +356,7 @@ class TransactionTest extends ClientTestHelpers {
         
         $transaction = new \Plasma\Transaction($client, $driver, \Plasma\TransactionInterface::ISOLATION_SERIALIZABLE);
         
-        $qb = $this->getMockBuilder(\Plasma\QuerybuilderInterface::class)
+        $qb = $this->getMockBuilder(\Plasma\QueryBuilderInterface::class)
             ->setMethods(array(
                 'create',
                 'getQuery',
@@ -391,7 +391,7 @@ class TransactionTest extends ClientTestHelpers {
         
         $this->await($prom);
         
-        $qb = $this->getMockBuilder(\Plasma\QuerybuilderInterface::class)
+        $qb = $this->getMockBuilder(\Plasma\QueryBuilderInterface::class)
             ->setMethods(array(
                 'create',
                 'getQuery',

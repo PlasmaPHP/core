@@ -37,6 +37,7 @@ class Transaction implements TransactionInterface {
      */
     function __construct(\Plasma\ClientInterface $client, \Plasma\DriverInterface $driver, int $isolation) {
         switch($isolation) {
+            case \Plasma\TransactionInterface::ISOLATION_NO_CHANGE:
             case \Plasma\TransactionInterface::ISOLATION_UNCOMMITTED:
             case \Plasma\TransactionInterface::ISOLATION_COMMITTED:
             case \Plasma\TransactionInterface::ISOLATION_REPEATABLE:

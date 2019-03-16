@@ -18,13 +18,20 @@ namespace Plasma;
  */
 interface TransactionInterface extends QueryableInterface {
     /**
+     * Advices the driver to not change the isolation level by itself.
+     * @var int
+     * @source
+     */
+    const ISOLATION_NO_CHANGE = 0;
+    
+    /**
      * Read Uncommitted is the lowest isolation level.
      * In this level, one transaction may read not yet commited changes made by other transaction, thereby allowing dirty reads.
      * In this level, transactions are not isolated from each other.
      * @var int
      * @source
      */
-    const ISOLATION_UNCOMMITTED = 0;
+    const ISOLATION_UNCOMMITTED = 0x1;
     
     /**
      * This isolation level guarantees that any data read is committed at the moment it is read.
@@ -33,7 +40,7 @@ interface TransactionInterface extends QueryableInterface {
      * @var int
      * @source
      */
-    const ISOLATION_COMMITTED = 1;
+    const ISOLATION_COMMITTED = 0x2;
     
     /**
      * This is the most restrictive isolation level.
@@ -42,7 +49,7 @@ interface TransactionInterface extends QueryableInterface {
      * @var int
      * @source
      */
-    const ISOLATION_REPEATABLE = 2;
+    const ISOLATION_REPEATABLE = 0x3;
     
     /**
      * This is the highest isolation level.
@@ -51,7 +58,7 @@ interface TransactionInterface extends QueryableInterface {
      * @var int
      * @source
      */
-    const ISOLATION_SERIALIZABLE = 4;
+    const ISOLATION_SERIALIZABLE = 0x4;
     
     /**
      * Destructor. Implicit rollback and automatically checks the connection back into the client on deallocation.

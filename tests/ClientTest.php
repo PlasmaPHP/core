@@ -385,7 +385,7 @@ class ClientTest extends ClientTestHelpers {
     function testRunQuery() {
         $client = $this->createClient();
         
-        $query = $this->getMockBuilder(\Plasma\QuerybuilderInterface::class)
+        $query = $this->getMockBuilder(\Plasma\QueryBuilderInterface::class)
             ->getMock();
         
         $this->driver
@@ -403,7 +403,7 @@ class ClientTest extends ClientTestHelpers {
         
         $this->assertNull($client->quit());
         
-        $query = $this->getMockBuilder(\Plasma\QuerybuilderInterface::class)
+        $query = $this->getMockBuilder(\Plasma\QueryBuilderInterface::class)
             ->getMock();
         
         $promise = $client->runQuery($query);
