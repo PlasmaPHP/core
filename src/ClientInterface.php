@@ -60,7 +60,7 @@ interface ClientInterface extends \Evenement\EventEmitterInterface, QueryableInt
      * @throws \Plasma\Exception
      * @see \Plasma\TransactionInterface
      */
-    function beginTransaction(int $isolation = \Plasma\TransactionInterface::ISOLATION_NO_CHANGE): \React\Promise\PromiseInterface;
+    function beginTransaction(int $isolation = \Plasma\TransactionInterface::ISOLATION_COMMITTED): \React\Promise\PromiseInterface;
     
     /**
      * Closes all connections gracefully after processing all outstanding requests.
