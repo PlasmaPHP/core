@@ -246,6 +246,16 @@
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
+                    <abbr title="React\Promise\PromiseInterface">PromiseInterface</abbr>
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_createCursor">createCursor</a>(<a href="../Plasma/ClientInterface.html"><abbr title="Plasma\ClientInterface">ClientInterface</abbr></a> $client, string $query, array $params = array())
+        
+                                            <p>Creates a new cursor to seek through SELECT query results.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
                     void
                 </div>
                 <div class="col-md-8 type">
@@ -535,6 +545,67 @@ The implicit COMMIT will prevent you from rolling back any other changes within 
                     <table class="table table-condensed">
                     <tr>
                 <td><a href="https://secure.php.net/InvalidArgumentException" target="_blank">InvalidArgumentException</a></td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_createCursor">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/DriverInterface.php#L262">line 262</a></div>
+        <code>                    <abbr title="React\Promise\PromiseInterface">PromiseInterface</abbr>
+    <strong>createCursor</strong>(<a href="../Plasma/ClientInterface.html"><abbr title="Plasma\ClientInterface">ClientInterface</abbr></a> $client, string $query, array $params = array())
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Creates a new cursor to seek through SELECT query results.</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../Plasma/ClientInterface.html"><abbr title="Plasma\ClientInterface">ClientInterface</abbr></a></td>
+                <td>$client</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$query</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$params</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><abbr title="React\Promise\PromiseInterface">PromiseInterface</abbr></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../Plasma/Exception.html"><abbr title="Plasma\Exception">Exception</abbr></a></td>
                 <td></td>
             </tr>
             </table>
