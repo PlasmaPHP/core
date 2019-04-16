@@ -257,6 +257,7 @@ interface DriverInterface extends \Evenement\EventEmitterInterface {
      * @param string                   $query
      * @param array                    $params
      * @return \React\Promise\PromiseInterface
+     * @throws \LogicException  Thrown if the driver or DBMS does not support cursors.
      * @throws \Plasma\Exception
      */
     function createCursor(\Plasma\ClientInterface $client, string $query, array $params = array()): \React\Promise\PromiseInterface;
