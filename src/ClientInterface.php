@@ -83,7 +83,7 @@ interface ClientInterface extends \Evenement\EventEmitterInterface, QueryableInt
     function runCommand(\Plasma\CommandInterface $command);
     
     /**
-     * Creates a new cursor to seek through SELECT query results.
+     * Creates a new cursor to seek through SELECT query results. Resolves with a `CursorInterface` instance.
      * @param string                   $query
      * @param array                    $params
      * @return \React\Promise\PromiseInterface
