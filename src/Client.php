@@ -331,6 +331,28 @@ class Client implements ClientInterface {
     }
     
     /**
+     * Creates a new cursor to seek through SELECT query results.
+     * @param string                   $query
+     * @param array                    $params
+     * @return \React\Promise\PromiseInterface
+     * @throws \Plasma\Exception
+     */
+    function createCursor(string $query, array $params = array()): \React\Promise\PromiseInterface {
+        if($this->goingAway) {
+            return \React\Promise\reject((new \Plasma\Exception('Client is closing all connections')));
+        }
+        
+        $connection = $this->getOptimalConnection();
+        
+        try {
+            return $connection->createCursor($this, $query, $params);
+        } catch (\Throwable $e) {
+            $this->checkinConnection($connection);
+            throw $e;
+        }
+    }
+    
+    /**
      * Get the optimal connection.
      * @return \Plasma\DriverInterface
      */

@@ -250,4 +250,14 @@ interface DriverInterface extends \Evenement\EventEmitterInterface {
      * @throws \Plasma\Exception
      */
     function runQuery(\Plasma\ClientInterface $client, \Plasma\QueryBuilderInterface $query): \React\Promise\PromiseInterface;
+    
+    /**
+     * Creates a new cursor to seek through SELECT query results.
+     * @param \Plasma\ClientInterface  $client
+     * @param string                   $query
+     * @param array                    $params
+     * @return \React\Promise\PromiseInterface
+     * @throws \Plasma\Exception
+     */
+    function createCursor(\Plasma\ClientInterface $client, string $query, array $params = array()): \React\Promise\PromiseInterface;
 }
