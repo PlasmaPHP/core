@@ -81,4 +81,13 @@ interface ClientInterface extends \Evenement\EventEmitterInterface, QueryableInt
      * @throws \Plasma\Exception  Thrown if the client is closing all connections.
      */
     function runCommand(\Plasma\CommandInterface $command);
+    
+    /**
+     * Creates a new cursor to seek through SELECT query results.
+     * @param string                   $query
+     * @param array                    $params
+     * @return \React\Promise\PromiseInterface
+     * @throws \Plasma\Exception
+     */
+    function createCursor(string $query, array $params = array()): \React\Promise\PromiseInterface;
 }

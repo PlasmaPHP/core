@@ -413,6 +413,33 @@ class ClientTest extends ClientTestHelpers {
         $this->await($promise);
     }
     
+    function testCreateCursor() {
+        $client = $this->createClient();
+        
+        $query = 'SELECT 1';
+        
+        $this->driver
+            ->expects($this->once())
+            ->method('createCursor')
+            ->with($client, $query, array())
+            ->will($this->returnValue(\React\Promise\resolve()));
+        
+        $promise = $client->createCursor('SELECT 1', array());
+        $this->assertInstanceOf(\React\Promise\PromiseInterface::class, $promise);
+    }
+    
+    function testCreateCursorGoingAway() {
+        $client = $this->createClient();
+        
+        $this->assertNull($client->quit());
+        
+        $promise = $client->createCursor('SELECT 1', array());
+        $this->assertInstanceOf(\React\Promise\PromiseInterface::class, $promise);
+        
+        $this->expectException(\Plasma\Exception::class);
+        $this->await($promise);
+    }
+    
     function testLazyCreateConnection() {
         $client = $this->createClient(array('connections.lazy' => true));
         
