@@ -249,7 +249,7 @@
                     <abbr title="React\Promise\PromiseInterface">PromiseInterface</abbr>
                 </div>
                 <div class="col-md-8 type">
-                    <a href="#method_createCursor">createCursor</a>(<a href="../Plasma/ClientInterface.html"><abbr title="Plasma\ClientInterface">ClientInterface</abbr></a> $client, string $query, array $params = array())
+                    <a href="#method_createReadCursor">createReadCursor</a>(<a href="../Plasma/ClientInterface.html"><abbr title="Plasma\ClientInterface">ClientInterface</abbr></a> $client, string $query, array $params = array())
         
                                             <p>Creates a new cursor to seek through SELECT query results. Resolves with a <code>CursorInterface</code> instance.</p>                </div>
                 <div class="col-md-2"></div>
@@ -557,10 +557,10 @@ The implicit COMMIT will prevent you from rolling back any other changes within 
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_createCursor">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/DriverInterface.php#L262">line 262</a></div>
+                    <h3 id="method_createReadCursor">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/DriverInterface.php#L263">line 263</a></div>
         <code>                    <abbr title="React\Promise\PromiseInterface">PromiseInterface</abbr>
-    <strong>createCursor</strong>(<a href="../Plasma/ClientInterface.html"><abbr title="Plasma\ClientInterface">ClientInterface</abbr></a> $client, string $query, array $params = array())
+    <strong>createReadCursor</strong>(<a href="../Plasma/ClientInterface.html"><abbr title="Plasma\ClientInterface">ClientInterface</abbr></a> $client, string $query, array $params = array())
         </code>
     </h3>
     <div class="details">
@@ -604,6 +604,10 @@ The implicit COMMIT will prevent you from rolling back any other changes within 
                             <h4>Exceptions</h4>
 
                     <table class="table table-condensed">
+                    <tr>
+                <td><a href="https://secure.php.net/LogicException" target="_blank">LogicException</a></td>
+                <td>Thrown if the driver or DBMS does not support cursors.</td>
+            </tr>
                     <tr>
                 <td><a href="../Plasma/Exception.html"><abbr title="Plasma\Exception">Exception</abbr></a></td>
                 <td></td>
