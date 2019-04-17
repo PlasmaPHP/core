@@ -337,7 +337,7 @@ class Client implements ClientInterface {
      * @return \React\Promise\PromiseInterface
      * @throws \Plasma\Exception
      */
-    function createCursor(string $query, array $params = array()): \React\Promise\PromiseInterface {
+    function createReadCursor(string $query, array $params = array()): \React\Promise\PromiseInterface {
         if($this->goingAway) {
             return \React\Promise\reject((new \Plasma\Exception('Client is closing all connections')));
         }
@@ -345,7 +345,7 @@ class Client implements ClientInterface {
         $connection = $this->getOptimalConnection();
         
         try {
-            return $connection->createCursor($this, $query, $params);
+            return $connection->createReadCursor($this, $query, $params);
         } catch (\Throwable $e) {
             $this->checkinConnection($connection);
             throw $e;

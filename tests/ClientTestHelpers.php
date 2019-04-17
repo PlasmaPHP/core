@@ -95,7 +95,7 @@ class ClientTestHelpers extends TestCase {
                 'endTransaction',
                 'runCommand',
                 'runQuery',
-                'createCursor',
+                'createReadCursor',
                 'listeners',
                 'on',
                 'once',

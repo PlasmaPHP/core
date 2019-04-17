@@ -90,5 +90,5 @@ interface ClientInterface extends \Evenement\EventEmitterInterface, QueryableInt
      * @throws \LogicException  Thrown if the driver or DBMS does not support cursors.
      * @throws \Plasma\Exception
      */
-    function createCursor(string $query, array $params = array()): \React\Promise\PromiseInterface;
+    function createReadCursor(string $query, array $params = array()): \React\Promise\PromiseInterface;
 }
