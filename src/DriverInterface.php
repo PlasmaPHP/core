@@ -131,20 +131,6 @@ interface DriverInterface extends \Evenement\EventEmitterInterface {
     function connect(string $uri): \React\Promise\PromiseInterface;
     
     /**
-     * Pauses the underlying stream I/O consumption.
-     * If consumption is already paused, this will do nothing.
-     * @return bool  Whether the operation was successful.
-     */
-    function pauseStreamConsumption(): bool;
-    
-    /**
-     * Resumes the underlying stream I/O consumption.
-     * If consumption is not paused, this will do nothing.
-     * @return bool  Whether the operation was successful.
-     */
-    function resumeStreamConsumption(): bool;
-    
-    /**
      * Closes all connections gracefully after processing all outstanding requests.
      * @return \React\Promise\PromiseInterface
      */

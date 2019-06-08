@@ -10,11 +10,12 @@
 namespace Plasma;
 
 /**
- * This is the more advanced query result interface, which is a readable stream.
+ * This is the more advanced query result interface, which is event based.
  * That means, for `SELECT` statements a `data` event will be emitted for each row.
  * At the end of a query, a `end` event will be emitted to notify of the completion.
+ * On error, it will emit an `error` event.
  */
-interface StreamQueryResultInterface extends \React\Stream\ReadableStreamInterface, QueryResultInterface {
+interface StreamQueryResultInterface extends \Evenement\EventEmitterInterface, QueryResultInterface {
     /**
      * Buffers all rows and returns a promise which resolves with an instance of `QueryResultInterface`.
      * This method does not guarantee that all rows get returned, as the buffering depends on when this

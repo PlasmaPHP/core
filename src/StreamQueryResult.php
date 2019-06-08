@@ -11,14 +11,11 @@ namespace Plasma;
 
 /**
  * A query result stream. Used to get rows row by row, as sent by the DBMS.
+ * To adhere to the `react/stream` standard,a `close` event
+ * will be emitted after the `end` or `error` event.
  */
 class StreamQueryResult implements StreamQueryResultInterface {
     use \Evenement\EventEmitterTrait;
-    
-    /**
-     * @var \Plasma\DriverInterface
-     */
-    protected $driver;
     
     /**
      * @var \Plasma\CommandInterface
@@ -51,31 +48,14 @@ class StreamQueryResult implements StreamQueryResultInterface {
     protected $rows;
     
     /**
-     * @var bool
-     */
-    protected $started = false;
-    
-    /**
-     * @var bool
-     */
-    protected $closed = false;
-    
-    /**
-     * @var bool
-     */
-    protected $paused = false;
-    
-    /**
      * Constructor.
-     * @param \Plasma\DriverInterface                   $driver
      * @param \Plasma\CommandInterface                  $command
      * @param int                                       $affectedRows
      * @param int                                       $warningsCount
      * @param int|null                                  $insertID
      * @param \Plasma\ColumnDefinitionInterface[]|null  $columns
      */
-    function __construct(\Plasma\DriverInterface $driver, \Plasma\CommandInterface $command, int $affectedRows = 0, int $warningsCount = 0, ?int $insertID = null, ?array $columns = null) {
-        $this->driver = $driver;
+    function __construct(\Plasma\CommandInterface $command, int $affectedRows = 0, int $warningsCount = 0, ?int $insertID = null, ?array $columns = null) {
         $this->command = $command;
         
         $this->affectedRows = $affectedRows;
@@ -84,23 +64,24 @@ class StreamQueryResult implements StreamQueryResultInterface {
         $this->insertID = $insertID;
         $this->columns = $columns;
         
-        $command->on('data', function ($row) {
-            if(!$this->started && $this->paused) {
-                $this->driver->pauseStreamConsumption();
-            }
-            
-            $this->started = true;
+        $buffer = function ($row) {
             $this->emit('data', array($row));
-        });
+        };
         
-        $command->on('end', function () {
+        $command->on('data', $buffer);
+        
+        $command->once('end', function () use ($buffer) {
+            $this->removeListener('data', $buffer);
+            
             $this->emit('end');
-            $this->close();
+            $this->emit('close');
         });
         
-        $command->on('error', function (\Throwable $error) {
+        $command->once('error', function (\Throwable $error) use ($buffer) {
+            $this->removeListener('data', $buffer);
+            
             $this->emit('error', array($error));
-            $this->close();
+            $this->emit('close');
         });
     }
     
@@ -154,69 +135,5 @@ class StreamQueryResult implements StreamQueryResultInterface {
         return \React\Promise\Stream\all($this)->then(function (array $rows) {
             return (new \Plasma\QueryResult($this->affectedRows, $this->warningsCount, $this->insertID, $this->columns, $rows));
         });
-    }
-    
-    /**
-     * Whether the stream is readable.
-     * @return bool
-     */
-    function isReadable() {
-        return (!$this->closed);
-    }
-    
-    /**
-     * Pauses the connection, where this stream is coming from.
-     * This operation halts ALL read activities. You may still receive
-     * `data` events until the underlying network buffer is drained.
-     * @return void
-     */
-    function pause() {
-        $this->paused = true;
-        
-        if($this->started && !$this->closed) {
-            $this->driver->pauseStreamConsumption();
-        }
-    }
-    
-    /**
-     * Resumes the connection, where this stream is coming from.
-     * @return void
-     */
-    function resume() {
-        $this->paused = false;
-        
-        if($this->started && !$this->closed) {
-            $this->driver->resumeStreamConsumption();
-        }
-    }
-    
-    /**
-     * Closes the stream. Resumes the connection stream.
-     * @return void
-     */
-    function close() {
-        if($this->closed) {
-            return;
-        }
-        
-        $this->closed = true;
-        if($this->started && $this->paused) {
-            $this->driver->resumeStreamConsumption();
-        }
-        
-        $this->emit('close');
-        $this->removeAllListeners();
-    }
-    
-    /**
-     * Pipes all the data from this readable source into the given writable destination.
-     * Automatically sends all incoming data to the destination.
-     * Automatically throttles the source based on what the destination can handle.
-     * @param \React\Stream\WritableStreamInterface  $dest
-     * @param array                                  $options
-     * @return \React\Stream\WritableStreamInterface  $dest  Stream as-is
-     */
-    function pipe(\React\Stream\WritableStreamInterface $dest, array $options = array()) {
-        return \React\Stream\Util::pipe($this, $dest, $options);
     }
 }
