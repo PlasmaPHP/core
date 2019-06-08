@@ -20,6 +20,7 @@ namespace Plasma;
  * Additionally to the event relaying, the client emits `close` and `error` events from the driver forward.
  * `close` event: The single argument is the `DriverInterface` (for debugging purpose).
  * `error` event: The first argument is a `\Throwable` and the second argument is the `DriverInterface` (for debugging purpose).
+ * `newConnection` event: The single argument is `DriverInterface`, emitted when the client successfully opens a new connection.
  */
 interface ClientInterface extends \Evenement\EventEmitterInterface, QueryableInterface {
     /**

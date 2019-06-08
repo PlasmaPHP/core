@@ -55,6 +55,7 @@ class ClientTestHelpers extends TestCase {
             }));
         
         $this->factory
+            ->expects($this->any())
             ->method('createDriver')
             ->will($this->returnValue($this->driver));
         

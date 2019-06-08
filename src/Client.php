@@ -357,7 +357,7 @@ class Client implements ClientInterface {
      * @return \Plasma\DriverInterface
      */
     protected function getOptimalConnection(): \Plasma\DriverInterface {
-        if(\count($this->connections) === 0) {
+        if(\count($this->connections) === 0 && \count($this->busyConnections) < $this->options['connections.max']) {
             $connection = $this->createNewConnection();
             $this->busyConnections->add($connection);
             
@@ -427,6 +427,8 @@ class Client implements ClientInterface {
         $connection->connect($this->uri)->then(function () use (&$connection) {
             $this->connections->add($connection);
             $this->busyConnections->delete($connection);
+            
+            $this->emit('newConnection', array($connection));
         }, function (\Throwable $error) use (&$connection) {
             $this->connections->delete($connection);
             $this->busyConnections->delete($connection);
