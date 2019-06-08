@@ -10,6 +10,36 @@
 namespace Plasma\Tests;
 
 class ClientTest extends ClientTestHelpers {
+    function testNewConnectionEvent() {
+        $client = $this->createClient();
+        
+        $this->driver
+            ->expects($this->once())
+            ->method('connect')
+            ->with('localhost')
+            ->will($this->returnValue(\React\Promise\resolve()));
+        
+        $this->driver
+            ->expects($this->once())
+            ->method('prepare')
+            ->will($this->returnValue(\React\Promise\resolve()));
+        
+        $this->driver
+            ->expects($this->any())
+            ->method('getBacklogLength')
+            ->will($this->returnValue(1));
+        
+        $deferred = new \React\Promise\Deferred();
+        
+        $client->once('newConnection', function ($driver) use (&$deferred) {
+            $this->assertInstanceOf(\Plasma\DriverInterface::class, $driver);
+            $deferred->resolve();
+        });
+        
+        $client->prepare('SELECT 1');
+        $this->assertNull($this->await($deferred->promise()));
+    }
+    
     function testCloseEvent() {
         $client = $this->createClient();
         
