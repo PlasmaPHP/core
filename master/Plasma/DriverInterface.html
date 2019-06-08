@@ -316,16 +316,6 @@
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    bool
-                </div>
-                <div class="col-md-8 type">
-                    <a href="#method_pauseStreamConsumption">pauseStreamConsumption</a>()
-        
-                                            <p>Pauses the underlying stream I/O consumption.</p>                </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
                     <abbr title="React\Promise\PromiseInterface">PromiseInterface</abbr>
                 </div>
                 <div class="col-md-8 type">
@@ -366,16 +356,6 @@
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    bool
-                </div>
-                <div class="col-md-8 type">
-                    <a href="#method_resumeStreamConsumption">resumeStreamConsumption</a>()
-        
-                                            <p>Resumes the underlying stream I/O consumption.</p>                </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
                     mixed
                 </div>
                 <div class="col-md-8 type">
@@ -402,7 +382,7 @@
             <div id="method-details">
                     <div class="method-item">
                     <h3 id="method_beginTransaction">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/DriverInterface.php#L226">line 226</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/DriverInterface.php#L212">line 212</a></div>
         <code>                    <abbr title="React\Promise\PromiseInterface">PromiseInterface</abbr>
     <strong>beginTransaction</strong>(<a href="../Plasma/ClientInterface.html"><abbr title="Plasma\ClientInterface">ClientInterface</abbr></a> $client, int $isolation = \Plasma\TransactionInterface::ISOLATION_COMMITTED)
         </code>
@@ -475,7 +455,7 @@ The implicit COMMIT will prevent you from rolling back any other changes within 
             </div>
                     <div class="method-item">
                     <h3 id="method_close">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/DriverInterface.php#L151">line 151</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/DriverInterface.php#L137">line 137</a></div>
         <code>                    <abbr title="React\Promise\PromiseInterface">PromiseInterface</abbr>
     <strong>close</strong>()
         </code>
@@ -558,7 +538,7 @@ The implicit COMMIT will prevent you from rolling back any other changes within 
             </div>
                     <div class="method-item">
                     <h3 id="method_createReadCursor">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/DriverInterface.php#L263">line 263</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/DriverInterface.php#L249">line 249</a></div>
         <code>                    <abbr title="React\Promise\PromiseInterface">PromiseInterface</abbr>
     <strong>createReadCursor</strong>(<a href="../Plasma/ClientInterface.html"><abbr title="Plasma\ClientInterface">ClientInterface</abbr></a> $client, string $query, array $params = array())
         </code>
@@ -623,7 +603,7 @@ The implicit COMMIT will prevent you from rolling back any other changes within 
             </div>
                     <div class="method-item">
                     <h3 id="method_endTransaction">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/DriverInterface.php#L232">line 232</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/DriverInterface.php#L218">line 218</a></div>
         <code>                    void
     <strong>endTransaction</strong>()
         </code>
@@ -655,7 +635,7 @@ The implicit COMMIT will prevent you from rolling back any other changes within 
             </div>
                     <div class="method-item">
                     <h3 id="method_execute">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/DriverInterface.php#L198">line 198</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/DriverInterface.php#L184">line 184</a></div>
         <code>                    <abbr title="React\Promise\PromiseInterface">PromiseInterface</abbr>
     <strong>execute</strong>(<a href="../Plasma/ClientInterface.html"><abbr title="Plasma\ClientInterface">ClientInterface</abbr></a> $client, string $query, array $params = array())
         </code>
@@ -824,7 +804,7 @@ If you need to execute a query multiple times, prepare the query manually for pe
             </div>
                     <div class="method-item">
                     <h3 id="method_isInTransaction">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/DriverInterface.php#L163">line 163</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/DriverInterface.php#L149">line 149</a></div>
         <code>                    bool
     <strong>isInTransaction</strong>()
         </code>
@@ -855,40 +835,8 @@ If you need to execute a query multiple times, prepare the query manually for pe
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_pauseStreamConsumption">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/DriverInterface.php#L138">line 138</a></div>
-        <code>                    bool
-    <strong>pauseStreamConsumption</strong>()
-        </code>
-    </h3>
-    <div class="details">
-            
-    
-
-                    <div class="method-description">
-                                    <p>Pauses the underlying stream I/O consumption.</p>                    <p>If consumption is already paused, this will do nothing.</p>                            </div>
-                <div class="tags">
-            
-                            <h4>Return Value</h4>
-
-                    <table class="table table-condensed">
-        <tr>
-            <td>bool</td>
-            <td>Whether the operation was successful.</td>
-        </tr>
-    </table>
-
-            
-            
-                        
-                        
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
                     <h3 id="method_prepare">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/DriverInterface.php#L185">line 185</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/DriverInterface.php#L171">line 171</a></div>
         <code>                    <abbr title="React\Promise\PromiseInterface">PromiseInterface</abbr>
     <strong>prepare</strong>(<a href="../Plasma/ClientInterface.html"><abbr title="Plasma\ClientInterface">ClientInterface</abbr></a> $client, string $query)
         </code>
@@ -955,7 +903,7 @@ If you need to execute a query multiple times, prepare the query manually for pe
             </div>
                     <div class="method-item">
                     <h3 id="method_query">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/DriverInterface.php#L174">line 174</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/DriverInterface.php#L160">line 160</a></div>
         <code>                    <abbr title="React\Promise\PromiseInterface">PromiseInterface</abbr>
     <strong>query</strong>(<a href="../Plasma/ClientInterface.html"><abbr title="Plasma\ClientInterface">ClientInterface</abbr></a> $client, string $query)
         </code>
@@ -1022,7 +970,7 @@ If you need to execute a query multiple times, prepare the query manually for pe
             </div>
                     <div class="method-item">
                     <h3 id="method_quit">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/DriverInterface.php#L157">line 157</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/DriverInterface.php#L143">line 143</a></div>
         <code>                    void
     <strong>quit</strong>()
         </code>
@@ -1054,7 +1002,7 @@ If you need to execute a query multiple times, prepare the query manually for pe
             </div>
                     <div class="method-item">
                     <h3 id="method_quote">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/DriverInterface.php#L208">line 208</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/DriverInterface.php#L194">line 194</a></div>
         <code>                    string
     <strong>quote</strong>(string $str, int $type = \Plasma\DriverInterface::QUOTE_TYPE_VALUE)
         </code>
@@ -1113,40 +1061,8 @@ If you need to execute a query multiple times, prepare the query manually for pe
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_resumeStreamConsumption">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/DriverInterface.php#L145">line 145</a></div>
-        <code>                    bool
-    <strong>resumeStreamConsumption</strong>()
-        </code>
-    </h3>
-    <div class="details">
-            
-    
-
-                    <div class="method-description">
-                                    <p>Resumes the underlying stream I/O consumption.</p>                    <p>If consumption is not paused, this will do nothing.</p>                            </div>
-                <div class="tags">
-            
-                            <h4>Return Value</h4>
-
-                    <table class="table table-condensed">
-        <tr>
-            <td>bool</td>
-            <td>Whether the operation was successful.</td>
-        </tr>
-    </table>
-
-            
-            
-                        
-                        
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
                     <h3 id="method_runCommand">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/DriverInterface.php#L241">line 241</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/DriverInterface.php#L227">line 227</a></div>
         <code>                    mixed
     <strong>runCommand</strong>(<a href="../Plasma/ClientInterface.html"><abbr title="Plasma\ClientInterface">ClientInterface</abbr></a> $client, <a href="../Plasma/CommandInterface.html"><abbr title="Plasma\CommandInterface">CommandInterface</abbr></a> $command)
         </code>
@@ -1193,7 +1109,7 @@ If you need to execute a query multiple times, prepare the query manually for pe
             </div>
                     <div class="method-item">
                     <h3 id="method_runQuery">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/DriverInterface.php#L252">line 252</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/DriverInterface.php#L238">line 238</a></div>
         <code>                    <abbr title="React\Promise\PromiseInterface">PromiseInterface</abbr>
     <strong>runQuery</strong>(<a href="../Plasma/ClientInterface.html"><abbr title="Plasma\ClientInterface">ClientInterface</abbr></a> $client, <a href="../Plasma/QueryBuilderInterface.html"><abbr title="Plasma\QueryBuilderInterface">QueryBuilderInterface</abbr></a> $query)
         </code>

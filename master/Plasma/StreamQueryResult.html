@@ -97,7 +97,8 @@
     
 
             <div class="description">
-            <p>A query result stream. Used to get rows row by row, as sent by the DBMS.</p>                                </div>
+            <p>A query result stream. Used to get rows row by row, as sent by the DBMS.</p>            <p>To adhere to the <code>react/stream</code> standard,a <code>close</code> event
+will be emitted after the <code>end</code> or <code>error</code> event.</p>                    </div>
     
             <h2>Traits</h2>
 
@@ -124,7 +125,7 @@
                     
                 </div>
                 <div class="col-md-8 type">
-                    <a href="#method___construct">__construct</a>(<a href="../Plasma/DriverInterface.html"><abbr title="Plasma\DriverInterface">DriverInterface</abbr></a> $driver, <a href="../Plasma/CommandInterface.html"><abbr title="Plasma\CommandInterface">CommandInterface</abbr></a> $command, int $affectedRows = 0, int $warningsCount = 0, int|null $insertID = null, array|null $columns = null)
+                    <a href="#method___construct">__construct</a>(<a href="../Plasma/CommandInterface.html"><abbr title="Plasma\CommandInterface">CommandInterface</abbr></a> $command, int $affectedRows = 0, int $warningsCount = 0, int|null $insertID = null, array|null $columns = null)
         
                                             <p>Constructor.</p>                </div>
                 <div class="col-md-2"></div>
@@ -141,16 +142,6 @@
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    void
-                </div>
-                <div class="col-md-8 type">
-                    <a href="#method_close">close</a>()
-        
-                                            <p>Closes the stream. Resumes the connection stream.</p>                </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
                     int
                 </div>
                 <div class="col-md-8 type">
@@ -161,7 +152,7 @@
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    array|null
+                    <a href="../Plasma/ColumnDefinitionInterface.html"><abbr title="Plasma\ColumnDefinitionInterface">ColumnDefinitionInterface</abbr></a>[]|null
                 </div>
                 <div class="col-md-8 type">
                     <a href="#method_getFieldDefinitions">getFieldDefinitions</a>()
@@ -199,46 +190,6 @@
                                             <p>Get the number of warnings sent by the server.</p>                </div>
                 <div class="col-md-2"></div>
             </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    bool
-                </div>
-                <div class="col-md-8 type">
-                    <a href="#method_isReadable">isReadable</a>()
-        
-                                            <p>Whether the stream is readable.</p>                </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    void
-                </div>
-                <div class="col-md-8 type">
-                    <a href="#method_pause">pause</a>()
-        
-                                            <p>Pauses the connection, where this stream is coming from.</p>                </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    <abbr title="React\Stream\WritableStreamInterface">WritableStreamInterface</abbr>
-                </div>
-                <div class="col-md-8 type">
-                    <a href="#method_pipe">pipe</a>(<abbr title="React\Stream\WritableStreamInterface">WritableStreamInterface</abbr> $dest, array $options = array())
-        
-                                            <p>Pipes all the data from this readable source into the given writable destination.</p>                </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    void
-                </div>
-                <div class="col-md-8 type">
-                    <a href="#method_resume">resume</a>()
-        
-                                            <p>Resumes the connection, where this stream is coming from.</p>                </div>
-                <div class="col-md-2"></div>
-            </div>
             </div>
 
 
@@ -247,9 +198,9 @@
             <div id="method-details">
                     <div class="method-item">
                     <h3 id="method___construct">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/StreamQueryResult.php#L77">line 77</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/StreamQueryResult.php#L58">line 58</a></div>
         <code>                    
-    <strong>__construct</strong>(<a href="../Plasma/DriverInterface.html"><abbr title="Plasma\DriverInterface">DriverInterface</abbr></a> $driver, <a href="../Plasma/CommandInterface.html"><abbr title="Plasma\CommandInterface">CommandInterface</abbr></a> $command, int $affectedRows = 0, int $warningsCount = 0, int|null $insertID = null, array|null $columns = null)
+    <strong>__construct</strong>(<a href="../Plasma/CommandInterface.html"><abbr title="Plasma\CommandInterface">CommandInterface</abbr></a> $command, int $affectedRows = 0, int $warningsCount = 0, int|null $insertID = null, array|null $columns = null)
         </code>
     </h3>
     <div class="details">
@@ -262,11 +213,6 @@
                             <h4>Parameters</h4>
 
                     <table class="table table-condensed">
-                    <tr>
-                <td><a href="../Plasma/DriverInterface.html"><abbr title="Plasma\DriverInterface">DriverInterface</abbr></a></td>
-                <td>$driver</td>
-                <td></td>
-            </tr>
                     <tr>
                 <td><a href="../Plasma/CommandInterface.html"><abbr title="Plasma\CommandInterface">CommandInterface</abbr></a></td>
                 <td>$command</td>
@@ -305,7 +251,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_all">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/StreamQueryResult.php#L153">line 153</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/StreamQueryResult.php#L134">line 134</a></div>
         <code>                    <abbr title="React\Promise\PromiseInterface">PromiseInterface</abbr>
     <strong>all</strong>()
         </code>
@@ -337,40 +283,8 @@ method gets invoked. There's no automatic buffering, as such rows may be missing
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_close">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/StreamQueryResult.php#L197">line 197</a></div>
-        <code>                    void
-    <strong>close</strong>()
-        </code>
-    </h3>
-    <div class="details">
-            
-    
-
-                    <div class="method-description">
-                                    <p>Closes the stream. Resumes the connection stream.</p>                                                </div>
-                <div class="tags">
-            
-                            <h4>Return Value</h4>
-
-                    <table class="table table-condensed">
-        <tr>
-            <td>void</td>
-            <td></td>
-        </tr>
-    </table>
-
-            
-            
-                        
-                        
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
                     <h3 id="method_getAffectedRows">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/StreamQueryResult.php#L111">line 111</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/StreamQueryResult.php#L92">line 92</a></div>
         <code>                    int
     <strong>getAffectedRows</strong>()
         </code>
@@ -402,8 +316,8 @@ method gets invoked. There's no automatic buffering, as such rows may be missing
             </div>
                     <div class="method-item">
                     <h3 id="method_getFieldDefinitions">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/StreamQueryResult.php#L135">line 135</a></div>
-        <code>                    array|null
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/StreamQueryResult.php#L116">line 116</a></div>
+        <code>                    <a href="../Plasma/ColumnDefinitionInterface.html"><abbr title="Plasma\ColumnDefinitionInterface">ColumnDefinitionInterface</abbr></a>[]|null
     <strong>getFieldDefinitions</strong>()
         </code>
     </h3>
@@ -419,7 +333,7 @@ method gets invoked. There's no automatic buffering, as such rows may be missing
 
                     <table class="table table-condensed">
         <tr>
-            <td>array|null</td>
+            <td><a href="../Plasma/ColumnDefinitionInterface.html"><abbr title="Plasma\ColumnDefinitionInterface">ColumnDefinitionInterface</abbr></a>[]|null</td>
             <td></td>
         </tr>
     </table>
@@ -434,7 +348,7 @@ method gets invoked. There's no automatic buffering, as such rows may be missing
             </div>
                     <div class="method-item">
                     <h3 id="method_getInsertID">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/StreamQueryResult.php#L127">line 127</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/StreamQueryResult.php#L108">line 108</a></div>
         <code>                    int|null
     <strong>getInsertID</strong>()
         </code>
@@ -466,7 +380,7 @@ method gets invoked. There's no automatic buffering, as such rows may be missing
             </div>
                     <div class="method-item">
                     <h3 id="method_getRows">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/StreamQueryResult.php#L143">line 143</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/StreamQueryResult.php#L124">line 124</a></div>
         <code>                    array|null
     <strong>getRows</strong>()
         </code>
@@ -498,7 +412,7 @@ method gets invoked. There's no automatic buffering, as such rows may be missing
             </div>
                     <div class="method-item">
                     <h3 id="method_getWarningsCount">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/StreamQueryResult.php#L119">line 119</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/StreamQueryResult.php#L100">line 100</a></div>
         <code>                    int
     <strong>getWarningsCount</strong>()
         </code>
@@ -516,151 +430,6 @@ method gets invoked. There's no automatic buffering, as such rows may be missing
                     <table class="table table-condensed">
         <tr>
             <td>int</td>
-            <td></td>
-        </tr>
-    </table>
-
-            
-            
-                        
-                        
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
-                    <h3 id="method_isReadable">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/StreamQueryResult.php#L163">line 163</a></div>
-        <code>                    bool
-    <strong>isReadable</strong>()
-        </code>
-    </h3>
-    <div class="details">
-            
-    
-
-                    <div class="method-description">
-                                    <p>Whether the stream is readable.</p>                                                </div>
-                <div class="tags">
-            
-                            <h4>Return Value</h4>
-
-                    <table class="table table-condensed">
-        <tr>
-            <td>bool</td>
-            <td></td>
-        </tr>
-    </table>
-
-            
-            
-                        
-                        
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
-                    <h3 id="method_pause">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/StreamQueryResult.php#L173">line 173</a></div>
-        <code>                    void
-    <strong>pause</strong>()
-        </code>
-    </h3>
-    <div class="details">
-            
-    
-
-                    <div class="method-description">
-                                    <p>Pauses the connection, where this stream is coming from.</p>                    <p>This operation halts ALL read activities. You may still receive
-<code>data</code> events until the underlying network buffer is drained.</p>                            </div>
-                <div class="tags">
-            
-                            <h4>Return Value</h4>
-
-                    <table class="table table-condensed">
-        <tr>
-            <td>void</td>
-            <td></td>
-        </tr>
-    </table>
-
-            
-            
-                        
-                        
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
-                    <h3 id="method_pipe">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/StreamQueryResult.php#L219">line 219</a></div>
-        <code>                    <abbr title="React\Stream\WritableStreamInterface">WritableStreamInterface</abbr>
-    <strong>pipe</strong>(<abbr title="React\Stream\WritableStreamInterface">WritableStreamInterface</abbr> $dest, array $options = array())
-        </code>
-    </h3>
-    <div class="details">
-            
-    
-
-                    <div class="method-description">
-                                    <p>Pipes all the data from this readable source into the given writable destination.</p>                    <p>Automatically sends all incoming data to the destination.
-Automatically throttles the source based on what the destination can handle.</p>                            </div>
-                <div class="tags">
-                            <h4>Parameters</h4>
-
-                    <table class="table table-condensed">
-                    <tr>
-                <td><abbr title="React\Stream\WritableStreamInterface">WritableStreamInterface</abbr></td>
-                <td>$dest</td>
-                <td></td>
-            </tr>
-                    <tr>
-                <td>array</td>
-                <td>$options</td>
-                <td></td>
-            </tr>
-            </table>
-
-            
-                            <h4>Return Value</h4>
-
-                    <table class="table table-condensed">
-        <tr>
-            <td><abbr title="React\Stream\WritableStreamInterface">WritableStreamInterface</abbr></td>
-            <td>$dest  Stream as-is</td>
-        </tr>
-    </table>
-
-            
-            
-                        
-                        
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
-                    <h3 id="method_resume">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/StreamQueryResult.php#L185">line 185</a></div>
-        <code>                    void
-    <strong>resume</strong>()
-        </code>
-    </h3>
-    <div class="details">
-            
-    
-
-                    <div class="method-description">
-                                    <p>Resumes the connection, where this stream is coming from.</p>                                                </div>
-                <div class="tags">
-            
-                            <h4>Return Value</h4>
-
-                    <table class="table table-condensed">
-        <tr>
-            <td>void</td>
             <td></td>
         </tr>
     </table>

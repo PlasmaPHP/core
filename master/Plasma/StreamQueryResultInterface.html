@@ -90,15 +90,16 @@
 
     <p>    interface
     <strong>StreamQueryResultInterface</strong>        implements
-        <a href="../Plasma/QueryResultInterface.html"><abbr title="Plasma\QueryResultInterface">QueryResultInterface</abbr></a>, <abbr title="React\Stream\ReadableStreamInterface">ReadableStreamInterface</abbr>        (<a href="https://github.com/PlasmaPHP/core/blob/master/src/StreamQueryResultInterface.php" target="_blank">View source</a>)
+        <abbr title="Evenement\EventEmitterInterface">EventEmitterInterface</abbr>, <a href="../Plasma/QueryResultInterface.html"><abbr title="Plasma\QueryResultInterface">QueryResultInterface</abbr></a>        (<a href="https://github.com/PlasmaPHP/core/blob/master/src/StreamQueryResultInterface.php" target="_blank">View source</a>)
 </p>
 
         
     
 
             <div class="description">
-            <p>This is the more advanced query result interface, which is a readable stream.</p>            <p>That means, for <code>SELECT</code> statements a <code>data</code> event will be emitted for each row.
-At the end of a query, a <code>end</code> event will be emitted to notify of the completion.</p>                    </div>
+            <p>This is the more advanced query result interface, which is event based.</p>            <p>That means, for <code>SELECT</code> statements a <code>data</code> event will be emitted for each row.
+At the end of a query, a <code>end</code> event will be emitted to notify of the completion.
+On error, it will emit an <code>error</code> event.</p>                    </div>
     
     
     
@@ -128,7 +129,7 @@ At the end of a query, a <code>end</code> event will be emitted to notify of the
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    array|null
+                    <a href="../Plasma/ColumnDefinitionInterface.html"><abbr title="Plasma\ColumnDefinitionInterface">ColumnDefinitionInterface</abbr></a>[]|null
                 </div>
                 <div class="col-md-8 type">
                     <a href="#method_getFieldDefinitions">getFieldDefinitions</a>()
@@ -174,7 +175,7 @@ At the end of a query, a <code>end</code> event will be emitted to notify of the
             <div id="method-details">
                     <div class="method-item">
                     <h3 id="method_all">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/StreamQueryResultInterface.php#L25">line 25</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/StreamQueryResultInterface.php#L26">line 26</a></div>
         <code>                    <abbr title="React\Promise\PromiseInterface">PromiseInterface</abbr>
     <strong>all</strong>()
         </code>
@@ -241,7 +242,7 @@ all rows get returned. But users must not assume this behaviour is the case.</p>
                     <div class="method-item">
                     <h3 id="method_getFieldDefinitions">
         <div class="location">in <a href="../Plasma/QueryResultInterface.html#method_getFieldDefinitions"><abbr title="Plasma\QueryResultInterface">QueryResultInterface</abbr></a> at         <a href="https://github.com/PlasmaPHP/core/blob/master/src/QueryResultInterface.php#L39">line 39</a></div>
-        <code>                    array|null
+        <code>                    <a href="../Plasma/ColumnDefinitionInterface.html"><abbr title="Plasma\ColumnDefinitionInterface">ColumnDefinitionInterface</abbr></a>[]|null
     <strong>getFieldDefinitions</strong>()
         </code>
     </h3>
@@ -257,7 +258,7 @@ all rows get returned. But users must not assume this behaviour is the case.</p>
 
                     <table class="table table-condensed">
         <tr>
-            <td>array|null</td>
+            <td><a href="../Plasma/ColumnDefinitionInterface.html"><abbr title="Plasma\ColumnDefinitionInterface">ColumnDefinitionInterface</abbr></a>[]|null</td>
             <td></td>
         </tr>
     </table>
