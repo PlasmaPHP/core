@@ -39,9 +39,9 @@ interface ColumnDefinitionInterface {
     
     /**
      * Get the charset, such as `utf8mb4`.
-     * @return string
+     * @return string|null
      */
-    function getCharset(): string;
+    function getCharset(): ?string;
     
     /**
      * Get the maximum field length, if any.

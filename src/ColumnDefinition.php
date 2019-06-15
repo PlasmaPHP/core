@@ -34,7 +34,7 @@ abstract class ColumnDefinition implements ColumnDefinitionInterface {
     protected $type;
     
     /**
-     * @var string
+     * @var string|null
      */
     protected $charset;
     
@@ -55,16 +55,16 @@ abstract class ColumnDefinition implements ColumnDefinitionInterface {
     
     /**
      * Constructor.
-     * @param string    $database
-     * @param string    $table
-     * @param string    $name
-     * @param string    $type
-     * @param string    $charset
-     * @param int|null  $length
-     * @param int       $flags
-     * @param int|null  $decimals
+     * @param string       $database
+     * @param string       $table
+     * @param string       $name
+     * @param string       $type
+     * @param string|null  $charset
+     * @param int|null     $length
+     * @param int          $flags
+     * @param int|null     $decimals
      */
-    function __construct(string $database, string $table, string $name, string $type, string $charset, ?int $length, int $flags, ?int $decimals) {
+    function __construct(string $database, string $table, string $name, string $type, ?string $charset, ?int $length, int $flags, ?int $decimals) {
         $this->database = $database;
         $this->table = $table;
         $this->name = $name;
@@ -109,9 +109,9 @@ abstract class ColumnDefinition implements ColumnDefinitionInterface {
     
     /**
      * Get the charset, such as `utf8mb4`.
-     * @return string
+     * @return string|null
      */
-    function getCharset(): string {
+    function getCharset(): ?string {
         return $this->charset;
     }
     
