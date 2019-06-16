@@ -9,7 +9,7 @@
 
 namespace Plasma\Tests;
 
-class ClientTestHelpers extends TestCase {
+abstract class ClientTestHelpers extends TestCase {
     /**
      * @var \Plasma\DriverFactoryInterface
      */
@@ -108,7 +108,7 @@ class ClientTestHelpers extends TestCase {
     }
     
     function getColDefMock(...$args): \Plasma\ColumnDefinitionInterface {
-        return $this->getMockBuilder(\Plasma\ColumnDefinition::class)
+        return $this->getMockBuilder(\Plasma\AbstractColumnDefinition::class)
             ->setMethods(array(
                 'isNullable',
                 'isAutoIncrement',

@@ -12,7 +12,7 @@ namespace Plasma;
 /**
  * Column Definitions define columns (who would've thought of that?). Such as their name, type, length, etc.
  */
-abstract class ColumnDefinition implements ColumnDefinitionInterface {
+abstract class AbstractColumnDefinition implements ColumnDefinitionInterface {
     /**
      * @var string
      */

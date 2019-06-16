@@ -9,7 +9,7 @@
 
 namespace Plasma\Tests;
 
-class TestCase extends \PHPUnit\Framework\TestCase {
+abstract class TestCase extends \PHPUnit\Framework\TestCase {
     /**
      * @var \React\EventLoop\LoopInterface
      */
