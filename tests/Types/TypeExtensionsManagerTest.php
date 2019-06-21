@@ -85,7 +85,7 @@ class TypeExtensionsManagerTest extends \Plasma\Tests\ClientTestHelpers {
         
         $this->assertNull($manager->registerType('string', $type));
         
-        $encoded = $manager->encodeType('hello', $this->getColDefMock('hello', 'world', 'a', 'b', 'c', 0, false, 0, null));
+        $encoded = $manager->encodeType('hello', $this->getColDefMock('world', 'a', 'b', 'c', 0, false, 0, null));
         $this->assertInstanceOf(\Plasma\Types\TypeExtensionResultInterface::class, $encoded);
     }
     
@@ -117,13 +117,13 @@ class TypeExtensionsManagerTest extends \Plasma\Tests\ClientTestHelpers {
         
         $this->assertNull($manager->registerType('string', $type));
         
-        $encoded = $manager->encodeType('hello', $this->getColDefMock('hello', 'world', 'a', 'b', 'c', 0, false, 0, null));
+        $encoded = $manager->encodeType('hello', $this->getColDefMock('world', 'a', 'b', 'c', 0, false, 0, null));
         $this->assertInstanceOf(\Plasma\Types\TypeExtensionResultInterface::class, $encoded);
         
         $this->assertNull($manager->unregisterType('string'));
         
         try {
-            $this->assertInstanceOf(\Throwable::class, $manager->encodeType('hello', $this->getColDefMock('hello', 'world', 'a', 'b', 'c', 0, false, 0, null)));
+            $this->assertInstanceOf(\Throwable::class, $manager->encodeType('hello', $this->getColDefMock('world', 'a', 'b', 'c', 0, false, 0, null)));
         } catch (\Plasma\Exception $e) {
             /* Continue */
         }
@@ -275,7 +275,7 @@ class TypeExtensionsManagerTest extends \Plasma\Tests\ClientTestHelpers {
         
         $manager->registerType('string', $type);
         
-        $encoded = $manager->encodeType('hello it is me', $this->getColDefMock('hello', 'world', 'a', 'b', 'c', 0, false, 0, null));
+        $encoded = $manager->encodeType('hello it is me', $this->getColDefMock('world', 'a', 'b', 'c', 0, false, 0, null));
         
         $this->assertInstanceOf(\Plasma\Types\TypeExtensionResultInterface::class, $encoded);
         $this->assertSame(\pack('C*', 'hello it is me'), $encoded->getValue());
@@ -330,7 +330,7 @@ class TypeExtensionsManagerTest extends \Plasma\Tests\ClientTestHelpers {
             }
         });
         
-        $encoded = $manager->encodeType($class, $this->getColDefMock('hello', 'world', 'a', 'b', 'c', 0, false, 0, null));
+        $encoded = $manager->encodeType($class, $this->getColDefMock('world', 'a', 'b', 'c', 0, false, 0, null));
         
         $this->assertInstanceOf(\Plasma\Types\TypeExtensionResultInterface::class, $encoded);
         $this->assertSame(\json_encode(array('hello' => true)), $encoded->getValue());
@@ -338,7 +338,7 @@ class TypeExtensionsManagerTest extends \Plasma\Tests\ClientTestHelpers {
         $class = new \stdClass();
         $class->hello = true;
         
-        $encoded2 = $manager->encodeType($class, $this->getColDefMock('hello', 'world', 'a', 'b', 'c', 0, false, 0, null));
+        $encoded2 = $manager->encodeType($class, $this->getColDefMock('world', 'a', 'b', 'c', 0, false, 0, null));
         
         $this->assertInstanceOf(\Plasma\Types\TypeExtensionResultInterface::class, $encoded2);
         $this->assertSame(\json_encode(array('hello' => true)), $encoded2->getValue());

@@ -16,11 +16,6 @@ abstract class AbstractColumnDefinition implements ColumnDefinitionInterface {
     /**
      * @var string
      */
-    protected $database;
-    
-    /**
-     * @var string
-     */
     protected $table;
     
     /**
@@ -55,7 +50,6 @@ abstract class AbstractColumnDefinition implements ColumnDefinitionInterface {
     
     /**
      * Constructor.
-     * @param string       $database
      * @param string       $table
      * @param string       $name
      * @param string       $type
@@ -64,8 +58,7 @@ abstract class AbstractColumnDefinition implements ColumnDefinitionInterface {
      * @param int          $flags
      * @param int|null     $decimals
      */
-    function __construct(string $database, string $table, string $name, string $type, ?string $charset, ?int $length, int $flags, ?int $decimals) {
-        $this->database = $database;
+    function __construct(string $table, string $name, string $type, ?string $charset, ?int $length, int $flags, ?int $decimals) {
         $this->table = $table;
         $this->name = $name;
         $this->type = $type;
@@ -73,14 +66,6 @@ abstract class AbstractColumnDefinition implements ColumnDefinitionInterface {
         $this->length = $length;
         $this->flags = $flags;
         $this->decimals = $decimals;
-    }
-    
-    /**
-     * Get the database name this column is in.
-     * @return string
-     */
-    function getDatabaseName(): string {
-        return $this->database;
     }
     
     /**

@@ -14,12 +14,6 @@ namespace Plasma;
  */
 interface ColumnDefinitionInterface {
     /**
-     * Get the database name this column is in.
-     * @return string
-     */
-    function getDatabaseName(): string;
-    
-    /**
      * Get the table name this column is in.
      * @return string
      */
