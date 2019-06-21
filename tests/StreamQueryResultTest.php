@@ -41,7 +41,7 @@ class StreamQueryResultTest extends ClientTestHelpers {
         $this->assertNull($result->getFieldDefinitions());
         
         $fields = array(
-            $this->getColDefMock('test', 'test2', 'coltest', 'BIGINT', 'utf8mb4', 20, false, 0, null)
+            $this->getColDefMock('test2', 'coltest', 'BIGINT', 'utf8mb4', 20, false, 0, null)
         );
         
         $result2 = new \Plasma\StreamQueryResult($command, 0, 1, null, $fields);
