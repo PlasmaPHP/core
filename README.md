@@ -42,5 +42,27 @@ $client->execute('SELECT * FROM `users`', [])
 $loop->run();
 ```
 
+# Cursors
+Cursors are a powerful to get full control over fetching rows.
+Cursors allow you to control when a row (or multiple) is fetched from the database and allow you to have your application a small memory footprint while fetching millions of rows.
+
+Cursors return a promise and resolve with the row, an array of rows or `false` (when no more rows).
+Since they return a promise, you don't need to depend on events and possibly buffer rows when passing around the result.
+
+When combining cursors with generator coroutines (such as Recoil), you get a powerful tool you already know from PDO.
+
+```php
+// Inside a coroutine
+
+/** @var \Plasma\CursorInterface  $cursor */
+$cursor = yield $client->createReadCursor('SELECT * FROM `my_table`");
+
+while($row = yield $cursor->fetch()) {
+    // Process row
+}
+```
+
+Support for cursors depend on the individual drivers.
+
 # Documentation
 https://plasmaphp.github.io/core/
