@@ -43,7 +43,7 @@ $loop->run();
 ```
 
 # Cursors
-Cursors are a powerful to get full control over fetching rows.
+Cursors are a powerful way to get full control over fetching rows.
 Cursors allow you to control when a row (or multiple) is fetched from the database and allows your application a small memory footprint while fetching millions of rows.
 
 Cursors return a promise and resolve with the row, an array of rows or `false` (when no more rows).
