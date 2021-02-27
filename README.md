@@ -20,21 +20,21 @@ Each driver has their own dependencies, as such they have to implement a factory
 But this is some little pseudo code:
 
 ```php
-$loop = \React\EventLoop\Factory::create();
-$factory = new \SomeGuy\PlasmaDriver\MsSQLFactory($loop);
+use Plasma\Client;use Plasma\QueryResultInterface;use React\EventLoop\Factory;use SomeGuy\PlasmaDriver\MsSQLFactory;$loop = Factory::create();
+$factory = new MsSQLFactory($loop);
 
-$client = \Plasma\Client::create($factory, 'root:1234@localhost');
+$client = Client::create($factory, 'root:1234@localhost');
 
 $client->execute('SELECT * FROM `users`', [])
-    ->then(function (\Plasma\QueryResultInterface $result) use ($client) {
+    ->then(function (QueryResultInterface $result) use ($client) {
         // Do something with the query result
         // Most likely for a SELECT query,
         // it will be a streaming query result
         
         $client->close()->done();
-    }, function (\Throwable $error) use ($client) {
+    }, function (Throwable $error) use ($client) {
         // Oh no, an error occurred!
-        echo $error.\PHP_EOL;
+        echo $error.PHP_EOL;
         
         $client->close()->done();
     });
@@ -54,8 +54,8 @@ When combining cursors with generator coroutines (such as Recoil), you get a pow
 ```php
 // Inside a coroutine
 
-/** @var \Plasma\CursorInterface  $cursor */
-$cursor = yield $client->createReadCursor('SELECT * FROM `my_table`');
+/** @var CursorInterface  $cursor */
+use Plasma\CursorInterface;$cursor = yield $client->createReadCursor('SELECT * FROM `my_table`');
 
 while($row = yield $cursor->fetch()) {
     // Process row

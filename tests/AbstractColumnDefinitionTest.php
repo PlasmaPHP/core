@@ -5,71 +5,78 @@
  *
  * Website: https://github.com/PlasmaPHP
  * License: https://github.com/PlasmaPHP/core/blob/master/LICENSE
+ * @noinspection PhpUnhandledExceptionInspection
 */
 
 namespace Plasma\Tests;
 
-class ColumnDefinitionTest extends ClientTestHelpers {
+use Plasma\ColumnDefinitionInterface;
+use Plasma\Types\AbstractTypeExtension;
+use Plasma\Types\TypeExtensionResult;
+use Plasma\Types\TypeExtensionResultInterface;
+use Plasma\Types\TypeExtensionsManager;
+
+class AbstractColumnDefinitionTest extends ClientTestHelpers {
     function testGetTableName() {
         $coldef = $this->getColDefMock('test2', 'coltest', 'BIGINT', 'utf8mb4', 20, 0, null);
-        $this->assertSame('test2', $coldef->getTableName());
+        self::assertSame('test2', $coldef->getTableName());
     }
     
     function testGetName() {
         $coldef = $this->getColDefMock('test2', 'coltest', 'BIGINT', 'utf8mb4', 20, 0, null);
-        $this->assertSame('coltest', $coldef->getName());
+        self::assertSame('coltest', $coldef->getName());
     }
     
     function testGetType() {
         $coldef = $this->getColDefMock('test2', 'coltest', 'BIGINT', 'utf8mb4', 20, 0, null);
-        $this->assertSame('BIGINT', $coldef->getType());
+        self::assertSame('BIGINT', $coldef->getType());
     }
     
     function testGetCharset() {
         $coldef = $this->getColDefMock('test2', 'coltest', 'BIGINT', 'utf8mb4', 20, 0, null);
-        $this->assertSame('utf8mb4', $coldef->getCharset());
+        self::assertSame('utf8mb4', $coldef->getCharset());
     }
    
     function testGetLength() {
         $coldef = $this->getColDefMock('test2', 'coltest', 'BIGINT', 'utf8mb4', 20, 0, null);
-        $this->assertSame(20, $coldef->getLength());
+        self::assertSame(20, $coldef->getLength());
         
         $coldef2 = $this->getColDefMock('test2', 'coltest', 'BIGINT', 'utf8mb4', null, 0, null);
-        $this->assertNull($coldef2->getLength());
+        self::assertNull($coldef2->getLength());
     }
     
     function testGetFlags() {
         $coldef = $this->getColDefMock('test2', 'coltest', 'BIGINT', 'utf8mb4', 20, 0, null);
-        $this->assertSame(0, $coldef->getFlags());
+        self::assertSame(0, $coldef->getFlags());
     }
     
     function testGetDecimals() {
         $coldef = $this->getColDefMock('test2', 'coltest', 'BIGINT', 'utf8mb4', 20, 0, null);
-        $this->assertNull($coldef->getDecimals());
+        self::assertNull($coldef->getDecimals());
         
         $coldef2 = $this->getColDefMock('test2', 'coltest', 'BIGINT', 'utf8mb4', 20, 0, 2);
-        $this->assertSame(2, $coldef2->getDecimals());
+        self::assertSame(2, $coldef2->getDecimals());
     }
     
     function testParseValueNoMatchingType() {
         $coldef = $this->getColDefMock('test2', 'coltest', 'BIGINT', 'utf8mb4', 20, 0, null);
-        $this->assertSame('testValue', $coldef->parseValue('testValue'));
+        self::assertSame('testValue', $coldef->parseValue('testValue'));
     }
     
     function testParseValue() {
-        $type = (new class('int', 'BIGINT', 'is_numeric') extends \Plasma\Types\AbstractTypeExtension {
-            function encode($value, \Plasma\ColumnDefinitionInterface $a): \Plasma\Types\TypeExtensionResultInterface {
-                return (new \Plasma\Types\TypeExtensionResult(0, false, $value));
+        $type = (new class('int', 'BIGINT', 'is_numeric') extends AbstractTypeExtension {
+            function encode($value, ColumnDefinitionInterface $a): TypeExtensionResultInterface {
+                return (new TypeExtensionResult(0, false, $value));
             }
             
-            function decode($value): \Plasma\Types\TypeExtensionResultInterface {
-                return (new \Plasma\Types\TypeExtensionResult(0, false, ((int) $value)));
+            function decode($value): TypeExtensionResultInterface {
+                return (new TypeExtensionResult(0, false, ((int) $value)));
             }
         });
         
-        \Plasma\Types\TypeExtensionsManager::getManager()->registerDatabaseType('BIGINT', $type);
+        TypeExtensionsManager::getManager()->registerDatabaseType('BIGINT', $type);
         
         $coldef = $this->getColDefMock('test2', 'coltest', 'BIGINT', 'utf8mb4', 20, 0, null);
-        $this->assertSame(500, $coldef->parseValue('500'));
+        self::assertSame(500, $coldef->parseValue('500'));
     }
 }

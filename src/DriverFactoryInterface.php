@@ -15,7 +15,7 @@ namespace Plasma;
 interface DriverFactoryInterface {
     /**
      * Creates a new driver instance.
-     * @return \Plasma\DriverInterface
+     * @return DriverInterface
      */
-    function createDriver(): \Plasma\DriverInterface;
+    function createDriver(): DriverInterface;
 }

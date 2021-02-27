@@ -9,6 +9,9 @@
 
 namespace Plasma;
 
+use Evenement\EventEmitterInterface;
+use React\Promise\PromiseInterface;
+
 /**
  * The client interface for plasma clients, responsible for creating drivers and pooling.
  * It also provides a minimal public API for checking out a connection, get work done and checking the connection back in.
@@ -22,16 +25,16 @@ namespace Plasma;
  * `error` event: The first argument is a `\Throwable` and the second argument is the `DriverInterface` (for debugging purpose).
  * `newConnection` event: The single argument is `DriverInterface`, emitted when the client successfully opens a new connection.
  */
-interface ClientInterface extends \Evenement\EventEmitterInterface, QueryableInterface {
+interface ClientInterface extends EventEmitterInterface, QueryableInterface {
     /**
      * Creates a client with the specified factory and options.
-     * @param \Plasma\DriverFactoryInterface  $factory
-     * @param string                          $uri      The connect uri, which consists of `username:password@host:port`.
-     * @param array                           $options  Any options for the client, see client implementation for details.
+     * @param DriverFactoryInterface  $factory
+     * @param string                  $uri      The connect uri, which consists of `username:password@host:port`.
+     * @param array                   $options  Any options for the client, see client implementation for details.
      * @return self
      * @throws \Throwable  The client implementation may throw any exception during this operation.
      */
-    static function create(\Plasma\DriverFactoryInterface $factory, string $uri, array $options = array()): self;
+    static function create(DriverFactoryInterface $factory, string $uri, array $options = array()): self;
     
     /**
      * Get the amount of connections.
@@ -41,10 +44,10 @@ interface ClientInterface extends \Evenement\EventEmitterInterface, QueryableInt
     
     /**
      * Checks a connection back in, if usable and not closing.
-     * @param \Plasma\DriverInterface  $driver
+     * @param DriverInterface  $driver
      * @return void
      */
-    function checkinConnection(\Plasma\DriverInterface $driver): void;
+    function checkinConnection(DriverInterface $driver): void;
     
     /**
      * Begins a transaction. Resolves with a `TransactionInterface` instance.
@@ -57,17 +60,17 @@ interface ClientInterface extends \Evenement\EventEmitterInterface, QueryableInt
      * statement such as DROP TABLE or CREATE TABLE is issued within a transaction.
      * The implicit COMMIT will prevent you from rolling back any other changes within the transaction boundary.
      * @param int  $isolation  See the `TransactionInterface` constants.
-     * @return \React\Promise\PromiseInterface
-     * @throws \Plasma\Exception
+     * @return PromiseInterface
+     * @throws Exception
      * @see \Plasma\TransactionInterface
      */
-    function beginTransaction(int $isolation = \Plasma\TransactionInterface::ISOLATION_COMMITTED): \React\Promise\PromiseInterface;
+    function beginTransaction(int $isolation = TransactionInterface::ISOLATION_COMMITTED): PromiseInterface;
     
     /**
      * Closes all connections gracefully after processing all outstanding requests.
-     * @return \React\Promise\PromiseInterface
+     * @return PromiseInterface
      */
-    function close(): \React\Promise\PromiseInterface;
+    function close(): PromiseInterface;
     
     /**
      * Forcefully closes the connection, without waiting for any outstanding requests. This will reject all outstanding requests.
@@ -77,19 +80,19 @@ interface ClientInterface extends \Evenement\EventEmitterInterface, QueryableInt
     
     /**
      * Runs the given command.
-     * @param \Plasma\CommandInterface  $command
+     * @param CommandInterface  $command
      * @return mixed  Return depends on command and driver.
-     * @throws \Plasma\Exception  Thrown if the client is closing all connections.
+     * @throws Exception  Thrown if the client is closing all connections.
      */
-    function runCommand(\Plasma\CommandInterface $command);
+    function runCommand(CommandInterface $command);
     
     /**
      * Creates a new cursor to seek through SELECT query results. Resolves with a `CursorInterface` instance.
      * @param string                   $query
      * @param array                    $params
-     * @return \React\Promise\PromiseInterface
+     * @return PromiseInterface
      * @throws \LogicException  Thrown if the driver or DBMS does not support cursors.
-     * @throws \Plasma\Exception
+     * @throws Exception
      */
-    function createReadCursor(string $query, array $params = array()): \React\Promise\PromiseInterface;
+    function createReadCursor(string $query, array $params = array()): PromiseInterface;
 }

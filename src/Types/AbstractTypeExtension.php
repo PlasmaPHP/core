@@ -9,6 +9,8 @@
 
 namespace Plasma\Types;
 
+use Plasma\ColumnDefinitionInterface;
+
 /**
  * An abstract type extension.
  */
@@ -44,11 +46,11 @@ abstract class AbstractTypeExtension implements TypeExtensionInterface {
      * Whether the type extension can handle the conversion of the passed value.
      * Before this method is used, the common types are checked first.
      * `class` -> `interface` -> `type` -> this.
-     * @param mixed                                   $value
-     * @param \Plasma\ColumnDefinitionInterface|null  $column
+     * @param mixed                           $value
+     * @param ColumnDefinitionInterface|null  $column
      * @return bool
      */
-    function canHandleType($value, ?\Plasma\ColumnDefinitionInterface $column): bool {
+    function canHandleType($value, ?ColumnDefinitionInterface $column): bool {
         $cb = $this->filter;
         return $cb($value, $column);
     }
@@ -71,16 +73,16 @@ abstract class AbstractTypeExtension implements TypeExtensionInterface {
     
     /**
      * Encodes a PHP value into a binary database value.
-     * @param mixed                              $value   The value to encode.
-     * @param \Plasma\ColumnDefinitionInterface  $column
-     * @return \Plasma\Types\TypeExtensionResultInterface
+     * @param mixed                      $value   The value to encode.
+     * @param ColumnDefinitionInterface  $column
+     * @return TypeExtensionResultInterface
      */
-    abstract function encode($value, \Plasma\ColumnDefinitionInterface $column): \Plasma\Types\TypeExtensionResultInterface;
+    abstract function encode($value, ColumnDefinitionInterface $column): TypeExtensionResultInterface;
     
     /**
      * Decodes a binary database value into a PHP value.
      * @param mixed  $value  The encoded binary. Actual type depends on the driver.
-     * @return \Plasma\Types\TypeExtensionResultInterface
+     * @return TypeExtensionResultInterface
      */
-    abstract function decode($value): \Plasma\Types\TypeExtensionResultInterface;
+    abstract function decode($value): TypeExtensionResultInterface;
 }

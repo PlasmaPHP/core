@@ -29,7 +29,7 @@ class QueryResult implements QueryResultInterface {
     protected $insertID;
     
     /**
-     * @var \Plasma\ColumnDefinitionInterface[]|null
+     * @var ColumnDefinitionInterface[]|null
      */
     protected $columns;
     
@@ -40,11 +40,11 @@ class QueryResult implements QueryResultInterface {
     
     /**
      * Constructor.
-     * @param int                                       $affectedRows
-     * @param int                                       $warningsCount
-     * @param int|null                                  $insertID
-     * @param \Plasma\ColumnDefinitionInterface[]|null  $columns
-     * @param array|null                                $rows
+     * @param int                               $affectedRows
+     * @param int                               $warningsCount
+     * @param int|null                          $insertID
+     * @param ColumnDefinitionInterface[]|null  $columns
+     * @param array|null                        $rows
      */
     function __construct(int $affectedRows, int $warningsCount, ?int $insertID, ?array $columns, ?array $rows) {
         $this->affectedRows = $affectedRows;
@@ -80,7 +80,7 @@ class QueryResult implements QueryResultInterface {
     
     /**
      * Get the field definitions, if any. `SELECT` statements only.
-     * @return \Plasma\ColumnDefinitionInterface[]|null
+     * @return ColumnDefinitionInterface[]|null
      */
     function getFieldDefinitions(): ?array {
         return $this->columns;

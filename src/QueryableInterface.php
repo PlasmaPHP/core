@@ -9,6 +9,8 @@
 
 namespace Plasma;
 
+use React\Promise\PromiseInterface;
+
 /**
  * Any queryable class (can execute queries) implements this indirectly or directly.
  */
@@ -16,20 +18,20 @@ interface QueryableInterface {
     /**
      * Executes a plain query. Resolves with a `QueryResultInterface` instance.
      * @param string  $query
-     * @return \React\Promise\PromiseInterface
-     * @throws \Plasma\Exception
+     * @return PromiseInterface
+     * @throws Exception
      * @see \Plasma\QueryResultInterface
      */
-    function query(string $query): \React\Promise\PromiseInterface;
+    function query(string $query): PromiseInterface;
     
     /**
      * Prepares a query. Resolves with a `StatementInterface` instance.
      * @param string  $query
-     * @return \React\Promise\PromiseInterface
-     * @throws \Plasma\Exception
+     * @return PromiseInterface
+     * @throws Exception
      * @see \Plasma\StatementInterface
      */
-    function prepare(string $query): \React\Promise\PromiseInterface;
+    function prepare(string $query): PromiseInterface;
     
     /**
      * Prepares and executes a query. Resolves with a `QueryResultInterface` instance.
@@ -37,21 +39,21 @@ interface QueryableInterface {
      * If you need to execute a query multiple times, prepare the query manually for performance reasons.
      * @param string  $query
      * @param array   $params
-     * @return \React\Promise\PromiseInterface
-     * @throws \Plasma\Exception
+     * @return PromiseInterface
+     * @throws Exception
      * @see \Plasma\StatementInterface
      */
-    function execute(string $query, array $params = array()): \React\Promise\PromiseInterface;
+    function execute(string $query, array $params = array()): PromiseInterface;
     
     /**
      * Runs the given querybuilder on an underlying driver instance.
      * The driver CAN throw an exception if the given querybuilder is not supported.
      * An example would be a SQL querybuilder and a Cassandra driver.
-     * @param \Plasma\QueryBuilderInterface  $query
-     * @return \React\Promise\PromiseInterface
-     * @throws \Plasma\Exception
+     * @param QueryBuilderInterface  $query
+     * @return PromiseInterface
+     * @throws Exception
      */
-    function runQuery(\Plasma\QueryBuilderInterface $query): \React\Promise\PromiseInterface;
+    function runQuery(QueryBuilderInterface $query): PromiseInterface;
     
     /**
      * Quotes the string for use in the query.
@@ -59,7 +61,7 @@ interface QueryableInterface {
      * @param int     $type  For types, see the driver interface constants.
      * @return string
      * @throws \LogicException  Thrown if the driver does not support quoting.
-     * @throws \Plasma\Exception
+     * @throws Exception
      */
-    function quote(string $str, int $type = \Plasma\DriverInterface::QUOTE_TYPE_VALUE): string;
+    function quote(string $str, int $type = DriverInterface::QUOTE_TYPE_VALUE): string;
 }

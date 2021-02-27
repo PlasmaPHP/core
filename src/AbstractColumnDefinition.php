@@ -9,6 +9,8 @@
 
 namespace Plasma;
 
+use Plasma\Types\TypeExtensionsManager;
+
 /**
  * Column Definitions define columns (who would've thought of that?). Such as their name, type, length, etc.
  */
@@ -131,8 +133,8 @@ abstract class AbstractColumnDefinition implements ColumnDefinitionInterface {
      */
     function parseValue($value) {
         try {
-            return \Plasma\Types\TypeExtensionsManager::getManager()->decodeType($this->type, $value)->getValue();
-        } catch (\Plasma\Exception $e) {
+            return TypeExtensionsManager::getManager()->decodeType($this->type, $value)->getValue();
+        } catch (Exception $e) {
             /* Continue regardless of error */
         }
         

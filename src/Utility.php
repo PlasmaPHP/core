@@ -25,7 +25,7 @@ class Utility {
         $params = array();
         $position = 1;
         
-        $query = \preg_replace_callback($regex, function (array $match) use ($replaceParams, &$params, &$position) {
+        $query = \preg_replace_callback($regex, static function (array $match) use ($replaceParams, &$params, &$position) {
             $params[($position++)] = $match[0];
             
             if($replaceParams !== null) {
@@ -43,11 +43,11 @@ class Utility {
      * @param array  $paramsInfo  The parameters array from `parseParameters`.
      * @param array  $params      The parameters of the user.
      * @return array
-     * @throws \Plasma\Exception
+     * @throws Exception
      */
     static function replaceParameters(array $paramsInfo, array $params): array {
         if(\count($params) !== \count($paramsInfo)) {
-            throw new \Plasma\Exception('Insufficient amount of parameters passed, expected '.\count($paramsInfo).', got '.\count($params));
+            throw new Exception('Insufficient amount of parameters passed, expected '.\count($paramsInfo).', got '.\count($params));
         }
         
         $realParams = array();
@@ -57,7 +57,7 @@ class Utility {
             $key = ($param[0] === ':' ? $param : ($pos++));
             
             if(!\array_key_exists($key, $params)) {
-                throw new \Plasma\Exception('Missing parameter with key "'.$key.'"');
+                throw new Exception('Missing parameter with key "'.$key.'"');
             }
             
             $realParams[] = $params[$key];

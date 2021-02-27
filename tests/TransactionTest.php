@@ -5,66 +5,77 @@
  *
  * Website: https://github.com/PlasmaPHP
  * License: https://github.com/PlasmaPHP/core/blob/master/LICENSE
+ * @noinspection PhpUnhandledExceptionInspection
 */
 
 namespace Plasma\Tests;
+
+use Plasma\DriverInterface;
+use Plasma\Exception;
+use Plasma\QueryBuilderInterface;
+use Plasma\Transaction;
+use Plasma\TransactionException;
+use Plasma\TransactionInterface;
+use React\Promise\PromiseInterface;
+use function React\Promise\reject;
+use function React\Promise\resolve;
 
 class TransactionTest extends ClientTestHelpers {
     function testConstruct() {
         $client = $this->createClient(array('connections.lazy' => true));
         $driver = $this->getDriverMock();
         
-        $transaction = new \Plasma\Transaction($client, $driver, \Plasma\TransactionInterface::ISOLATION_UNCOMMITTED);
-        $this->assertInstanceOf(\Plasma\TransactionInterface::class, $transaction);
+        $transaction = new Transaction($client, $driver, TransactionInterface::ISOLATION_UNCOMMITTED);
+        self::assertInstanceOf(TransactionInterface::class, $transaction);
     }
     
     function testConstruct2() {
         $client = $this->createClient(array('connections.lazy' => true));
         $driver = $this->getDriverMock();
         
-        $transaction = new \Plasma\Transaction($client, $driver, \Plasma\TransactionInterface::ISOLATION_COMMITTED);
-        $this->assertInstanceOf(\Plasma\TransactionInterface::class, $transaction);
+        $transaction = new Transaction($client, $driver, TransactionInterface::ISOLATION_COMMITTED);
+        self::assertInstanceOf(TransactionInterface::class, $transaction);
     }
     
     function testConstruct3() {
         $client = $this->createClient(array('connections.lazy' => true));
         $driver = $this->getDriverMock();
         
-        $transaction = new \Plasma\Transaction($client, $driver, \Plasma\TransactionInterface::ISOLATION_REPEATABLE);
-        $this->assertInstanceOf(\Plasma\TransactionInterface::class, $transaction);
+        $transaction = new Transaction($client, $driver, TransactionInterface::ISOLATION_REPEATABLE);
+        self::assertInstanceOf(TransactionInterface::class, $transaction);
     }
     
     function testConstruct4() {
         $client = $this->createClient(array('connections.lazy' => true));
         $driver = $this->getDriverMock();
         
-        $transaction = new \Plasma\Transaction($client, $driver, \Plasma\TransactionInterface::ISOLATION_SERIALIZABLE);
-        $this->assertInstanceOf(\Plasma\TransactionInterface::class, $transaction);
+        $transaction = new Transaction($client, $driver, TransactionInterface::ISOLATION_SERIALIZABLE);
+        self::assertInstanceOf(TransactionInterface::class, $transaction);
     }
     
     function testConstructFail() {
         $client = $this->createClient(array('connections.lazy' => true));
         $driver = $this->getDriverMock();
         
-        $this->expectException(\Plasma\Exception::class);
-        $transaction = new \Plasma\Transaction($client, $driver, 250);
+        $this->expectException(Exception::class);
+        $transaction = new Transaction($client, $driver, 250);
     }
     
     function testDestruct() {
         $client = $this->createClient(array('connections.lazy' => true));
         $driver = $this->getDriverMock();
         
-        $driver->expects($this->atMost(2))
+        $driver->expects(self::atMost(2))
             ->method('getConnectionState')
-            ->will($this->returnValue(\Plasma\DriverInterface::CONNECTION_OK));
+            ->willReturn(DriverInterface::CONNECTION_OK);
         
-        $driver->expects($this->once())
+        $driver->expects(self::once())
             ->method('query')
             ->with($client, 'ROLLBACK')
-            ->will($this->returnValue(\React\Promise\resolve()));
+            ->willReturn(resolve());
         
-        (function ($client, $driver) {
-            $transaction = new \Plasma\Transaction($client, $driver, \Plasma\TransactionInterface::ISOLATION_UNCOMMITTED);
+        (static function ($client, $driver) {
+            $transaction = new Transaction($client, $driver, TransactionInterface::ISOLATION_UNCOMMITTED);
         })($client, $driver);
     }
     
@@ -72,21 +83,21 @@ class TransactionTest extends ClientTestHelpers {
         $client = $this->createClient(array('connections.lazy' => true));
         $driver = $this->getDriverMock();
         
-        $driver->expects($this->atMost(2))
+        $driver->expects(self::atMost(2))
             ->method('getConnectionState')
-            ->will($this->returnValue(\Plasma\DriverInterface::CONNECTION_OK));
+            ->willReturn(DriverInterface::CONNECTION_OK);
         
-        $driver->expects($this->once())
+        $driver->expects(self::once())
             ->method('query')
             ->with($client, 'ROLLBACK')
-            ->will($this->returnValue(\React\Promise\reject((new \RuntimeException('test')))));
+            ->willReturn(reject((new \RuntimeException('test'))));
         
-        $driver->expects($this->once())
+        $driver->expects(self::once())
             ->method('close')
-            ->will($this->returnValue(\React\Promise\resolve()));
+            ->willReturn(resolve());
         
-        (function ($client, $driver) {
-            $transaction = new \Plasma\Transaction($client, $driver, \Plasma\TransactionInterface::ISOLATION_UNCOMMITTED);
+        (static function ($client, $driver) {
+            $transaction = new Transaction($client, $driver, TransactionInterface::ISOLATION_UNCOMMITTED);
         })($client, $driver);
     }
     
@@ -94,49 +105,49 @@ class TransactionTest extends ClientTestHelpers {
         $client = $this->createClient(array('connections.lazy' => true));
         $driver = $this->getDriverMock();
         
-        $transaction = new \Plasma\Transaction($client, $driver, \Plasma\TransactionInterface::ISOLATION_SERIALIZABLE);
-        $this->assertSame(\Plasma\TransactionInterface::ISOLATION_SERIALIZABLE, $transaction->getIsolationLevel());
+        $transaction = new Transaction($client, $driver, TransactionInterface::ISOLATION_SERIALIZABLE);
+        self::assertSame(TransactionInterface::ISOLATION_SERIALIZABLE, $transaction->getIsolationLevel());
     }
     
     function testIsActive() {
         $client = $this->createClient(array('connections.lazy' => true));
         $driver = $this->getDriverMock();
         
-        $transaction = new \Plasma\Transaction($client, $driver, \Plasma\TransactionInterface::ISOLATION_SERIALIZABLE);
-        $this->assertTrue($transaction->isActive());
+        $transaction = new Transaction($client, $driver, TransactionInterface::ISOLATION_SERIALIZABLE);
+        self::assertTrue($transaction->isActive());
     }
     
     function testIsActiveFalse() {
         $client = $this->createClient(array('connections.lazy' => true));
         $driver = $this->getDriverMock();
         
-        $transaction = new \Plasma\Transaction($client, $driver, \Plasma\TransactionInterface::ISOLATION_SERIALIZABLE);
+        $transaction = new Transaction($client, $driver, TransactionInterface::ISOLATION_SERIALIZABLE);
         
-        $driver->expects($this->once())
+        $driver->expects(self::once())
             ->method('query')
             ->with($client, 'ROLLBACK')
-            ->will($this->returnValue(\React\Promise\resolve()));
+            ->willReturn(resolve());
         
         $prom = $transaction->rollback();
-        $this->assertInstanceOf(\React\Promise\PromiseInterface::class, $prom);
+        self::assertInstanceOf(PromiseInterface::class, $prom);
         
         $this->await($prom);
-        $this->assertFalse($transaction->isActive());
+        self::assertFalse($transaction->isActive());
     }
     
     function testCommit() {
         $client = $this->createClient(array('connections.lazy' => true));
         $driver = $this->getDriverMock();
         
-        $transaction = new \Plasma\Transaction($client, $driver, \Plasma\TransactionInterface::ISOLATION_SERIALIZABLE);
+        $transaction = new Transaction($client, $driver, TransactionInterface::ISOLATION_SERIALIZABLE);
         
-        $driver->expects($this->once())
+        $driver->expects(self::once())
             ->method('query')
             ->with($client, 'COMMIT')
-            ->will($this->returnValue(\React\Promise\resolve()));
+            ->willReturn(resolve());
         
         $prom = $transaction->commit();
-        $this->assertInstanceOf(\React\Promise\PromiseInterface::class, $prom);
+        self::assertInstanceOf(PromiseInterface::class, $prom);
         
         $this->await($prom);
     }
@@ -145,15 +156,15 @@ class TransactionTest extends ClientTestHelpers {
         $client = $this->createClient(array('connections.lazy' => true));
         $driver = $this->getDriverMock();
         
-        $transaction = new \Plasma\Transaction($client, $driver, \Plasma\TransactionInterface::ISOLATION_SERIALIZABLE);
+        $transaction = new Transaction($client, $driver, TransactionInterface::ISOLATION_SERIALIZABLE);
         
-        $driver->expects($this->once())
+        $driver->expects(self::once())
             ->method('query')
             ->with($client, 'ROLLBACK')
-            ->will($this->returnValue(\React\Promise\resolve()));
+            ->willReturn(resolve());
         
         $prom = $transaction->rollback();
-        $this->assertInstanceOf(\React\Promise\PromiseInterface::class, $prom);
+        self::assertInstanceOf(PromiseInterface::class, $prom);
         
         $this->await($prom);
     }
@@ -162,20 +173,20 @@ class TransactionTest extends ClientTestHelpers {
         $client = $this->createClient(array('connections.lazy' => true));
         $driver = $this->getDriverMock();
         
-        $transaction = new \Plasma\Transaction($client, $driver, \Plasma\TransactionInterface::ISOLATION_SERIALIZABLE);
+        $transaction = new Transaction($client, $driver, TransactionInterface::ISOLATION_SERIALIZABLE);
         
-        $driver->expects($this->once())
+        $driver->expects(self::once())
             ->method('quote')
             ->with('hello')
-            ->will($this->returnValue('"hello"'));
+            ->willReturn('"hello"');
         
-        $driver->expects($this->once())
+        $driver->expects(self::once())
             ->method('query')
             ->with($client, 'SAVEPOINT "hello"')
-            ->will($this->returnValue(\React\Promise\resolve()));
+            ->willReturn(resolve());
         
         $prom = $transaction->createSavepoint('hello');
-        $this->assertInstanceOf(\React\Promise\PromiseInterface::class, $prom);
+        self::assertInstanceOf(PromiseInterface::class, $prom);
         
         $this->await($prom);
     }
@@ -184,20 +195,20 @@ class TransactionTest extends ClientTestHelpers {
         $client = $this->createClient(array('connections.lazy' => true));
         $driver = $this->getDriverMock();
         
-        $transaction = new \Plasma\Transaction($client, $driver, \Plasma\TransactionInterface::ISOLATION_SERIALIZABLE);
+        $transaction = new Transaction($client, $driver, TransactionInterface::ISOLATION_SERIALIZABLE);
         
-        $driver->expects($this->once())
+        $driver->expects(self::once())
             ->method('quote')
             ->with('hello')
-            ->will($this->returnValue('"hello"'));
+            ->willReturn('"hello"');
         
-        $driver->expects($this->once())
+        $driver->expects(self::once())
             ->method('query')
             ->with($client, 'ROLLBACK TO "hello"')
-            ->will($this->returnValue(\React\Promise\resolve()));
+            ->willReturn(resolve());
         
         $prom = $transaction->rollbackTo('hello');
-        $this->assertInstanceOf(\React\Promise\PromiseInterface::class, $prom);
+        self::assertInstanceOf(PromiseInterface::class, $prom);
         
         $this->await($prom);
     }
@@ -206,20 +217,20 @@ class TransactionTest extends ClientTestHelpers {
         $client = $this->createClient(array('connections.lazy' => true));
         $driver = $this->getDriverMock();
         
-        $transaction = new \Plasma\Transaction($client, $driver, \Plasma\TransactionInterface::ISOLATION_SERIALIZABLE);
+        $transaction = new Transaction($client, $driver, TransactionInterface::ISOLATION_SERIALIZABLE);
         
-        $driver->expects($this->once())
+        $driver->expects(self::once())
             ->method('quote')
             ->with('hello')
-            ->will($this->returnValue('"hello"'));
+            ->willReturn('"hello"');
         
-        $driver->expects($this->once())
+        $driver->expects(self::once())
             ->method('query')
             ->with($client, 'RELEASE SAVEPOINT "hello"')
-            ->will($this->returnValue(\React\Promise\resolve()));
+            ->willReturn(resolve());
         
         $prom = $transaction->releaseSavepoint('hello');
-        $this->assertInstanceOf(\React\Promise\PromiseInterface::class, $prom);
+        self::assertInstanceOf(PromiseInterface::class, $prom);
         
         $this->await($prom);
     }
@@ -228,15 +239,15 @@ class TransactionTest extends ClientTestHelpers {
         $client = $this->createClient(array('connections.lazy' => true));
         $driver = $this->getDriverMock();
         
-        $transaction = new \Plasma\Transaction($client, $driver, \Plasma\TransactionInterface::ISOLATION_SERIALIZABLE);
+        $transaction = new Transaction($client, $driver, TransactionInterface::ISOLATION_SERIALIZABLE);
         
-        $driver->expects($this->once())
+        $driver->expects(self::once())
             ->method('prepare')
             ->with($client, 'SELECT 1')
-            ->will($this->returnValue(\React\Promise\resolve()));
+            ->willReturn(resolve());
         
         $prom = $transaction->prepare('SELECT 1');
-        $this->assertInstanceOf(\React\Promise\PromiseInterface::class, $prom);
+        self::assertInstanceOf(PromiseInterface::class, $prom);
         
         $this->await($prom);
     }
@@ -245,24 +256,24 @@ class TransactionTest extends ClientTestHelpers {
         $client = $this->createClient(array('connections.lazy' => true));
         $driver = $this->getDriverMock();
         
-        $transaction = new \Plasma\Transaction($client, $driver, \Plasma\TransactionInterface::ISOLATION_SERIALIZABLE);
+        $transaction = new Transaction($client, $driver, TransactionInterface::ISOLATION_SERIALIZABLE);
         
-        $driver->expects($this->once())
+        $driver->expects(self::once())
             ->method('query')
             ->with($client, 'COMMIT')
-            ->will($this->returnValue(\React\Promise\resolve()));
+            ->willReturn(resolve());
         
         $prom = $transaction->commit();
-        $this->assertInstanceOf(\React\Promise\PromiseInterface::class, $prom);
+        self::assertInstanceOf(PromiseInterface::class, $prom);
         
         $this->await($prom);
         
-        $driver->expects($this->never())
+        $driver->expects(self::never())
             ->method('prepare')
             ->with($client, 'SELECT 1')
-            ->will($this->returnValue(\React\Promise\resolve()));
+            ->willReturn(resolve());
         
-        $this->expectException(\Plasma\TransactionException::class);
+        $this->expectException(TransactionException::class);
         $prom2 = $transaction->prepare('SELECT 1');
     }
     
@@ -270,15 +281,15 @@ class TransactionTest extends ClientTestHelpers {
         $client = $this->createClient(array('connections.lazy' => true));
         $driver = $this->getDriverMock();
         
-        $transaction = new \Plasma\Transaction($client, $driver, \Plasma\TransactionInterface::ISOLATION_SERIALIZABLE);
+        $transaction = new Transaction($client, $driver, TransactionInterface::ISOLATION_SERIALIZABLE);
         
-        $driver->expects($this->once())
+        $driver->expects(self::once())
             ->method('query')
             ->with($client, 'SELECT 1')
-            ->will($this->returnValue(\React\Promise\resolve()));
+            ->willReturn(resolve());
         
         $prom = $transaction->query('SELECT 1');
-        $this->assertInstanceOf(\React\Promise\PromiseInterface::class, $prom);
+        self::assertInstanceOf(PromiseInterface::class, $prom);
         
         $this->await($prom);
     }
@@ -287,24 +298,24 @@ class TransactionTest extends ClientTestHelpers {
         $client = $this->createClient(array('connections.lazy' => true));
         $driver = $this->getDriverMock();
         
-        $transaction = new \Plasma\Transaction($client, $driver, \Plasma\TransactionInterface::ISOLATION_SERIALIZABLE);
+        $transaction = new Transaction($client, $driver, TransactionInterface::ISOLATION_SERIALIZABLE);
         
-        $driver->expects($this->once())
+        $driver->expects(self::once())
             ->method('query')
             ->with($client, 'COMMIT')
-            ->will($this->returnValue(\React\Promise\resolve()));
+            ->willReturn(resolve());
         
         $prom = $transaction->commit();
-        $this->assertInstanceOf(\React\Promise\PromiseInterface::class, $prom);
+        self::assertInstanceOf(PromiseInterface::class, $prom);
         
         $this->await($prom);
         
-        $driver->expects($this->never())
+        $driver->expects(self::never())
             ->method('query')
             ->with($client, 'SELECT 1')
-            ->will($this->returnValue(\React\Promise\resolve()));
+            ->willReturn(resolve());
         
-        $this->expectException(\Plasma\TransactionException::class);
+        $this->expectException(TransactionException::class);
         $prom2 = $transaction->query('SELECT 1');
     }
     
@@ -312,15 +323,15 @@ class TransactionTest extends ClientTestHelpers {
         $client = $this->createClient(array('connections.lazy' => true));
         $driver = $this->getDriverMock();
         
-        $transaction = new \Plasma\Transaction($client, $driver, \Plasma\TransactionInterface::ISOLATION_SERIALIZABLE);
+        $transaction = new Transaction($client, $driver, TransactionInterface::ISOLATION_SERIALIZABLE);
         
-        $driver->expects($this->once())
+        $driver->expects(self::once())
             ->method('execute')
             ->with($client, 'SELECT 1')
-            ->will($this->returnValue(\React\Promise\resolve()));
+            ->willReturn(resolve());
         
         $prom = $transaction->execute('SELECT 1');
-        $this->assertInstanceOf(\React\Promise\PromiseInterface::class, $prom);
+        self::assertInstanceOf(PromiseInterface::class, $prom);
         
         $this->await($prom);
     }
@@ -329,24 +340,24 @@ class TransactionTest extends ClientTestHelpers {
         $client = $this->createClient(array('connections.lazy' => true));
         $driver = $this->getDriverMock();
         
-        $transaction = new \Plasma\Transaction($client, $driver, \Plasma\TransactionInterface::ISOLATION_SERIALIZABLE);
+        $transaction = new Transaction($client, $driver, TransactionInterface::ISOLATION_SERIALIZABLE);
         
-        $driver->expects($this->once())
+        $driver->expects(self::once())
             ->method('query')
             ->with($client, 'COMMIT')
-            ->will($this->returnValue(\React\Promise\resolve()));
+            ->willReturn(resolve());
         
         $prom = $transaction->commit();
-        $this->assertInstanceOf(\React\Promise\PromiseInterface::class, $prom);
+        self::assertInstanceOf(PromiseInterface::class, $prom);
         
         $this->await($prom);
         
-        $driver->expects($this->never())
+        $driver->expects(self::never())
             ->method('execute')
             ->with($client, 'SELECT 1')
-            ->will($this->returnValue(\React\Promise\resolve()));
+            ->willReturn(resolve());
         
-        $this->expectException(\Plasma\TransactionException::class);
+        $this->expectException(TransactionException::class);
         $prom2 = $transaction->execute('SELECT 1');
     }
     
@@ -354,9 +365,9 @@ class TransactionTest extends ClientTestHelpers {
         $client = $this->createClient(array('connections.lazy' => true));
         $driver = $this->getDriverMock();
         
-        $transaction = new \Plasma\Transaction($client, $driver, \Plasma\TransactionInterface::ISOLATION_SERIALIZABLE);
+        $transaction = new Transaction($client, $driver, TransactionInterface::ISOLATION_SERIALIZABLE);
         
-        $qb = $this->getMockBuilder(\Plasma\QueryBuilderInterface::class)
+        $qb = $this->getMockBuilder(QueryBuilderInterface::class)
             ->setMethods(array(
                 'create',
                 'getQuery',
@@ -364,13 +375,13 @@ class TransactionTest extends ClientTestHelpers {
             ))
             ->getMock();
         
-        $driver->expects($this->once())
+        $driver->expects(self::once())
             ->method('runQuery')
             ->with($client, $qb)
-            ->will($this->returnValue(\React\Promise\resolve()));
+            ->willReturn(resolve());
         
         $prom = $transaction->runQuery($qb);
-        $this->assertInstanceOf(\React\Promise\PromiseInterface::class, $prom);
+        self::assertInstanceOf(PromiseInterface::class, $prom);
         
         $this->await($prom);
     }
@@ -379,19 +390,19 @@ class TransactionTest extends ClientTestHelpers {
         $client = $this->createClient(array('connections.lazy' => true));
         $driver = $this->getDriverMock();
         
-        $transaction = new \Plasma\Transaction($client, $driver, \Plasma\TransactionInterface::ISOLATION_SERIALIZABLE);
+        $transaction = new Transaction($client, $driver, TransactionInterface::ISOLATION_SERIALIZABLE);
         
-        $driver->expects($this->once())
+        $driver->expects(self::once())
             ->method('query')
             ->with($client, 'COMMIT')
-            ->will($this->returnValue(\React\Promise\resolve()));
+            ->willReturn(resolve());
         
         $prom = $transaction->commit();
-        $this->assertInstanceOf(\React\Promise\PromiseInterface::class, $prom);
+        self::assertInstanceOf(PromiseInterface::class, $prom);
         
         $this->await($prom);
         
-        $qb = $this->getMockBuilder(\Plasma\QueryBuilderInterface::class)
+        $qb = $this->getMockBuilder(QueryBuilderInterface::class)
             ->setMethods(array(
                 'create',
                 'getQuery',
@@ -399,12 +410,12 @@ class TransactionTest extends ClientTestHelpers {
             ))
             ->getMock();
         
-        $driver->expects($this->never())
+        $driver->expects(self::never())
             ->method('runQuery')
             ->with($client, $qb)
-            ->will($this->returnValue(\React\Promise\resolve()));
+            ->willReturn(resolve());
         
-        $this->expectException(\Plasma\TransactionException::class);
+        $this->expectException(TransactionException::class);
         $prom2 = $transaction->runQuery($qb);
     }
     
@@ -412,39 +423,39 @@ class TransactionTest extends ClientTestHelpers {
         $client = $this->createClient(array('connections.lazy' => true));
         $driver = $this->getDriverMock();
         
-        $transaction = new \Plasma\Transaction($client, $driver, \Plasma\TransactionInterface::ISOLATION_SERIALIZABLE);
+        $transaction = new Transaction($client, $driver, TransactionInterface::ISOLATION_SERIALIZABLE);
         
-        $driver->expects($this->once())
+        $driver->expects(self::once())
             ->method('quote')
             ->with('COMMIT')
-            ->will($this->returnValue('"COMMIT"'));
+            ->willReturn('"COMMIT"');
         
         $quoted = $transaction->quote('COMMIT');
-        $this->assertInternalType('string', $quoted);
+        self::assertIsString($quoted);
     }
     
     function testQuoteFail() {
         $client = $this->createClient(array('connections.lazy' => true));
         $driver = $this->getDriverMock();
         
-        $transaction = new \Plasma\Transaction($client, $driver, \Plasma\TransactionInterface::ISOLATION_SERIALIZABLE);
+        $transaction = new Transaction($client, $driver, TransactionInterface::ISOLATION_SERIALIZABLE);
         
-        $driver->expects($this->once())
+        $driver->expects(self::once())
             ->method('query')
             ->with($client, 'COMMIT')
-            ->will($this->returnValue(\React\Promise\resolve()));
+            ->willReturn(resolve());
         
         $prom = $transaction->commit();
-        $this->assertInstanceOf(\React\Promise\PromiseInterface::class, $prom);
+        self::assertInstanceOf(PromiseInterface::class, $prom);
         
         $this->await($prom);
         
-        $driver->expects($this->never())
+        $driver->expects(self::never())
             ->method('quote')
             ->with('COMMIT')
-            ->will($this->returnValue('"COMMIT"'));
+            ->willReturn('"COMMIT"');
         
-        $this->expectException(\Plasma\TransactionException::class);
+        $this->expectException(TransactionException::class);
         $quoted = $transaction->quote('COMMIT');
     }
 }

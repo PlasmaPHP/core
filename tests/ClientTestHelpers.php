@@ -5,23 +5,32 @@
  *
  * Website: https://github.com/PlasmaPHP
  * License: https://github.com/PlasmaPHP/core/blob/master/LICENSE
+ * @noinspection PhpUnhandledExceptionInspection
 */
 
 namespace Plasma\Tests;
 
+use Plasma\AbstractColumnDefinition;
+use Plasma\Client;
+use Plasma\ClientInterface;
+use Plasma\ColumnDefinitionInterface;
+use Plasma\DriverFactoryInterface;
+use Plasma\DriverInterface;
+use function React\Promise\resolve;
+
 abstract class ClientTestHelpers extends TestCase {
     /**
-     * @var \Plasma\DriverFactoryInterface
+     * @var DriverFactoryInterface
      */
     public $factory;
     
     /**
-     * @var \Plasma\DriverInterface
+     * @var DriverInterface
      */
     public $driver;
     
-    function createClient(array $options = array()): \Plasma\ClientInterface {
-        $this->factory = $this->getMockBuilder(\Plasma\DriverFactoryInterface::class)
+    function createClient(array $options = array()): ClientInterface {
+        $this->factory = $this->getMockBuilder(DriverFactoryInterface::class)
             ->setMethods(array(
                 'createDriver',
             ))
@@ -30,40 +39,41 @@ abstract class ClientTestHelpers extends TestCase {
         $this->driver = $this->getDriverMock();
         
         $this->driver
-            ->expects($this->any())
             ->method('getConnectionState')
-            ->will($this->returnValue(\Plasma\DriverInterface::CONNECTION_OK));
+            ->willReturn(DriverInterface::CONNECTION_OK);
         
         $this->driver
-            ->expects($this->any())
             ->method('connect')
             ->with('localhost')
-            ->will($this->returnValue(\React\Promise\resolve()));
+            ->willReturn(resolve());
         
         $events = array();
         
         $this->driver
             ->method('on')
-            ->will($this->returnCallback(function ($event, $cb) use (&$events) {
-                $events[$event] = $cb;
-            }));
+            ->willReturnCallback(
+                function ($event, $cb) use (&$events) {
+                    $events[$event] = $cb;
+                }
+            );
         
         $this->driver
             ->method('emit')
-            ->will($this->returnCallback(function ($event, $args) use (&$events) {
-                $events[$event](...$args);
-            }));
+            ->willReturnCallback(
+                function ($event, $args) use (&$events) {
+                    $events[$event](...$args);
+                }
+            );
         
         $this->factory
-            ->expects($this->any())
             ->method('createDriver')
-            ->will($this->returnValue($this->driver));
+            ->willReturn($this->driver);
         
-        return \Plasma\Client::create($this->factory, 'localhost', $options);
+        return Client::create($this->factory, 'localhost', $options);
     }
     
-    function createClientMock(): \Plasma\ClientInterface {
-        return $this->getMockBuilder(\Plasma\ClientInterface::class)
+    function createClientMock(): ClientInterface {
+        return $this->getMockBuilder(ClientInterface::class)
             ->setMethods(array(
                 'getConnectionCount',
                 'beginTransaction',
@@ -76,8 +86,8 @@ abstract class ClientTestHelpers extends TestCase {
             ->getMock();
     }
     
-    function getDriverMock(): \Plasma\DriverInterface {
-        return $this->getMockBuilder(\Plasma\DriverInterface::class)
+    function getDriverMock(): DriverInterface {
+        return $this->getMockBuilder(DriverInterface::class)
             ->setMethods(array(
                 'getConnectionState',
                 'getBusyState',
@@ -107,8 +117,8 @@ abstract class ClientTestHelpers extends TestCase {
             ->getMock();
     }
     
-    function getColDefMock(...$args): \Plasma\ColumnDefinitionInterface {
-        return $this->getMockBuilder(\Plasma\AbstractColumnDefinition::class)
+    function getColDefMock(...$args): ColumnDefinitionInterface {
+        return $this->getMockBuilder(AbstractColumnDefinition::class)
             ->setMethods(array(
                 'isNullable',
                 'isAutoIncrement',

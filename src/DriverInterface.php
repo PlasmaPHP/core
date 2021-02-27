@@ -9,10 +9,13 @@
 
 namespace Plasma;
 
+use Evenement\EventEmitterInterface;
+use React\Promise\PromiseInterface;
+
 /**
  * The minimum public API a driver has to maintain. The driver MUST emit a `close` event when it gets disconnected from the server.
  */
-interface DriverInterface extends \Evenement\EventEmitterInterface {
+interface DriverInterface extends EventEmitterInterface {
     /**
      * Driver is idling and ready for requests.
      * @var int
@@ -125,16 +128,16 @@ interface DriverInterface extends \Evenement\EventEmitterInterface {
     /**
      * Connects to the given URI.
      * @param string  $uri
-     * @return \React\Promise\PromiseInterface
+     * @return PromiseInterface
      * @throws \InvalidArgumentException
      */
-    function connect(string $uri): \React\Promise\PromiseInterface;
+    function connect(string $uri): PromiseInterface;
     
     /**
      * Closes all connections gracefully after processing all outstanding requests.
-     * @return \React\Promise\PromiseInterface
+     * @return PromiseInterface
      */
-    function close(): \React\Promise\PromiseInterface;
+    function close(): PromiseInterface;
     
     /**
      * Forcefully closes the connection, without waiting for any outstanding requests. This will reject all outstanding requests.
@@ -151,37 +154,37 @@ interface DriverInterface extends \Evenement\EventEmitterInterface {
     /**
      * Executes a plain query. Resolves with a `QueryResultInterface` instance.
      * When the command is done, the driver must check itself back into the client.
-     * @param \Plasma\ClientInterface  $client
-     * @param string                   $query
-     * @return \React\Promise\PromiseInterface
-     * @throws \Plasma\Exception
+     * @param ClientInterface  $client
+     * @param string           $query
+     * @return PromiseInterface
+     * @throws Exception
      * @see \Plasma\QueryResultInterface
      */
-    function query(\Plasma\ClientInterface $client, string $query): \React\Promise\PromiseInterface;
+    function query(ClientInterface $client, string $query): PromiseInterface;
     
     /**
      * Prepares a query. Resolves with a `StatementInterface` instance.
      * When the command is done, the driver must check itself back into the client.
-     * @param \Plasma\ClientInterface  $client
-     * @param string                   $query
-     * @return \React\Promise\PromiseInterface
-     * @throws \Plasma\Exception
+     * @param ClientInterface  $client
+     * @param string           $query
+     * @return PromiseInterface
+     * @throws Exception
      * @see \Plasma\StatementInterface
      */
-    function prepare(\Plasma\ClientInterface $client, string $query): \React\Promise\PromiseInterface;
+    function prepare(ClientInterface $client, string $query): PromiseInterface;
     
     /**
      * Prepares and executes a query. Resolves with a `QueryResultInterface` instance.
      * This is equivalent to prepare -> execute -> close.
      * If you need to execute a query multiple times, prepare the query manually for performance reasons.
-     * @param \Plasma\ClientInterface  $client
-     * @param string                   $query
-     * @param array                    $params
-     * @return \React\Promise\PromiseInterface
-     * @throws \Plasma\Exception
+     * @param ClientInterface  $client
+     * @param string           $query
+     * @param array            $params
+     * @return PromiseInterface
+     * @throws Exception
      * @see \Plasma\StatementInterface
      */
-    function execute(\Plasma\ClientInterface $client, string $query, array $params = array()): \React\Promise\PromiseInterface;
+    function execute(ClientInterface $client, string $query, array $params = array()): PromiseInterface;
     
     /**
      * Quotes the string for use in the query.
@@ -189,9 +192,9 @@ interface DriverInterface extends \Evenement\EventEmitterInterface {
      * @param int     $type  For types, see the constants.
      * @return string
      * @throws \LogicException  Thrown if the driver does not support quoting.
-     * @throws \Plasma\Exception
+     * @throws Exception
      */
-    function quote(string $str, int $type = \Plasma\DriverInterface::QUOTE_TYPE_VALUE): string;
+    function quote(string $str, int $type = DriverInterface::QUOTE_TYPE_VALUE): string;
     
     /**
      * Begins a transaction. Resolves with a `TransactionInterface` instance.
@@ -203,13 +206,13 @@ interface DriverInterface extends \Evenement\EventEmitterInterface {
      * Some databases, including MySQL, automatically issue an implicit COMMIT when a database definition language (DDL)
      * statement such as DROP TABLE or CREATE TABLE is issued within a transaction.
      * The implicit COMMIT will prevent you from rolling back any other changes within the transaction boundary.
-     * @param \Plasma\ClientInterface  $client
-     * @param int                      $isolation  See the `TransactionInterface` constants.
-     * @return \React\Promise\PromiseInterface
-     * @throws \Plasma\Exception
+     * @param ClientInterface  $client
+     * @param int              $isolation  See the `TransactionInterface` constants.
+     * @return PromiseInterface
+     * @throws Exception
      * @see \Plasma\TransactionInterface
      */
-    function beginTransaction(\Plasma\ClientInterface $client, int $isolation = \Plasma\TransactionInterface::ISOLATION_COMMITTED): \React\Promise\PromiseInterface;
+    function beginTransaction(ClientInterface $client, int $isolation = TransactionInterface::ISOLATION_COMMITTED): PromiseInterface;
     
     /**
      * Informationally closes a transaction. This method is used by `Transaction` to inform the driver of the end of the transaction.
@@ -220,31 +223,31 @@ interface DriverInterface extends \Evenement\EventEmitterInterface {
     /**
      * Runs the given command.
      * When the command is done, the driver must check itself back into the client.
-     * @param \Plasma\ClientInterface   $client
-     * @param \Plasma\CommandInterface  $command
+     * @param ClientInterface   $client
+     * @param CommandInterface  $command
      * @return mixed  Return depends on command and driver.
      */
-    function runCommand(\Plasma\ClientInterface $client, \Plasma\CommandInterface $command);
+    function runCommand(ClientInterface $client, CommandInterface $command);
     
     /**
      * Runs the given querybuilder.
      * The driver CAN throw an exception if the given querybuilder is not supported.
      * An example would be a SQL querybuilder and a Cassandra driver.
-     * @param \Plasma\ClientInterface        $client
-     * @param \Plasma\QueryBuilderInterface  $query
-     * @return \React\Promise\PromiseInterface
-     * @throws \Plasma\Exception
+     * @param ClientInterface        $client
+     * @param QueryBuilderInterface  $query
+     * @return PromiseInterface
+     * @throws Exception
      */
-    function runQuery(\Plasma\ClientInterface $client, \Plasma\QueryBuilderInterface $query): \React\Promise\PromiseInterface;
+    function runQuery(ClientInterface $client, QueryBuilderInterface $query): PromiseInterface;
     
     /**
      * Creates a new cursor to seek through SELECT query results. Resolves with a `CursorInterface` instance.
-     * @param \Plasma\ClientInterface  $client
-     * @param string                   $query
-     * @param array                    $params
-     * @return \React\Promise\PromiseInterface
+     * @param ClientInterface  $client
+     * @param string           $query
+     * @param array            $params
+     * @return PromiseInterface
      * @throws \LogicException  Thrown if the driver or DBMS does not support cursors.
-     * @throws \Plasma\Exception
+     * @throws Exception
      */
-    function createReadCursor(\Plasma\ClientInterface $client, string $query, array $params = array()): \React\Promise\PromiseInterface;
+    function createReadCursor(ClientInterface $client, string $query, array $params = array()): PromiseInterface;
 }

@@ -9,6 +9,8 @@
 
 namespace Plasma;
 
+use React\Promise\PromiseInterface;
+
 /**
  * Transactions turn off auto-commit mode and let you rollback any changes you have done during it.
  *
@@ -79,39 +81,39 @@ interface TransactionInterface extends QueryableInterface {
     
     /**
      * Commits the changes.
-     * @return \React\Promise\PromiseInterface
-     * @throws \Plasma\TransactionException  Thrown if the transaction has been committed or rolled back.
+     * @return PromiseInterface
+     * @throws TransactionException  Thrown if the transaction has been committed or rolled back.
      */
-    function commit(): \React\Promise\PromiseInterface;
+    function commit(): PromiseInterface;
     
     /**
      * Rolls back the changes.
-     * @return \React\Promise\PromiseInterface
-     * @throws \Plasma\TransactionException  Thrown if the transaction has been committed or rolled back.
+     * @return PromiseInterface
+     * @throws TransactionException  Thrown if the transaction has been committed or rolled back.
      */
-    function rollback(): \React\Promise\PromiseInterface;
+    function rollback(): PromiseInterface;
     
     /**
      * Creates a savepoint with the given identifier.
      * @param string  $identifier
-     * @return \React\Promise\PromiseInterface
-     * @throws \Plasma\TransactionException  Thrown if the transaction has been committed or rolled back.
+     * @return PromiseInterface
+     * @throws TransactionException  Thrown if the transaction has been committed or rolled back.
      */
-    function createSavepoint(string $identifier): \React\Promise\PromiseInterface;
+    function createSavepoint(string $identifier): PromiseInterface;
     
     /**
      * Rolls back to the savepoint with the given identifier.
      * @param string  $identifier
-     * @return \React\Promise\PromiseInterface
-     * @throws \Plasma\TransactionException  Thrown if the transaction has been committed or rolled back.
+     * @return PromiseInterface
+     * @throws TransactionException  Thrown if the transaction has been committed or rolled back.
      */
-    function rollbackTo(string $identifier): \React\Promise\PromiseInterface;
+    function rollbackTo(string $identifier): PromiseInterface;
     
     /**
      * Releases the savepoint with the given identifier.
      * @param string  $identifier
-     * @return \React\Promise\PromiseInterface
-     * @throws \Plasma\TransactionException  Thrown if the transaction has been committed or rolled back.
+     * @return PromiseInterface
+     * @throws TransactionException  Thrown if the transaction has been committed or rolled back.
      */
-    function releaseSavepoint(string $identifier): \React\Promise\PromiseInterface;
+    function releaseSavepoint(string $identifier): PromiseInterface;
 }

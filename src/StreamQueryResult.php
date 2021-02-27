@@ -9,16 +9,20 @@
 
 namespace Plasma;
 
+use Evenement\EventEmitterTrait;
+use React\Promise\PromiseInterface;
+use function React\Promise\Stream\all;
+
 /**
  * A query result stream. Used to get rows row by row, as sent by the DBMS.
  * To adhere to the `react/stream` standard,a `close` event
  * will be emitted after the `end` or `error` event.
  */
 class StreamQueryResult implements StreamQueryResultInterface {
-    use \Evenement\EventEmitterTrait;
+    use EventEmitterTrait;
     
     /**
-     * @var \Plasma\CommandInterface
+     * @var CommandInterface
      */
     protected $command;
     
@@ -38,7 +42,7 @@ class StreamQueryResult implements StreamQueryResultInterface {
     protected $insertID;
     
     /**
-     * @var \Plasma\ColumnDefinitionInterface[]|null
+     * @var ColumnDefinitionInterface[]|null
      */
     protected $columns;
     
@@ -49,13 +53,13 @@ class StreamQueryResult implements StreamQueryResultInterface {
     
     /**
      * Constructor.
-     * @param \Plasma\CommandInterface                  $command
-     * @param int                                       $affectedRows
-     * @param int                                       $warningsCount
-     * @param int|null                                  $insertID
-     * @param \Plasma\ColumnDefinitionInterface[]|null  $columns
+     * @param CommandInterface                  $command
+     * @param int                               $affectedRows
+     * @param int                               $warningsCount
+     * @param int|null                          $insertID
+     * @param ColumnDefinitionInterface[]|null  $columns
      */
-    function __construct(\Plasma\CommandInterface $command, int $affectedRows = 0, int $warningsCount = 0, ?int $insertID = null, ?array $columns = null) {
+    function __construct(CommandInterface $command, int $affectedRows = 0, int $warningsCount = 0, ?int $insertID = null, ?array $columns = null) {
         $this->command = $command;
         
         $this->affectedRows = $affectedRows;
@@ -111,7 +115,7 @@ class StreamQueryResult implements StreamQueryResultInterface {
     
     /**
      * Get the field definitions, if any. `SELECT` statements only.
-     * @return \Plasma\ColumnDefinitionInterface[]|null
+     * @return ColumnDefinitionInterface[]|null
      */
     function getFieldDefinitions(): ?array {
         return $this->columns;
@@ -129,11 +133,11 @@ class StreamQueryResult implements StreamQueryResultInterface {
      * Buffers all rows and returns a promise which resolves with an instance of `QueryResultInterface`.
      * This method does not guarantee that all rows get returned, as the buffering depends on when this
      * method gets invoked. There's no automatic buffering, as such rows may be missing if invoked too late.
-     * @return \React\Promise\PromiseInterface
+     * @return PromiseInterface
      */
-    function all(): \React\Promise\PromiseInterface {
-        return \React\Promise\Stream\all($this)->then(function (array $rows) {
-            return (new \Plasma\QueryResult($this->affectedRows, $this->warningsCount, $this->insertID, $this->columns, $rows));
+    function all(): PromiseInterface {
+        return all($this)->then(function (array $rows) {
+            return (new QueryResult($this->affectedRows, $this->warningsCount, $this->insertID, $this->columns, $rows));
         });
     }
 }

@@ -5,23 +5,27 @@
  *
  * Website: https://github.com/PlasmaPHP
  * License: https://github.com/PlasmaPHP/core/blob/master/LICENSE
+ * @noinspection PhpUnhandledExceptionInspection
 */
 
 namespace Plasma\Tests\Types;
 
-class TypeExtensionResultTest extends \Plasma\Tests\TestCase {
+use Plasma\Tests\TestCase;
+use Plasma\Types\TypeExtensionResult;
+
+class TypeExtensionResultTest extends TestCase {
     function testGetDatabaseType() {
-        $result = new \Plasma\Types\TypeExtensionResult('VARCHAR', false, 'hello mine turtle');
-        $this->assertSame('VARCHAR', $result->getDatabaseType());
+        $result = new TypeExtensionResult('VARCHAR', false, 'hello mine turtle');
+        self::assertSame('VARCHAR', $result->getDatabaseType());
     }
     
     function testIsUnsigned() {
-        $result = new \Plasma\Types\TypeExtensionResult('VARCHAR', false, 'hello mine turtle');
-        $this->assertFalse($result->isUnsigned());
+        $result = new TypeExtensionResult('VARCHAR', false, 'hello mine turtle');
+        self::assertFalse($result->isUnsigned());
     }
     
     function testGetValue() {
-        $result = new \Plasma\Types\TypeExtensionResult('VARCHAR', false, 'hello mine turtle');
-        $this->assertSame('hello mine turtle', $result->getValue());
+        $result = new TypeExtensionResult('VARCHAR', false, 'hello mine turtle');
+        self::assertSame('hello mine turtle', $result->getValue());
     }
 }

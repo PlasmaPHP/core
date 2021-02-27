@@ -9,14 +9,20 @@
 
 namespace Plasma;
 
+use Evenement\EventEmitterTrait;
+use Obsidian\Validation\Validator;
+use React\Promise;
+use React\Promise\Deferred;
+use React\Promise\PromiseInterface;
+
 /**
  * The plasma client, responsible for pooling and connections.
  */
 class Client implements ClientInterface {
-    use \Evenement\EventEmitterTrait;
+    use EventEmitterTrait;
     
     /**
-     * @var \Plasma\DriverFactoryInterface
+     * @var DriverFactoryInterface
      */
     protected $factory;
     
@@ -34,17 +40,17 @@ class Client implements ClientInterface {
     );
     
     /**
-     * @var \React\Promise\PromiseInterface
+     * @var PromiseInterface
      */
     protected $goingAway;
     
     /**
-     * @var \CharlotteDunois\Collect\Set
+     * @var \SplObjectStorage
      */
     protected $connections;
     
     /**
-     * @var \CharlotteDunois\Collect\Set
+     * @var \SplObjectStorage
      */
     protected $busyConnections;
     
@@ -59,40 +65,40 @@ class Client implements ClientInterface {
      * )
      * ```
      *
-     * @param \Plasma\DriverFactoryInterface  $factory
-     * @param string                          $uri
-     * @param array                           $options
+     * @param DriverFactoryInterface  $factory
+     * @param string                  $uri
+     * @param array                   $options
      * @throws \InvalidArgumentException
      * @throws \InvalidArgumentException  The driver may throw this exception when invalid arguments (connect uri) were given, this may be thrown later when connecting lazy.
      */
-    function __construct(\Plasma\DriverFactoryInterface $factory, string $uri, array $options = array()) {
+    function __construct(DriverFactoryInterface $factory, string $uri, array $options = array()) {
         $this->validateOptions($options);
         
         $this->factory = $factory;
         $this->uri = $uri;
         $this->options = \array_merge($this->options, $options);
         
-        $this->connections = new \CharlotteDunois\Collect\Set();
-        $this->busyConnections = new \CharlotteDunois\Collect\Set();
+        $this->connections = new \SplObjectStorage();
+        $this->busyConnections = new \SplObjectStorage();
         
         if(!$this->options['connections.lazy']) {
             $connection = $this->createNewConnection();
-            if($connection->getConnectionState() !== \Plasma\DriverInterface::CONNECTION_OK) {
-                $this->busyConnections->add($connection);
+            if($connection->getConnectionState() !== DriverInterface::CONNECTION_OK) {
+                $this->busyConnections->attach($connection);
             }
         }
     }
     
     /**
      * Creates a client with the specified factory and options.
-     * @param \Plasma\DriverFactoryInterface  $factory
-     * @param string                          $uri
-     * @param array                           $options
-     * @return \Plasma\ClientInterface
+     * @param DriverFactoryInterface  $factory
+     * @param string                  $uri
+     * @param array                   $options
+     * @return ClientInterface
      * @throws \Throwable  The client implementation may throw any exception during this operation.
      * @see Client::__construct()
      */
-    static function create(\Plasma\DriverFactoryInterface $factory, string $uri, array $options = array()): \Plasma\ClientInterface {
+    static function create(DriverFactoryInterface $factory, string $uri, array $options = array()): ClientInterface {
         return (new static($factory, $uri, $options));
     }
     
@@ -106,13 +112,13 @@ class Client implements ClientInterface {
     
     /**
      * Checks a connection back in, if usable and not closing.
-     * @param \Plasma\DriverInterface  $driver
+     * @param DriverInterface  $driver
      * @return void
      */
-    function checkinConnection(\Plasma\DriverInterface $driver): void {
-        if($driver->getConnectionState() !== \Plasma\DriverInterface::CONNECTION_UNUSABLE && !$this->goingAway) {
-            $this->connections->add($driver);
-            $this->busyConnections->delete($driver);
+    function checkinConnection(DriverInterface $driver): void {
+        if(!$this->goingAway && $driver->getConnectionState() !== DriverInterface::CONNECTION_UNUSABLE) {
+            $this->connections->attach($driver);
+            $this->busyConnections->detach($driver);
         }
     }
     
@@ -126,13 +132,13 @@ class Client implements ClientInterface {
      * statement such as DROP TABLE or CREATE TABLE is issued within a transaction.
      * The implicit COMMIT will prevent you from rolling back any other changes within the transaction boundary.
      * @param int  $isolation  See the `TransactionInterface` constants.
-     * @return \React\Promise\PromiseInterface
-     * @throws \Plasma\Exception
+     * @return PromiseInterface
+     * @throws Exception
      * @see \Plasma\Transaction
      */
-    function beginTransaction(int $isolation = \Plasma\TransactionInterface::ISOLATION_COMMITTED): \React\Promise\PromiseInterface {
+    function beginTransaction(int $isolation = TransactionInterface::ISOLATION_COMMITTED): PromiseInterface {
         if($this->goingAway) {
-            return \React\Promise\reject((new \Plasma\Exception('Client is closing all connections')));
+            return Promise\reject((new Exception('Client is closing all connections')));
         }
         
         $connection = $this->getOptimalConnection();
@@ -146,12 +152,13 @@ class Client implements ClientInterface {
     /**
      * Executes a plain query. Resolves with a `QueryResult` instance.
      * @param string  $query
-     * @return \React\Promise\PromiseInterface
+     * @return PromiseInterface
+     * @throws Exception
      * @see \Plasma\QueryResultInterface
      */
-    function query(string $query): \React\Promise\PromiseInterface {
+    function query(string $query): PromiseInterface {
         if($this->goingAway) {
-            return \React\Promise\reject((new \Plasma\Exception('Client is closing all connections')));
+            return Promise\reject((new Exception('Client is closing all connections')));
         }
         
         $connection = $this->getOptimalConnection();
@@ -165,12 +172,13 @@ class Client implements ClientInterface {
     /**
      * Prepares a query. Resolves with a `StatementInterface` instance.
      * @param string  $query
-     * @return \React\Promise\PromiseInterface
+     * @return PromiseInterface
+     * @throws Exception
      * @see \Plasma\StatementInterface
      */
-    function prepare(string $query): \React\Promise\PromiseInterface {
+    function prepare(string $query): PromiseInterface {
         if($this->goingAway) {
-            return \React\Promise\reject((new \Plasma\Exception('Client is closing all connections')));
+            return Promise\reject((new Exception('Client is closing all connections')));
         }
         
         $connection = $this->getOptimalConnection();
@@ -187,13 +195,13 @@ class Client implements ClientInterface {
      * If you need to execute a query multiple times, prepare the query manually for performance reasons.
      * @param string  $query
      * @param array   $params
-     * @return \React\Promise\PromiseInterface
-     * @throws \Plasma\Exception
+     * @return PromiseInterface
+     * @throws Exception
      * @see \Plasma\StatementInterface
      */
-    function execute(string $query, array $params = array()): \React\Promise\PromiseInterface {
+    function execute(string $query, array $params = array()): PromiseInterface {
         if($this->goingAway) {
-            return \React\Promise\reject((new \Plasma\Exception('Client is closing all connections')));
+            return Promise\reject((new Exception('Client is closing all connections')));
         }
         
         $connection = $this->getOptimalConnection();
@@ -212,12 +220,13 @@ class Client implements ClientInterface {
      * @param string  $str
      * @param int     $type  For types, see the driver interface constants.
      * @return string
-     * @throws \LogicException    Thrown if the driver does not support quoting.
-     * @throws \Plasma\Exception  Thrown if the client is closing all connections.
+     * @throws \LogicException  Thrown if the driver does not support quoting.
+     * @throws Exception        Thrown if the client is closing all connections.
+     * @throws \Throwable
      */
-    function quote(string $str, int $type = \Plasma\DriverInterface::QUOTE_TYPE_VALUE): string {
+    function quote(string $str, int $type = DriverInterface::QUOTE_TYPE_VALUE): string {
         if($this->goingAway) {
-            throw new \Plasma\Exception('Client is closing all connections');
+            throw new Exception('Client is closing all connections');
         }
         
         $connection = $this->getOptimalConnection();
@@ -234,31 +243,31 @@ class Client implements ClientInterface {
     
     /**
      * Closes all connections gracefully after processing all outstanding requests.
-     * @return \React\Promise\PromiseInterface
+     * @return PromiseInterface
      */
-    function close(): \React\Promise\PromiseInterface {
+    function close(): PromiseInterface {
         if($this->goingAway) {
             return $this->goingAway;
         }
         
-        $deferred = new \React\Promise\Deferred();
+        $deferred = new Deferred();
         $this->goingAway = $deferred->promise();
         
         $closes = array();
         
-        /** @var \Plasma\DriverInterface  $conn */
-        foreach($this->connections->all() as $conn) {
+        /** @var DriverInterface $conn */
+        foreach($this->connections as $conn) {
             $closes[] = $conn->close();
-            $this->connections->delete($conn);
+            $this->connections->detach($conn);
         }
         
-        /** @var \Plasma\DriverInterface  $conn */
-        foreach($this->busyConnections->all() as $conn) {
+        /** @var DriverInterface $conn */
+        foreach($this->busyConnections as $conn) {
             $closes[] = $conn->close();
-            $this->busyConnections->delete($conn);
+            $this->busyConnections->detach($conn);
         }
-        
-        \React\Promise\all($closes)->then(array($deferred, 'resolve'), array($deferred, 'reject'));
+    
+        Promise\all($closes)->then(array($deferred, 'resolve'), array($deferred, 'reject'));
         return $this->goingAway;
     }
     
@@ -271,30 +280,31 @@ class Client implements ClientInterface {
             return;
         }
         
-        $this->goingAway = \React\Promise\resolve();
+        $this->goingAway = Promise\resolve();
         
-        /** @var \Plasma\DriverInterface  $conn */
-        foreach($this->connections->all() as $conn) {
+        /** @var DriverInterface $conn */
+        foreach($this->connections as $conn) {
             $conn->quit();
-            $this->connections->delete($conn);
+            $this->connections->detach($conn);
         }
         
-        /** @var \Plasma\DriverInterface  $conn */
-        foreach($this->busyConnections->all() as $conn) {
+        /** @var DriverInterface $conn */
+        foreach($this->busyConnections as $conn) {
             $conn->quit();
-            $this->busyConnections->delete($conn);
+            $this->busyConnections->detach($conn);
         }
     }
     
     /**
      * Runs the given command.
-     * @param \Plasma\CommandInterface  $command
+     * @param CommandInterface  $command
      * @return mixed  Return depends on command and driver.
-     * @throws \Plasma\Exception  Thrown if the client is closing all connections.
+     * @throws Exception  Thrown if the client is closing all connections.
+     * @throws \Throwable
      */
-    function runCommand(\Plasma\CommandInterface $command) {
+    function runCommand(CommandInterface $command) {
         if($this->goingAway) {
-            throw new \Plasma\Exception('Client is closing all connections');
+            throw new Exception('Client is closing all connections');
         }
         
         $connection = $this->getOptimalConnection();
@@ -311,13 +321,14 @@ class Client implements ClientInterface {
      * Runs the given querybuilder on an underlying driver instance.
      * The driver CAN throw an exception if the given querybuilder is not supported.
      * An example would be a SQL querybuilder and a Cassandra driver.
-     * @param \Plasma\QueryBuilderInterface  $query
-     * @return \React\Promise\PromiseInterface
-     * @throws \Plasma\Exception
+     * @param QueryBuilderInterface  $query
+     * @return PromiseInterface
+     * @throws Exception
+     * @throws \Throwable
      */
-    function runQuery(\Plasma\QueryBuilderInterface $query): \React\Promise\PromiseInterface {
+    function runQuery(QueryBuilderInterface $query): PromiseInterface {
         if($this->goingAway) {
-            return \React\Promise\reject((new \Plasma\Exception('Client is closing all connections')));
+            return Promise\reject((new Exception('Client is closing all connections')));
         }
         
         $connection = $this->getOptimalConnection();
@@ -332,14 +343,15 @@ class Client implements ClientInterface {
     
     /**
      * Creates a new cursor to seek through SELECT query results.
-     * @param string                   $query
-     * @param array                    $params
-     * @return \React\Promise\PromiseInterface
-     * @throws \Plasma\Exception
+     * @param string  $query
+     * @param array   $params
+     * @return PromiseInterface
+     * @throws Exception
+     * @throws \Throwable
      */
-    function createReadCursor(string $query, array $params = array()): \React\Promise\PromiseInterface {
+    function createReadCursor(string $query, array $params = array()): PromiseInterface {
         if($this->goingAway) {
-            return \React\Promise\reject((new \Plasma\Exception('Client is closing all connections')));
+            return Promise\reject((new Exception('Client is closing all connections')));
         }
         
         $connection = $this->getOptimalConnection();
@@ -354,31 +366,31 @@ class Client implements ClientInterface {
     
     /**
      * Get the optimal connection.
-     * @return \Plasma\DriverInterface
+     * @return DriverInterface
      */
-    protected function getOptimalConnection(): \Plasma\DriverInterface {
+    protected function getOptimalConnection(): DriverInterface {
         if(\count($this->connections) === 0 && \count($this->busyConnections) < $this->options['connections.max']) {
             $connection = $this->createNewConnection();
-            $this->busyConnections->add($connection);
+            $this->busyConnections->attach($connection);
             
             return $connection;
         }
         
-        /** @var \Plasma\DriverInterface  $connection */
+        /** @var DriverInterface $connection */
         $this->connections->rewind();
         $connection = $this->connections->current();
         
         $backlog = $connection->getBacklogLength();
         $state = $connection->getBusyState();
         
-        /** @var \Plasma\DriverInterface  $conn */
+        /** @var DriverInterface $conn */
         foreach($this->connections as $conn) {
             $cbacklog = $conn->getBacklogLength();
             $cstate = $conn->getBusyState();
             
-            if($cbacklog === 0 && $conn->getConnectionState() === \Plasma\DriverInterface::CONNECTION_OK && $cstate == \Plasma\DriverInterface::STATE_IDLE) {
-                $this->connections->delete($conn);
-                $this->busyConnections->add($conn);
+            if($cbacklog === 0 && $cstate === DriverInterface::STATE_IDLE && $conn->getConnectionState() === DriverInterface::CONNECTION_OK) {
+                $this->connections->detach($conn);
+                $this->busyConnections->attach($conn);
                 
                 return $conn;
             }
@@ -394,17 +406,17 @@ class Client implements ClientInterface {
             $connection = $this->createNewConnection();
         }
         
-        $this->connections->delete($connection);
-        $this->busyConnections->add($connection);
+        $this->connections->detach($connection);
+        $this->busyConnections->attach($connection);
         
         return $connection;
     }
     
     /**
      * Create a new connection.
-     * @return \Plasma\DriverInterface
+     * @return DriverInterface
      */
-    protected function createNewConnection(): \Plasma\DriverInterface {
+    protected function createNewConnection(): DriverInterface {
         $connection = $this->factory->createDriver();
         
         // We relay a driver's specific events forward, e.g. PostgreSQL notifications
@@ -414,8 +426,8 @@ class Client implements ClientInterface {
         });
         
         $connection->on('close', function () use (&$connection) {
-            $this->connections->delete($connection);
-            $this->busyConnections->delete($connection);
+            $this->connections->detach($connection);
+            $this->busyConnections->detach($connection);
             
             $this->emit('close', array($connection));
         });
@@ -425,13 +437,13 @@ class Client implements ClientInterface {
         });
         
         $connection->connect($this->uri)->then(function () use (&$connection) {
-            $this->connections->add($connection);
-            $this->busyConnections->delete($connection);
+            $this->connections->attach($connection);
+            $this->busyConnections->detach($connection);
             
             $this->emit('newConnection', array($connection));
         }, function (\Throwable $error) use (&$connection) {
-            $this->connections->delete($connection);
-            $this->busyConnections->delete($connection);
+            $this->connections->detach($connection);
+            $this->busyConnections->detach($connection);
             
             $this->emit('error', array($error, $connection));
         });
@@ -445,12 +457,10 @@ class Client implements ClientInterface {
      * @return void
      * @throws \InvalidArgumentException
      */
-    protected function validateOptions(array $options) {
-        $validator = \CharlotteDunois\Validation\Validator::make($options, array(
+    protected function validateOptions(array $options): void {
+        Validator::make(array(
             'connections.max' => 'integer|min:1',
             'connections.lazy' => 'boolean'
-        ));
-        
-        $validator->throw(\InvalidArgumentException::class);
+        ))->validate($options, \InvalidArgumentException::class);
     }
 }

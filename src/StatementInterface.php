@@ -9,6 +9,8 @@
 
 namespace Plasma;
 
+use React\Promise\PromiseInterface;
+
 /**
  * Represents any prepared statement.
  */
@@ -35,26 +37,26 @@ interface StatementInterface {
     /**
      * Closes the prepared statement and frees the associated resources on the server.
      * Closing a statement more than once SHOULD have no effect.
-     * @return \React\Promise\PromiseInterface
+     * @return PromiseInterface
      */
-    function close(): \React\Promise\PromiseInterface;
+    function close(): PromiseInterface;
     
     /**
      * Executes the prepared statement. Resolves with a `QueryResult` instance.
      * @param array  $params
-     * @return \React\Promise\PromiseInterface
-     * @throws \Plasma\Exception
+     * @return PromiseInterface
+     * @throws Exception
      * @see \Plasma\QueryResultInterface
      */
-    function execute(array $params = array()): \React\Promise\PromiseInterface;
+    function execute(array $params = array()): PromiseInterface;
     
     /**
      * Runs the given querybuilder on an underlying driver instance.
      * The driver CAN throw an exception if the given querybuilder is not supported.
      * An example would be a SQL querybuilder and a Cassandra driver.
-     * @param \Plasma\QueryBuilderInterface  $query
-     * @return \React\Promise\PromiseInterface
-     * @throws \Plasma\Exception
+     * @param QueryBuilderInterface  $query
+     * @return PromiseInterface
+     * @throws Exception
      */
-    function runQuery(\Plasma\QueryBuilderInterface $query): \React\Promise\PromiseInterface;
+    function runQuery(QueryBuilderInterface $query): PromiseInterface;
 }

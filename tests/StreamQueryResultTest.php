@@ -5,54 +5,61 @@
  *
  * Website: https://github.com/PlasmaPHP
  * License: https://github.com/PlasmaPHP/core/blob/master/LICENSE
+ * @noinspection PhpUnhandledExceptionInspection
 */
 
 namespace Plasma\Tests;
+
+use Plasma\CommandInterface;
+use Plasma\QueryResultInterface;
+use Plasma\StreamQueryResult;
+use React\Promise\Deferred;
+use React\Promise\PromiseInterface;
 
 class StreamQueryResultTest extends ClientTestHelpers {
     function testGetAffectedRows() {
         $command = $this->getCommandMock();
         
-        $result = new \Plasma\StreamQueryResult($command, 0, 1, null, null);
-        $this->assertSame(0, $result->getAffectedRows());
+        $result = new StreamQueryResult($command, 0, 1, null, null);
+        self::assertSame(0, $result->getAffectedRows());
     }
     
     function testGetWarningsCount() {
         $command = $this->getCommandMock();
         
-        $result = new \Plasma\StreamQueryResult($command, 0, 1, null, null);
-        $this->assertSame(1, $result->getWarningsCount());
+        $result = new StreamQueryResult($command, 0, 1, null, null);
+        self::assertSame(1, $result->getWarningsCount());
     }
     
     function testGetInsertID() {
         $command = $this->getCommandMock();
         
-        $result = new \Plasma\StreamQueryResult($command, 0, 1, null, null);
-        $this->assertNull($result->getInsertID());
+        $result = new StreamQueryResult($command, 0, 1, null, null);
+        self::assertNull($result->getInsertID());
         
-        $result2 = new \Plasma\StreamQueryResult($command, 0, 1, 42, null);
-        $this->assertSame(42, $result2->getInsertID());
+        $result2 = new StreamQueryResult($command, 0, 1, 42, null);
+        self::assertSame(42, $result2->getInsertID());
     }
     
     function testGetFieldDefinitions() {
         $command = $this->getCommandMock();
         
-        $result = new \Plasma\StreamQueryResult($command, 0, 1, null, null);
-        $this->assertNull($result->getFieldDefinitions());
+        $result = new StreamQueryResult($command, 0, 1, null, null);
+        self::assertNull($result->getFieldDefinitions());
         
         $fields = array(
             $this->getColDefMock('test2', 'coltest', 'BIGINT', 'utf8mb4', 20, false, 0, null)
         );
         
-        $result2 = new \Plasma\StreamQueryResult($command, 0, 1, null, $fields);
-        $this->assertSame($fields, $result2->getFieldDefinitions());
+        $result2 = new StreamQueryResult($command, 0, 1, null, $fields);
+        self::assertSame($fields, $result2->getFieldDefinitions());
     }
     
     function testGetRows() {
         $command = $this->getCommandMock();
         
-        $result = new \Plasma\StreamQueryResult($command, 0, 1, null, null);
-        $this->assertNull($result->getRows());
+        $result = new StreamQueryResult($command, 0, 1, null, null);
+        self::assertNull($result->getRows());
     }
     
     function testEvents() {
@@ -62,40 +69,46 @@ class StreamQueryResultTest extends ClientTestHelpers {
         
         $command
             ->method('once')
-            ->will($this->returnCallback(function ($event, $cb) use (&$events) {
-                $events[$event] = $cb;
-            }));
+            ->willReturnCallback(
+                function ($event, $cb) use (&$events) {
+                    $events[$event] = $cb;
+                }
+            );
     
         $command
             ->method('on')
-            ->will($this->returnCallback(function ($event, $cb) use (&$events) {
-                $events[$event] = $cb;
-            }));
+            ->willReturnCallback(
+                function ($event, $cb) use (&$events) {
+                    $events[$event] = $cb;
+                }
+            );
         
         $command
             ->method('emit')
-            ->will($this->returnCallback(function ($event, $args) use (&$events) {
-                $events[$event](...$args);
-            }));
+            ->willReturnCallback(
+                function ($event, $args) use (&$events) {
+                    $events[$event](...$args);
+                }
+            );
         
-        $result = new \Plasma\StreamQueryResult($command, 0, 1, null, null);
+        $result = new StreamQueryResult($command, 0, 1, null, null);
         
-        $deferred = new \React\Promise\Deferred();
+        $deferred = new Deferred();
         $result->once('end', array($deferred, 'resolve'));
         
         $command->emit('end', array());
         
-        $this->assertNull($this->await($deferred->promise()));
+        self::assertNull($this->await($deferred->promise()));
     
-        $result2 = new \Plasma\StreamQueryResult($command, 0, 1, null, null);
+        $result2 = new StreamQueryResult($command, 0, 1, null, null);
         
-        $deferred3 = new \React\Promise\Deferred();
+        $deferred3 = new Deferred();
         $result2->once('error', array($deferred3, 'resolve'));
         
         $command->emit('error', array((new \RuntimeException('test'))));
         
         $exc = $this->await($deferred3->promise());
-        $this->assertInstanceOf(\Throwable::class, $exc);
+        self::assertInstanceOf(\Throwable::class, $exc);
     }
     
     function testAll() {
@@ -103,26 +116,32 @@ class StreamQueryResultTest extends ClientTestHelpers {
         
         $command
             ->method('once')
-            ->will($this->returnCallback(function ($event, $cb) use (&$events) {
-                $events[$event] = $cb;
-            }));
+            ->willReturnCallback(
+                function ($event, $cb) use (&$events) {
+                    $events[$event] = $cb;
+                }
+            );
         
         $command
             ->method('on')
-            ->will($this->returnCallback(function ($event, $cb) use (&$events) {
-                $events[$event] = $cb;
-            }));
+            ->willReturnCallback(
+                function ($event, $cb) use (&$events) {
+                    $events[$event] = $cb;
+                }
+            );
         
         $command
             ->method('emit')
-            ->will($this->returnCallback(function ($event, $args) use (&$events) {
-                $events[$event](...$args);
-            }));
+            ->willReturnCallback(
+                function ($event, $args) use (&$events) {
+                    $events[$event](...$args);
+                }
+            );
         
-        $result = new \Plasma\StreamQueryResult($command, 0, 1, null, null);
+        $result = new StreamQueryResult($command, 0, 1, null, null);
         
         $prom = $result->all();
-        $this->assertInstanceOf(\React\Promise\PromiseInterface::class, $prom);
+        self::assertInstanceOf(PromiseInterface::class, $prom);
         
         $command->emit('data', array(5));
         $command->emit('data', array(255));
@@ -131,14 +150,14 @@ class StreamQueryResultTest extends ClientTestHelpers {
         $command->emit('end');
         
         $result = $this->await($prom);
-        $this->assertInstanceOf(\Plasma\QueryResultInterface::class, $result);
+        self::assertInstanceOf(QueryResultInterface::class, $result);
         
         $rows = $result->getRows();
-        $this->assertSame(array(5, 255, 851), $rows);
+        self::assertSame(array(5, 255, 851), $rows);
     }
     
-    function getCommandMock(): \Plasma\CommandInterface {
-        return $this->getMockBuilder(\Plasma\CommandInterface::class)
+    function getCommandMock(): CommandInterface {
+        return $this->getMockBuilder(CommandInterface::class)
             ->setMethods(array(
                 'listeners',
                 'on',
