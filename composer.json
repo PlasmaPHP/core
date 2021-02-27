@@ -11,8 +11,8 @@
     ],
     "require": {
         "php": ">=7.1",
-        "obsidian/validation": "^0.1.0",
         "evenement/evenement": "^3.0|^2.0",
+        "obsidian/validation": "^0.1.0",
         "react/promise": "^2.7",
         "react/promise-stream": "^1.1"
     },
