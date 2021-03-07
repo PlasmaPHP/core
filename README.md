@@ -1,4 +1,6 @@
-# Plasma Core [![CI status](https://github.com/PlasmaPHP/core/workflows/CI/badge.svg)](https://github.com/PlasmaPHP/core/actions) parts and interfaces.
+# Plasma Core [![CI status](https://github.com/PlasmaPHP/core/workflows/CI/badge.svg)](https://github.com/PlasmaPHP/core/actions)
+
+Plasma provides an asynchronous, non-blocking (data access) Database Abstraction Layer. This is the core component, defining common parts and interfaces.
 
 The core component alone does __nothing__, you need a Plasma driver, which does all the handling of the DBMS.
 
