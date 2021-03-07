@@ -59,6 +59,9 @@ class AbstractColumnDefinitionTest extends ClientTestHelpers {
     }
     
     function testParseValueNoMatchingType() {
+        // Make sure we don't have a database type decoder from testParseValue lying around
+        TypeExtensionsManager::getManager()->unregisterDatabaseType('BIGINT');
+        
         $coldef = $this->getColDefMock('test2', 'coltest', 'BIGINT', 'utf8mb4', 20, 0, null);
         self::assertSame('testValue', $coldef->parseValue('testValue'));
     }
