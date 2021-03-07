@@ -1,6 +1,4 @@
-# Plasma [![Build Status](https://travis-ci.org/PlasmaPHP/core.svg?branch=master)](https://travis-ci.org/PlasmaPHP/core) [![Build Status](https://scrutinizer-ci.com/g/PlasmaPHP/core/badges/build.png?b=master)](https://scrutinizer-ci.com/g/PlasmaPHP/core/build-status/master) [![Code Coverage](https://scrutinizer-ci.com/g/PlasmaPHP/core/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/PlasmaPHP/core/?branch=master)
-
-Plasma provides an asynchronous, non-blocking (data access) Database Abstraction Layer. This is the core component, defining common parts and interfaces.
+# Plasma Core [![CI status](https://github.com/PlasmaPHP/core/workflows/CI/badge.svg)](https://github.com/PlasmaPHP/core/actions) parts and interfaces.
 
 The core component alone does __nothing__, you need a Plasma driver, which does all the handling of the DBMS.
 
@@ -20,7 +18,12 @@ Each driver has their own dependencies, as such they have to implement a factory
 But this is some little pseudo code:
 
 ```php
-use Plasma\Client;use Plasma\QueryResultInterface;use React\EventLoop\Factory;use SomeGuy\PlasmaDriver\MsSQLFactory;$loop = Factory::create();
+use Plasma\Client;
+use Plasma\QueryResultInterface;
+use React\EventLoop\Factory;
+use SomeGuy\PlasmaDriver\MsSQLFactory;
+
+$loop = Factory::create();
 $factory = new MsSQLFactory($loop);
 
 $client = Client::create($factory, 'root:1234@localhost');
@@ -53,9 +56,10 @@ When combining cursors with generator coroutines (such as Recoil), you get a pow
 
 ```php
 // Inside a coroutine
+use Plasma\CursorInterface;
 
 /** @var CursorInterface  $cursor */
-use Plasma\CursorInterface;$cursor = yield $client->createReadCursor('SELECT * FROM `my_table`');
+$cursor = yield $client->createReadCursor('SELECT * FROM `my_table`');
 
 while($row = yield $cursor->fetch()) {
     // Process row
